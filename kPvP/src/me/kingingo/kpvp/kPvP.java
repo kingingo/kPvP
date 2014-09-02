@@ -53,7 +53,7 @@ public class kPvP extends JavaPlugin{
 	private Hologram hologram;
 	@Getter
 	private Location hologram_loc;
-	
+	//TEST
 	public void onEnable(){
 		loadConfig();
 		this.instance=this;
