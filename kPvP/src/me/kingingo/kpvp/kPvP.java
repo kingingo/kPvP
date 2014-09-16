@@ -8,7 +8,6 @@ import me.kingingo.kcore.Command.CommandHandler;
 import me.kingingo.kcore.Command.Admin.CommandMuteAll;
 import me.kingingo.kcore.Enum.GameType;
 import me.kingingo.kcore.Gilden.GildenManager;
-import me.kingingo.kcore.Gilden.GildenType;
 import me.kingingo.kcore.Hologram.Hologram;
 import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Neuling.NeulingManager;
@@ -66,7 +65,7 @@ public class kPvP extends JavaPlugin{
 		this.hologram_loc=new Location(Bukkit.getWorld("world"),getConfig().getInt("Config.Hologram.X"),getConfig().getInt("Config.Hologram.Y"),getConfig().getInt("Config.Hologram.Z"));
 		this.hologram_loc.getWorld().loadChunk(this.hologram_loc.getWorld().getChunkAt(this.hologram_loc));
 		this.hologram=new Hologram(this);
-		this.gildenManager=new GildenManager(this,mysql,GildenType.PvP,cmd);
+		this.gildenManager=new GildenManager(this,mysql,GameType.PVP,cmd);
 		this.friendManager=new FriendManager(this,mysql,cmd);
 		this.neulingManager=new NeulingManager(this,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,30);
