@@ -1,6 +1,8 @@
 package me.kingingo.kpvp;
 
 import lombok.Getter;
+import lombok.Setter;
+import me.kingingo.kcore.Addons.AddonRealTime;
 import me.kingingo.kcore.AntiLogout.AntiLogoutManager;
 import me.kingingo.kcore.AntiLogout.AntiLogoutType;
 import me.kingingo.kcore.Client.Client;
@@ -8,6 +10,7 @@ import me.kingingo.kcore.Command.CommandHandler;
 import me.kingingo.kcore.Command.Admin.CommandMuteAll;
 import me.kingingo.kcore.Enum.GameType;
 import me.kingingo.kcore.Gilden.GildenManager;
+import me.kingingo.kcore.Gilden.GildenType;
 import me.kingingo.kcore.Hologram.Hologram;
 import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Neuling.NeulingManager;
@@ -18,6 +21,8 @@ import me.kingingo.kcore.Util.UtilBG;
 import me.kingingo.kcore.Util.UtilServer;
 import me.kingingo.kcore.friend.FriendManager;
 import me.kingingo.kcore.memory.MemoryFix;
+import me.kingingo.kpvp.Command.CommandHologram;
+import me.kingingo.kpvp.Command.CommandStats;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,7 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class kPvP extends JavaPlugin{
 
 	@Getter
-	private Client c;
+	private Client client;
 	@Getter
 	private JavaPlugin instance;
 	@Getter
@@ -51,36 +56,40 @@ public class kPvP extends JavaPlugin{
 	@Getter
 	private Hologram hologram;
 	@Getter
+	@Setter
 	private Location hologram_loc;
 	
 	public void onEnable(){
 		loadConfig();
 		this.instance=this;
 		updater=new Updater(this);
-		this.c = new Client(getConfig().getString("Config.Client.Host"),getConfig().getInt("Config.Client.Port"),"PvP",this,updater);
+		this.client = new Client(getConfig().getString("Config.Client.Host"),getConfig().getInt("Config.Client.Port"),"PvP",this,updater);
 		mysql=new MySQL(getConfig().getString("Config.MySQL.User"),getConfig().getString("Config.MySQL.Password"),getConfig().getString("Config.MySQL.Host"),getConfig().getString("Config.MySQL.DB"),this);
 		permManager=new PermissionManager(this,mysql);
 		cmd=new CommandHandler(this);
 		new MemoryFix(this);
-		this.hologram_loc=new Location(Bukkit.getWorld("world"),getConfig().getInt("Config.Hologram.X"),getConfig().getInt("Config.Hologram.Y"),getConfig().getInt("Config.Hologram.Z"));
+		
+		this.hologram_loc=new Location(Bukkit.getWorld("world"),getConfig().getDouble("Config.Hologram.X"),getConfig().getDouble("Config.Hologram.Y"),getConfig().getDouble("Config.Hologram.Z"));
 		this.hologram_loc.getWorld().loadChunk(this.hologram_loc.getWorld().getChunkAt(this.hologram_loc));
 		this.hologram=new Hologram(this);
-		this.gildenManager=new GildenManager(this,mysql,GameType.PVP,cmd);
+		
+		this.gildenManager=new GildenManager(this,mysql,GildenType.PVP,cmd);
 		this.friendManager=new FriendManager(this,mysql,cmd);
 		this.neulingManager=new NeulingManager(this,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,30);
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
+		new AddonRealTime(this,Bukkit.getWorld("world"));
 		cmd.register(CommandMuteAll.class, new CommandMuteAll(getPermManager()));
+		cmd.register(CommandHologram.class, new CommandHologram(this));
+		cmd.register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
+		new kPvPListener(this);
 	}
 	
 	public void onDisable(){
-		this.gildenManager.setOnDisable(true);
-		this.statsManager.setOnDisable(true);
-		for(Player player : UtilServer.getPlayers()){
-			UtilBG.sendToServer(player, "lobby", this);
-		}
 		this.statsManager.SaveAllData();
 		this.gildenManager.AllUpdateGilde();
+		this.mysql.close();
+		this.client.disconnect(false);
 	}
 	
 	public void loadConfig(){
