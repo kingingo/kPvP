@@ -21,14 +21,19 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+
 public class kPvPListener extends kListener{
 
 	@Getter
 	private kPvP manager;
+	private PermissionManager pex=null;
 	
 	public kPvPListener(kPvP manager){
 		super(manager.getInstance(),"[kPvPListener]");
 		this.manager=manager;
+		this.pex = PermissionsEx.getPermissionManager();
 	}
 	
 	@EventHandler
@@ -125,6 +130,12 @@ public class kPvPListener extends kListener{
 	public void Join(PlayerJoinEvent ev){
 		ev.setJoinMessage(null);
 		setHologramm(ev.getPlayer());
+		
+		if(ev.getPlayer().getName().length()>13){
+			ev.getPlayer().setPlayerListName(pex.getUser(ev.getPlayer()).getPrefix().substring(0, 2)+ev.getPlayer().getName().substring(0, 13));
+		}else{
+			ev.getPlayer().setPlayerListName(pex.getUser(ev.getPlayer()).getPrefix().substring(0, 2)+ev.getPlayer().getName());
+		}
 	}
 	
 	@EventHandler

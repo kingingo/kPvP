@@ -25,6 +25,7 @@ import me.kingingo.kpvp.Command.CommandHologram;
 import me.kingingo.kpvp.Command.CommandStats;
 import me.kingingo.kpvp.Command.CommandURang;
 import me.kingingo.kpvp.Command.CommandUnBan;
+import me.kingingo.kpvp.Command.CommandXP;
 import me.kingingo.kpvp.Command.CommandkSpawn;
 
 import org.bukkit.Bukkit;
@@ -91,6 +92,7 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandURang.class, new CommandURang());
 		cmd.register(CommandUnBan.class, new CommandUnBan(mysql));
 		cmd.register(CommandBanned.class, new CommandBanned(mysql));
+		cmd.register(CommandXP.class, new CommandXP());
 		new kPvPListener(this);
 	}
 	
