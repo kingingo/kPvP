@@ -24,7 +24,7 @@ public class CommandStats implements CommandExecutor{
 		this.statsManager=statsmanager;
 	}
 
-	@me.kingingo.kcore.Command.CommandHandler.Command(command = "stats", alias = {"kdr"}, sender = Sender.PLAYER)
+	@me.kingingo.kcore.Command.CommandHandler.Command(command = "stats", alias = {"kdr","money"}, sender = Sender.PLAYER)
 	public boolean onCommand(CommandSender cs, Command cmd, String arg2,String[] args) {
 		Player p = (Player)cs;
 		if(args.length==0){

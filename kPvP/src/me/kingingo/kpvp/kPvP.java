@@ -2,7 +2,6 @@ package me.kingingo.kpvp;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.kingingo.kcore.Addons.AddonRealTime;
 import me.kingingo.kcore.AntiLogout.AntiLogoutManager;
 import me.kingingo.kcore.AntiLogout.AntiLogoutType;
 import me.kingingo.kcore.Client.Client;

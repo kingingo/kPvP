@@ -15,6 +15,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -42,6 +44,19 @@ public class kPvPListener extends kListener{
 			ev.setCancelled(true);
 		}
 	}
+	
+	@EventHandler
+	public void onClickinAnvil(InventoryClickEvent e){
+	    try{
+	      if ((e.getInventory().getType() == InventoryType.ANVIL) && 
+	        (e.getCurrentItem().getAmount() > 1)){
+	        e.setCancelled(true);
+	        Player ps = (Player)e.getWhoClicked();
+	        ps.sendMessage("§cFEHLER: BuggUsing ist verboten!");
+	      }
+	    }
+	    catch (Exception localException){}
+	  }
 	
 	@EventHandler
 	public void GildeHome(GildenPlayerTeleportEvent ev){
@@ -79,36 +94,13 @@ public class kPvPListener extends kListener{
 		if(ev.getPlayer().isOp()){
 			if(cmd.equalsIgnoreCase("/reload")){
 				ev.setCancelled(true);
-				manager.getGildenManager().setOnDisable(true);
-				manager.getStatsManager().setOnDisable(true);
-				manager.getAntiManager().setOnDisable(true);
-				for(Player player : UtilServer.getPlayers()){
-					UtilBG.sendToServer(player, "falldown", manager);
-				}
-				
-				Bukkit.getScheduler().scheduleAsyncDelayedTask(manager.getInstance(), new Runnable(){
-
-		  			@Override
-		  			public void run() {
-		  				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
-		  			}
-		      		 
-		      	 }, 25*20);
-				
+				new Restart(getManager());
 			}else if(cmd.equalsIgnoreCase("/restart")){
-				manager.getGildenManager().setOnDisable(true);
-				manager.getStatsManager().setOnDisable(true);
-				manager.getAntiManager().setOnDisable(true);
-				for(Player player : UtilServer.getPlayers()){
-					UtilBG.sendToServer(player, "falldown", manager);
-				}
+				ev.setCancelled(true);
+				new Restart(getManager());
 			}else if(cmd.equalsIgnoreCase("/stop")){
-				manager.getGildenManager().setOnDisable(true);
-				manager.getStatsManager().setOnDisable(true);
-				manager.getAntiManager().setOnDisable(true);
-				for(Player player : UtilServer.getPlayers()){
-					UtilBG.sendToServer(player, "falldown", manager);
-				}
+				ev.setCancelled(true);
+				new Restart(getManager());
 			}
 		}else{
 			if(!getManager().getAntiManager().is(ev.getPlayer())){
@@ -132,15 +124,15 @@ public class kPvPListener extends kListener{
 		setHologramm(ev.getPlayer());
 		
 		if(ev.getPlayer().getName().length()>13){
-			ev.getPlayer().setPlayerListName(pex.getUser(ev.getPlayer()).getPrefix().substring(0, 2)+ev.getPlayer().getName().substring(0, 13));
+			ev.getPlayer().setPlayerListName(pex.getUser(ev.getPlayer()).getPrefix().substring(0, 2).replaceAll("&", "§")+ev.getPlayer().getName().substring(0, 13));
 		}else{
-			ev.getPlayer().setPlayerListName(pex.getUser(ev.getPlayer()).getPrefix().substring(0, 2)+ev.getPlayer().getName());
+			ev.getPlayer().setPlayerListName(pex.getUser(ev.getPlayer()).getPrefix().substring(0, 2).replaceAll("&", "§")+ev.getPlayer().getName());
 		}
 	}
 	
 	@EventHandler
 	public void Updater(UpdateEvent ev){
-		if(ev.getType()!=UpdateType.MIN_16)return;
+		if(ev.getType()!=UpdateType.MIN_04)return;
 		for(Player p : UtilServer.getPlayers())setHologramm(p);
 	}
 	
