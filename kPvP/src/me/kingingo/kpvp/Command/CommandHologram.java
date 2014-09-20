@@ -3,9 +3,6 @@ package me.kingingo.kpvp.Command;
 import lombok.Getter;
 import me.kingingo.kcore.Command.CommandHandler.Sender;
 import me.kingingo.kcore.Enum.Text;
-import me.kingingo.kcore.Gilden.GildenManager;
-import me.kingingo.kcore.PlayerStats.Stats;
-import me.kingingo.kcore.PlayerStats.StatsManager;
 import me.kingingo.kpvp.kPvP;
 
 import org.bukkit.command.Command;

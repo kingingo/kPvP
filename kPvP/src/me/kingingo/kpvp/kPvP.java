@@ -18,18 +18,17 @@ import me.kingingo.kcore.Permission.PermissionManager;
 import me.kingingo.kcore.PlayerStats.StatsManager;
 import me.kingingo.kcore.SignShop.SignShop;
 import me.kingingo.kcore.Update.Updater;
-import me.kingingo.kcore.Util.UtilBG;
-import me.kingingo.kcore.Util.UtilServer;
 import me.kingingo.kcore.friend.FriendManager;
 import me.kingingo.kcore.memory.MemoryFix;
+import me.kingingo.kpvp.Command.CommandBanned;
 import me.kingingo.kpvp.Command.CommandHologram;
 import me.kingingo.kpvp.Command.CommandStats;
 import me.kingingo.kpvp.Command.CommandURang;
+import me.kingingo.kpvp.Command.CommandUnBan;
 import me.kingingo.kpvp.Command.CommandkSpawn;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class kPvP extends JavaPlugin{
@@ -90,6 +89,8 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
 		cmd.register(CommandkSpawn.class, new CommandkSpawn());
 		cmd.register(CommandURang.class, new CommandURang());
+		cmd.register(CommandUnBan.class, new CommandUnBan(mysql));
+		cmd.register(CommandBanned.class, new CommandBanned(mysql));
 		new kPvPListener(this);
 	}
 	
