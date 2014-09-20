@@ -84,7 +84,6 @@ public class kPvP extends JavaPlugin{
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,30);
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
 		this.Shop=new SignShop(this,statsManager);
-		new AddonRealTime(this,Bukkit.getWorld("world"));
 		cmd.register(CommandMuteAll.class, new CommandMuteAll(getPermManager()));
 		cmd.register(CommandHologram.class, new CommandHologram(this));
 		cmd.register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
