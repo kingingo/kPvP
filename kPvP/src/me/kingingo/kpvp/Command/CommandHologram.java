@@ -29,6 +29,7 @@ public class CommandHologram implements CommandExecutor{
 			manager.getConfig().set("Config.Hologram.X", p.getLocation().getX());
 			manager.getConfig().set("Config.Hologram.Y", p.getLocation().getY());
 			manager.getConfig().set("Config.Hologram.Z", p.getLocation().getZ());
+			manager.saveConfig();
 			manager.setHologram_loc(p.getLocation());
 			p.sendMessage(Text.PREFIX.getText()+"§a Das Hologramm wurde gesetzt!");
 		}

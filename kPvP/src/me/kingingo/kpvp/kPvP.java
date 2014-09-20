@@ -16,6 +16,7 @@ import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Neuling.NeulingManager;
 import me.kingingo.kcore.Permission.PermissionManager;
 import me.kingingo.kcore.PlayerStats.StatsManager;
+import me.kingingo.kcore.SignShop.SignShop;
 import me.kingingo.kcore.Update.Updater;
 import me.kingingo.kcore.Util.UtilBG;
 import me.kingingo.kcore.Util.UtilServer;
@@ -23,6 +24,8 @@ import me.kingingo.kcore.friend.FriendManager;
 import me.kingingo.kcore.memory.MemoryFix;
 import me.kingingo.kpvp.Command.CommandHologram;
 import me.kingingo.kpvp.Command.CommandStats;
+import me.kingingo.kpvp.Command.CommandURang;
+import me.kingingo.kpvp.Command.CommandkSpawn;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -58,6 +61,8 @@ public class kPvP extends JavaPlugin{
 	@Getter
 	@Setter
 	private Location hologram_loc;
+	@Getter
+	private SignShop Shop;
 	
 	public void onEnable(){
 		loadConfig();
@@ -66,22 +71,25 @@ public class kPvP extends JavaPlugin{
 		this.client = new Client(getConfig().getString("Config.Client.Host"),getConfig().getInt("Config.Client.Port"),"PvP",this,updater);
 		mysql=new MySQL(getConfig().getString("Config.MySQL.User"),getConfig().getString("Config.MySQL.Password"),getConfig().getString("Config.MySQL.Host"),getConfig().getString("Config.MySQL.DB"),this);
 		permManager=new PermissionManager(this,mysql);
+		permManager.setSetAllowTab(false);
 		cmd=new CommandHandler(this);
 		new MemoryFix(this);
 		
 		this.hologram_loc=new Location(Bukkit.getWorld("world"),getConfig().getDouble("Config.Hologram.X"),getConfig().getDouble("Config.Hologram.Y"),getConfig().getDouble("Config.Hologram.Z"));
 		this.hologram_loc.getWorld().loadChunk(this.hologram_loc.getWorld().getChunkAt(this.hologram_loc));
 		this.hologram=new Hologram(this);
-		
 		this.gildenManager=new GildenManager(this,mysql,GildenType.PVP,cmd);
 		this.friendManager=new FriendManager(this,mysql,cmd);
-		this.neulingManager=new NeulingManager(this,20);
+		this.neulingManager=new NeulingManager(this,cmd,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,30);
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
+		this.Shop=new SignShop(this,statsManager);
 		new AddonRealTime(this,Bukkit.getWorld("world"));
 		cmd.register(CommandMuteAll.class, new CommandMuteAll(getPermManager()));
 		cmd.register(CommandHologram.class, new CommandHologram(this));
 		cmd.register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
+		cmd.register(CommandkSpawn.class, new CommandkSpawn());
+		cmd.register(CommandURang.class, new CommandURang());
 		new kPvPListener(this);
 	}
 	

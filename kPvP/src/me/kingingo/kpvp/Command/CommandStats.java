@@ -31,6 +31,7 @@ public class CommandStats implements CommandExecutor{
 			p.sendMessage(Text.STATS_PREFIX.getText());
 			p.sendMessage(Text.STATS_KILLS.getText()+getStatsManager().getInt(Stats.KILLS, p));
 			p.sendMessage(Text.STATS_DEATHS.getText()+getStatsManager().getInt(Stats.DEATHS, p));
+			p.sendMessage(Text.STATS_MONEY.getText()+getStatsManager().getDouble(Stats.MONEY, p));
 			p.sendMessage(Text.STATS_KDR.getText()+getStatsManager().getKDR(getStatsManager().getInt(Stats.KILLS, p), getStatsManager().getInt(Stats.DEATHS, p)));
 			if(getGildenManager().isPlayerInGilde(p)){
 				p.sendMessage(Text.STATS_GILDE.getText()+getGildenManager().getPlayerGilde(p));
@@ -48,6 +49,7 @@ public class CommandStats implements CommandExecutor{
 			p.sendMessage(Text.STATS_PREFIX.getText());
 			p.sendMessage(Text.STATS_KILLS.getText()+k);
 			p.sendMessage(Text.STATS_DEATHS.getText()+d);
+			p.sendMessage(Text.STATS_MONEY.getText()+getStatsManager().getDoubleWithString(Stats.MONEY, player));
 			p.sendMessage(Text.STATS_KDR.getText()+getStatsManager().getKDR(k, d));
 			if(getGildenManager().isPlayerInGilde(player)){
 				p.sendMessage(Text.STATS_GILDE.getText()+getGildenManager().getPlayerGilde(player));
