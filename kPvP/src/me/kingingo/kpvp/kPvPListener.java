@@ -1,9 +1,12 @@
 package me.kingingo.kpvp;
 
+import java.util.HashMap;
+
 import lombok.Getter;
 import me.kingingo.kcore.kListener;
 import me.kingingo.kcore.Enum.Text;
 import me.kingingo.kcore.Gilden.Events.GildenPlayerTeleportEvent;
+import me.kingingo.kcore.Hologram.nametags.NameTagMessage;
 import me.kingingo.kcore.PlayerStats.Stats;
 import me.kingingo.kcore.PlayerStats.Event.PlayerStatsCreateEvent;
 import me.kingingo.kcore.Update.UpdateType;
@@ -31,6 +34,7 @@ public class kPvPListener extends kListener{
 	@Getter
 	private kPvP manager;
 	private PermissionManager pex=null;
+	private HashMap<Player,NameTagMessage> holo = new HashMap<>();
 	
 	public kPvPListener(kPvP manager){
 		super(manager.getInstance(),"[kPvPListener]");
@@ -104,7 +108,7 @@ public class kPvPListener extends kListener{
 			}
 		}else{
 			if(!getManager().getAntiManager().is(ev.getPlayer())){
-				if(cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/warp")){
+				if(cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/warp")){
 					ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl §b"+cmd+"§c nicht in Kampf ausführen!");
 					ev.setCancelled(true);
 				}
@@ -115,6 +119,10 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void Quit(PlayerQuitEvent ev){
 		ev.setQuitMessage(null);
+		if(holo.containsKey(ev.getPlayer())){
+			holo.get(ev.getPlayer()).clear(ev.getPlayer());
+			holo.remove(ev.getPlayer());
+		}
 		getManager().getStatsManager().SaveAllPlayerData(ev.getPlayer());
 	}
 	
@@ -132,14 +140,17 @@ public class kPvPListener extends kListener{
 	
 	@EventHandler
 	public void Updater(UpdateEvent ev){
-		if(ev.getType()!=UpdateType.MIN_04)return;
+		if(ev.getType()!=UpdateType.MIN_08)return;
 		for(Player p : UtilServer.getPlayers())setHologramm(p);
 	}
 	
 	public void setHologramm(Player p){
 		getManager().getStatsManager().ExistPlayer(p);
-		getManager().getHologram().RemoveText(p);
-		getManager().getHologram().sendText(p, getManager().getHologram_loc(), new String[]{
+		if(holo.containsKey(p)){
+			holo.get(p).clear(p);
+			holo.remove(p);
+		}
+		holo.put(p, getManager().getHologram().sendText(p, getManager().getHologram_loc(), new String[]{
 			"§6Name§a "+p.getName(),
 			"§6Gilde§b "+getManager().getGildenManager().getPlayerGilde(p.getName()),
 			"§6Ranking§b "+getManager().getStatsManager().getRank(Stats.KILLS, p),
@@ -147,7 +158,7 @@ public class kPvPListener extends kListener{
 			"§6Tode§b "+getManager().getStatsManager().getInt(Stats.DEATHS, p),
 			"§6Money§b "+getManager().getStatsManager().getDouble(Stats.MONEY, p),
 			"§6KDR§b "+getManager().getStatsManager().getKDR(getManager().getStatsManager().getInt(Stats.KILLS, p), getManager().getStatsManager().getInt(Stats.DEATHS, p)),
-		});
+		}));
 	}
 	
 }

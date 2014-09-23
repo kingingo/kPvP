@@ -73,7 +73,6 @@ public class kPvP extends JavaPlugin{
 		permManager.setSetAllowTab(false);
 		cmd=new CommandHandler(this);
 		new MemoryFix(this);
-		
 		this.hologram_loc=new Location(Bukkit.getWorld("world"),getConfig().getDouble("Config.Hologram.X"),getConfig().getDouble("Config.Hologram.Y"),getConfig().getDouble("Config.Hologram.Z"));
 		this.hologram_loc.getWorld().loadChunk(this.hologram_loc.getWorld().getChunkAt(this.hologram_loc));
 		this.hologram=new Hologram(this);
