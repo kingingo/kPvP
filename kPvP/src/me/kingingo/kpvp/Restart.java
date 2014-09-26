@@ -56,7 +56,7 @@ public class Restart extends kListener{
 		for(Player p : UtilServer.getPlayers())UtilBG.sendToServer(p, "falldown", getInstance().getInstance());
 			break;
 		case 10:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
-		case 5:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));
+		case 5:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
 		case 4:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
 		case 3:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
 		case 2:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
