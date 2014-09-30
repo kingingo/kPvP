@@ -62,6 +62,8 @@ public class kPvP extends JavaPlugin{
 	private Location hologram_loc;
 	@Getter
 	private SignShop Shop;
+	@Getter
+	private Restart restart;
 	
 	public void onEnable(){
 		loadConfig();
@@ -90,6 +92,7 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandUnBan.class, new CommandUnBan(mysql));
 		cmd.register(CommandBanned.class, new CommandBanned(mysql));
 		cmd.register(CommandXP.class, new CommandXP());
+		this.restart=new Restart(this);
 		new kPvPListener(this);
 	}
 	

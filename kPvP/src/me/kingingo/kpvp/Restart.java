@@ -14,19 +14,23 @@ import me.kingingo.kcore.Util.UtilServer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
-public class Restart extends kListener{
+public class Restart implements Listener{
 
 	@Getter
 	private kPvP instance;
-	int start=35;
+	private int start=35;
 	
 	public Restart(kPvP instance){
-		super(instance.getInstance(),"[RestartScript]");
 		this.instance=instance;
+	}
+	
+	public void start(){
 		getInstance().getGildenManager().setOnDisable(true);
 		getInstance().getStatsManager().setOnDisable(true);
 		getInstance().getAntiManager().setOnDisable(true);
+		Bukkit.getPluginManager().registerEvents(this, instance);
 	}
 	
 	public void broadcast(String msg){
@@ -49,14 +53,13 @@ public class Restart extends kListener{
 			for(Player p : UtilServer.getPlayers())UtilBG.sendToServer(p, "falldown", getInstance().getInstance());
 			break;
 		case 23:
-			getInstance().getStatsManager().SaveAllData();
-			getInstance().getGildenManager().AllUpdateGilde();
-		break;
-		case 20:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));
-		for(Player p : UtilServer.getPlayers())UtilBG.sendToServer(p, "falldown", getInstance().getInstance());
+			if(UtilServer.getPlayers().length!=0)start=26;
 			break;
+		case 20:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
 		case 10:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
-		case 5:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
+		case 5:getInstance().getStatsManager().SaveAllData();
+		getInstance().getGildenManager().AllUpdateGilde();
+		break;
 		case 4:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
 		case 3:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;
 		case 2:broadcast(Text.PREFIX.getText()+Text.RESTART_IN.getText(start));break;

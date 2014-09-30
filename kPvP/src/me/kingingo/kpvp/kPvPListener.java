@@ -98,17 +98,17 @@ public class kPvPListener extends kListener{
 		if(ev.getPlayer().isOp()){
 			if(cmd.equalsIgnoreCase("/reload")){
 				ev.setCancelled(true);
-				new Restart(getManager());
+				getManager().getRestart().start();
 			}else if(cmd.equalsIgnoreCase("/restart")){
 				ev.setCancelled(true);
-				new Restart(getManager());
+				getManager().getRestart().start();
 			}else if(cmd.equalsIgnoreCase("/stop")){
 				ev.setCancelled(true);
-				new Restart(getManager());
+				getManager().getRestart().start();
 			}
 		}else{
 			if(!getManager().getAntiManager().is(ev.getPlayer())){
-				if(cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/warp")){
+				if(cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
 					ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl §b"+cmd+"§c nicht in Kampf ausführen!");
 					ev.setCancelled(true);
 				}
