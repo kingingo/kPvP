@@ -11,12 +11,14 @@ import me.kingingo.kcore.PlayerStats.Stats;
 import me.kingingo.kcore.PlayerStats.Event.PlayerStatsCreateEvent;
 import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;
-import me.kingingo.kcore.Util.UtilBG;
+import me.kingingo.kcore.Util.TabTitle;
+import me.kingingo.kcore.Util.UtilPlayer;
 import me.kingingo.kcore.Util.UtilServer;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -46,6 +48,15 @@ public class kPvPListener extends kListener{
 	public void Enderpearl(PlayerTeleportEvent ev){
 		if(ev.getCause()==TeleportCause.ENDER_PEARL&&!ev.getPlayer().isPermissionSet("kpvp.enderpearl")){
 			ev.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void EntityDamage(EntityDamageEvent ev){
+		if(ev.getEntity() instanceof Player){
+			if(ev.getCause()==DamageCause.POISON){
+				ev.setDamage( (ev.getDamage()/2) );
+			}
 		}
 	}
 	
@@ -130,7 +141,7 @@ public class kPvPListener extends kListener{
 	public void Join(PlayerJoinEvent ev){
 		ev.setJoinMessage(null);
 		setHologramm(ev.getPlayer());
-		
+		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEPICPVP §7-§e PvP Server", "§eShop.EpicPvP.de");
 		if(ev.getPlayer().getName().length()>13){
 			ev.getPlayer().setPlayerListName(pex.getUser(ev.getPlayer()).getPrefix().substring(0, 2).replaceAll("&", "§")+ev.getPlayer().getName().substring(0, 13));
 		}else{
@@ -145,6 +156,7 @@ public class kPvPListener extends kListener{
 	}
 	
 	public void setHologramm(Player p){
+		if(UtilPlayer.getVersion(p)>=47)return;
 		getManager().getStatsManager().ExistPlayer(p);
 		if(holo.containsKey(p)){
 			holo.get(p).clear(p);
