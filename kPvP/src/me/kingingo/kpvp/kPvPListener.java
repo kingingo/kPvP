@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -27,6 +28,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -52,10 +55,11 @@ public class kPvPListener extends kListener{
 	}
 	
 	@EventHandler
-	public void EntityDamage(EntityDamageEvent ev){
-		if(ev.getEntity() instanceof Player){
-			if(ev.getCause()==DamageCause.POISON){
-				ev.setDamage( (ev.getDamage()/2) );
+	public void PotionSplash(PotionSplashEvent ev){
+		for(PotionEffect pe : ev.getPotion().getEffects()){
+			if(pe.getType().getName().equalsIgnoreCase("HARM")){
+				ev.setCancelled(true);
+				break;
 			}
 		}
 	}
