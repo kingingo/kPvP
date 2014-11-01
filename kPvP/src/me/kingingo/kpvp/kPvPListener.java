@@ -7,6 +7,7 @@ import me.kingingo.kcore.kListener;
 import me.kingingo.kcore.Enum.Text;
 import me.kingingo.kcore.Gilden.Events.GildenPlayerTeleportEvent;
 import me.kingingo.kcore.Hologram.nametags.NameTagMessage;
+import me.kingingo.kcore.Packet.Events.PacketReceiveEvent;
 import me.kingingo.kcore.PlayerStats.Stats;
 import me.kingingo.kcore.PlayerStats.Event.PlayerStatsCreateEvent;
 import me.kingingo.kcore.Update.UpdateType;
@@ -15,6 +16,7 @@ import me.kingingo.kcore.Util.TabTitle;
 import me.kingingo.kcore.Util.UtilPlayer;
 import me.kingingo.kcore.Util.UtilServer;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -24,6 +26,7 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -48,8 +51,13 @@ public class kPvPListener extends kListener{
 	}
 	
 	@EventHandler
+	public void Packet(PacketReceiveEvent ev){
+		
+	}
+	
+	@EventHandler
 	public void Enderpearl(PlayerTeleportEvent ev){
-		if(ev.getCause()==TeleportCause.ENDER_PEARL&&!ev.getPlayer().isPermissionSet("kpvp.enderpearl")){
+		if(ev.getCause()==TeleportCause.ENDER_PEARL&& (!ev.getPlayer().isPermissionSet("kpvp.enderpearl")) ){
 			ev.setCancelled(true);
 		}
 	}
@@ -60,6 +68,19 @@ public class kPvPListener extends kListener{
 			if(pe.getType().getName().equalsIgnoreCase("HARM")){
 				ev.setCancelled(true);
 				break;
+			}else if(pe.getType().getName().equalsIgnoreCase("Invisibility")){
+				ev.setCancelled(true);
+				break;
+			}
+		}
+	}
+	
+	@EventHandler
+	public void PlayerItemConsum(PlayerItemConsumeEvent ev){
+		if(ev.getItem().getType()==Material.POTION){
+			if(ev.getItem().getDurability()==8270){
+				ev.setItem(null);
+				ev.setCancelled(true);
 			}
 		}
 	}
@@ -123,7 +144,7 @@ public class kPvPListener extends kListener{
 			}
 		}else{
 			if(!getManager().getAntiManager().is(ev.getPlayer())){
-				if(cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
+				if(cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/tpaccept")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
 					ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl §b"+cmd+"§c nicht in Kampf ausführen!");
 					ev.setCancelled(true);
 				}

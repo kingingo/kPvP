@@ -13,6 +13,7 @@ import me.kingingo.kcore.Gilden.GildenType;
 import me.kingingo.kcore.Hologram.Hologram;
 import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Neuling.NeulingManager;
+import me.kingingo.kcore.Packet.PacketManager;
 import me.kingingo.kcore.Permission.PermissionManager;
 import me.kingingo.kcore.PlayerStats.StatsManager;
 import me.kingingo.kcore.SignShop.SignShop;
@@ -64,6 +65,8 @@ public class kPvP extends JavaPlugin{
 	private SignShop Shop;
 	@Getter
 	private Restart restart;
+	@Getter
+	private PacketManager packetManager;
 	
 	public void onEnable(){
 		loadConfig();
@@ -71,10 +74,11 @@ public class kPvP extends JavaPlugin{
 		updater=new Updater(this);
 		this.client = new Client(getConfig().getString("Config.Client.Host"),getConfig().getInt("Config.Client.Port"),"PvP",this,updater);
 		mysql=new MySQL(getConfig().getString("Config.MySQL.User"),getConfig().getString("Config.MySQL.Password"),getConfig().getString("Config.MySQL.Host"),getConfig().getString("Config.MySQL.DB"),this);
-		permManager=new PermissionManager(this,mysql);
-		permManager.setSetAllowTab(false);
 		cmd=new CommandHandler(this);
 		new MemoryFix(this);
+		this.packetManager=new PacketManager(this,client);
+		permManager=new PermissionManager(this,packetManager,mysql);
+		permManager.setSetAllowTab(false);
 		this.hologram_loc=new Location(Bukkit.getWorld("world"),getConfig().getDouble("Config.Hologram.X"),getConfig().getDouble("Config.Hologram.Y"),getConfig().getDouble("Config.Hologram.Z"));
 		this.hologram_loc.getWorld().loadChunk(this.hologram_loc.getWorld().getChunkAt(this.hologram_loc));
 		this.hologram=new Hologram(this);
