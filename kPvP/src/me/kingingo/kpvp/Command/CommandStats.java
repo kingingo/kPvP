@@ -37,6 +37,8 @@ public class CommandStats implements CommandExecutor{
 				p.sendMessage(Text.STATS_GILDE.getText()+getGildenManager().getPlayerGilde(p));
 			}
 			p.sendMessage(Text.STATS_RANKING.getText()+getStatsManager().getRank(Stats.KILLS, p));
+		}else if(args[0].equalsIgnoreCase("ranking")){
+			statsManager.Ranking(p);
 		}else{
 			String player=args[0];
 			if(player.equalsIgnoreCase(p.getName()))return false;
