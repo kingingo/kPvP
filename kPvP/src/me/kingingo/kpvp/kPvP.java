@@ -18,6 +18,7 @@ import me.kingingo.kcore.Permission.PermissionManager;
 import me.kingingo.kcore.PlayerStats.StatsManager;
 import me.kingingo.kcore.SignShop.SignShop;
 import me.kingingo.kcore.Update.Updater;
+import me.kingingo.kcore.Util.UtilException;
 import me.kingingo.kcore.friend.FriendManager;
 import me.kingingo.kcore.memory.MemoryFix;
 import me.kingingo.kpvp.Command.CommandBanned;
@@ -69,11 +70,12 @@ public class kPvP extends JavaPlugin{
 	private PacketManager packetManager;
 	
 	public void onEnable(){
+		try{
 		loadConfig();
+		mysql=new MySQL(getConfig().getString("Config.MySQL.User"),getConfig().getString("Config.MySQL.Password"),getConfig().getString("Config.MySQL.Host"),getConfig().getString("Config.MySQL.DB"),this);
 		this.instance=this;
 		updater=new Updater(this);
 		this.client = new Client(getConfig().getString("Config.Client.Host"),getConfig().getInt("Config.Client.Port"),"PvP",this,updater);
-		mysql=new MySQL(getConfig().getString("Config.MySQL.User"),getConfig().getString("Config.MySQL.Password"),getConfig().getString("Config.MySQL.Host"),getConfig().getString("Config.MySQL.DB"),this);
 		cmd=new CommandHandler(this);
 		new MemoryFix(this);
 		this.packetManager=new PacketManager(this,client);
@@ -98,6 +100,9 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandXP.class, new CommandXP());
 		this.restart=new Restart(this);
 		new kPvPListener(this);
+		}catch(Exception e){
+			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
+		}
 	}
 	
 	public void onDisable(){
