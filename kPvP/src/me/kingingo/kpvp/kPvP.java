@@ -11,6 +11,18 @@ import me.kingingo.kcore.Enum.GameType;
 import me.kingingo.kcore.Gilden.GildenManager;
 import me.kingingo.kcore.Gilden.GildenType;
 import me.kingingo.kcore.Hologram.Hologram;
+import me.kingingo.kcore.Kit.Perk;
+import me.kingingo.kcore.Kit.PerkManager;
+import me.kingingo.kcore.Kit.Perks.PerkDoubleXP;
+import me.kingingo.kcore.Kit.Perks.PerkDropper;
+import me.kingingo.kcore.Kit.Perks.PerkGetXP;
+import me.kingingo.kcore.Kit.Perks.PerkHealPotion;
+import me.kingingo.kcore.Kit.Perks.PerkItemName;
+import me.kingingo.kcore.Kit.Perks.PerkNoFiredamage;
+import me.kingingo.kcore.Kit.Perks.PerkNoHunger;
+import me.kingingo.kcore.Kit.Perks.PerkPotionClear;
+import me.kingingo.kcore.Kit.Perks.PerkPotionEffectUnlimited;
+import me.kingingo.kcore.Kit.Perks.PerkRunner;
 import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Neuling.NeulingManager;
 import me.kingingo.kcore.Packet.PacketManager;
@@ -32,6 +44,7 @@ import me.kingingo.kpvp.Command.CommandkSpawn;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 
 public class kPvP extends JavaPlugin{
 
@@ -55,6 +68,8 @@ public class kPvP extends JavaPlugin{
 	private NeulingManager neulingManager;
 	@Getter
 	private AntiLogoutManager antiManager;
+	@Getter
+	private PerkManager perkManager;
 	@Getter
 	private StatsManager statsManager;
 	@Getter
@@ -89,6 +104,8 @@ public class kPvP extends JavaPlugin{
 		this.neulingManager=new NeulingManager(this,cmd,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,30);
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
+		this.perkManager=new PerkManager(this,new Perk[]{new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(2),new PerkPotionEffectUnlimited(PotionEffectType.JUMP, 2),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName()});
+		new PerkListener(perkManager);
 		this.Shop=new SignShop(this,statsManager);
 		cmd.register(CommandMuteAll.class, new CommandMuteAll(getPermManager()));
 		cmd.register(CommandHologram.class, new CommandHologram(this));
