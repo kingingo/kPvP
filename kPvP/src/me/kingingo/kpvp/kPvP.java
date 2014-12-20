@@ -104,8 +104,8 @@ public class kPvP extends JavaPlugin{
 		this.neulingManager=new NeulingManager(this,cmd,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,30);
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
-		this.perkManager=new PerkManager(this,new Perk[]{new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(2),new PerkPotionEffectUnlimited(PotionEffectType.JUMP, 2),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName()});
-		new PerkListener(perkManager);
+		//this.perkManager=new PerkManager(this,new Perk[]{new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(2),new PerkPotionEffectUnlimited(PotionEffectType.JUMP, 2),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName()});
+		//new PerkListener(perkManager);
 		this.Shop=new SignShop(this,statsManager);
 		cmd.register(CommandMuteAll.class, new CommandMuteAll(getPermManager()));
 		cmd.register(CommandHologram.class, new CommandHologram(this));
