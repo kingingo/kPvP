@@ -51,11 +51,6 @@ public class kPvPListener extends kListener{
 	}
 	
 	@EventHandler
-	public void Packet(PacketReceiveEvent ev){
-		
-	}
-	
-	@EventHandler
 	public void Enderpearl(PlayerTeleportEvent ev){
 		if(ev.getCause()==TeleportCause.ENDER_PEARL&& (!ev.getPlayer().isPermissionSet("kpvp.enderpearl")) ){
 			ev.setCancelled(true);
@@ -150,11 +145,6 @@ public class kPvPListener extends kListener{
 				}
 			}
 		}
-	}
-	
-	@EventHandler
-	public void Teleport(PlayerTeleportEvent ev){
-		
 	}
 	
 	@EventHandler
