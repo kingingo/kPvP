@@ -76,6 +76,9 @@ public class kPvPListener extends kListener{
 			if(ev.getItem().getDurability()==8270){
 				ev.setItem(null);
 				ev.setCancelled(true);
+			}else if(ev.getItem().getDurability()==8206){
+				ev.setItem(null);
+				ev.setCancelled(true);
 			}
 		}
 	}
