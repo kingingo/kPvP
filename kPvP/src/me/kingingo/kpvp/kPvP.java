@@ -16,6 +16,7 @@ import me.kingingo.kcore.Hologram.Hologram;
 import me.kingingo.kcore.Kit.Perk;
 import me.kingingo.kcore.Kit.PerkManager;
 import me.kingingo.kcore.Kit.Command.CommandPerk;
+import me.kingingo.kcore.Kit.Perks.PerkDoubleJump;
 import me.kingingo.kcore.Kit.Perks.PerkDoubleXP;
 import me.kingingo.kcore.Kit.Perks.PerkDropper;
 import me.kingingo.kcore.Kit.Perks.PerkGetXP;
@@ -24,7 +25,6 @@ import me.kingingo.kcore.Kit.Perks.PerkItemName;
 import me.kingingo.kcore.Kit.Perks.PerkNoFiredamage;
 import me.kingingo.kcore.Kit.Perks.PerkNoHunger;
 import me.kingingo.kcore.Kit.Perks.PerkPotionClear;
-import me.kingingo.kcore.Kit.Perks.PerkPotionEffectUnlimited;
 import me.kingingo.kcore.Kit.Perks.PerkRunner;
 import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Neuling.NeulingManager;
@@ -37,6 +37,7 @@ import me.kingingo.kcore.Util.UtilException;
 import me.kingingo.kcore.friend.FriendManager;
 import me.kingingo.kcore.memory.MemoryFix;
 import me.kingingo.kpvp.Command.CommandBanned;
+import me.kingingo.kpvp.Command.CommandGroup;
 import me.kingingo.kpvp.Command.CommandHologram;
 import me.kingingo.kpvp.Command.CommandStats;
 import me.kingingo.kpvp.Command.CommandURang;
@@ -47,7 +48,6 @@ import me.kingingo.kpvp.Command.CommandkSpawn;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffectType;
 
 public class kPvP extends JavaPlugin{
 
@@ -107,7 +107,7 @@ public class kPvP extends JavaPlugin{
 		this.neulingManager=new NeulingManager(this,cmd,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,30);
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
-		this.perkManager=new PerkManager(permManager,new Perk[]{new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(2),new PerkPotionEffectUnlimited(PotionEffectType.JUMP, 2),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName()});
+		this.perkManager=new PerkManager(permManager,new Perk[]{new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(cmd)});
 		new PerkListener(perkManager);
 		this.cmd.register(CommandPerk.class, new CommandPerk(perkManager));	
 		this.Shop=new SignShop(this,statsManager);
@@ -121,6 +121,7 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandUnBan.class, new CommandUnBan(mysql));
 		cmd.register(CommandBanned.class, new CommandBanned(mysql));
 		cmd.register(CommandXP.class, new CommandXP());
+		cmd.register(CommandGroup.class, new CommandGroup(permManager));
 		this.restart=new Restart(this);
 		new kPvPListener(this);
 		}catch(Exception e){
