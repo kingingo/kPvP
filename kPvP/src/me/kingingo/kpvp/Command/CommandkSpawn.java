@@ -13,20 +13,20 @@ import org.bukkit.entity.Player;
 
 public class CommandkSpawn implements CommandExecutor{
 
-	private HashMap<Player,Long> timer = new HashMap<>();
+	private HashMap<String,Long> timer = new HashMap<>();
 	
 	@me.kingingo.kcore.Command.CommandHandler.Command(command = "kspawn", alias = {"ksp"}, sender = Sender.PLAYER)
 	public boolean onCommand(CommandSender cs, Command cmd, String arg2,String[] args) {
 		Player p = (Player)cs;
 		if(args.length==0){
 			if(p.hasPermission("kpvp.kspawn")){
-				if(!timer.containsKey(p)){
-					timer.put(p, System.currentTimeMillis());
+				if(!timer.containsKey(p.getName())){
+					timer.put(p.getName(), System.currentTimeMillis());
 					p.teleport(p.getWorld().getSpawnLocation());
 				}else{
-					if((timer.get(p)+TimeSpan.HOUR)<System.currentTimeMillis()){
+					if((timer.get(p.getName())+TimeSpan.HOUR)<System.currentTimeMillis()){
 						timer.remove(p);
-						timer.put(p, System.currentTimeMillis());
+						timer.put(p.getName(), System.currentTimeMillis());
 						p.teleport(p.getWorld().getSpawnLocation());
 					}else{
 						p.sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl nur jede 1 Std benutzten!");
