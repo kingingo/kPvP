@@ -142,6 +142,10 @@ public class kPvPListener extends kListener{
 					ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl §b"+cmd+"§c nicht in Kampf ausführen!");
 					ev.setCancelled(true);
 				}
+			}else{
+				if(cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/espawn")){
+					ev.setCancelled(true);
+				}
 			}
 		}
 	}
