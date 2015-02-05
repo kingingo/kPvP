@@ -138,12 +138,12 @@ public class kPvPListener extends kListener{
 			}
 		}else{
 			if(!getManager().getAntiManager().is(ev.getPlayer())){
-				if(cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/tpaccept")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
+				if(cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/tpask")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/tpaccept")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
 					ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl §b"+cmd+"§c nicht in Kampf ausführen!");
 					ev.setCancelled(true);
 				}
 			}else{
-				if(cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/espawn")){
+				if(cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/tpask")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/espawn")){
 					ev.setCancelled(true);
 				}
 			}
@@ -189,7 +189,7 @@ public class kPvPListener extends kListener{
 		}
 		holo.put(p, getManager().getHologram().sendText(p, getManager().getHologram_loc(), new String[]{
 			"§6Name§a "+p.getName(),
-			"§6Gilde§b "+getManager().getGildenManager().getPlayerGilde(p.getName()),
+			"§6Gilde§b "+getManager().getGildenManager().getPlayerGilde(p),
 			"§6Ranking§b "+getManager().getStatsManager().getRank(Stats.KILLS, p),
 			"§6Kills§b "+getManager().getStatsManager().getInt(Stats.KILLS, p),
 			"§6Tode§b "+getManager().getStatsManager().getInt(Stats.DEATHS, p),

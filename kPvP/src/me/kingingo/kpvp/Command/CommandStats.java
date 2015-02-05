@@ -1,11 +1,14 @@
 package me.kingingo.kpvp.Command;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import me.kingingo.kcore.Command.CommandHandler.Sender;
 import me.kingingo.kcore.Enum.Text;
 import me.kingingo.kcore.Gilden.GildenManager;
 import me.kingingo.kcore.PlayerStats.Stats;
 import me.kingingo.kcore.PlayerStats.StatsManager;
+import me.kingingo.kcore.Util.UtilPlayer;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -53,8 +56,9 @@ public class CommandStats implements CommandExecutor{
 			p.sendMessage(Text.STATS_DEATHS.getText()+d);
 			p.sendMessage(Text.STATS_MONEY.getText()+getStatsManager().getDoubleWithString(Stats.MONEY, player));
 			p.sendMessage(Text.STATS_KDR.getText()+getStatsManager().getKDR(k, d));
-			if(getGildenManager().isPlayerInGilde(player)){
-				p.sendMessage(Text.STATS_GILDE.getText()+getGildenManager().getPlayerGilde(player));
+			UUID uuid = UtilPlayer.getUUID(player, statsManager.getMysql());
+			if(uuid!=null&&getGildenManager().isPlayerInGilde(uuid)){
+				p.sendMessage(Text.STATS_GILDE.getText()+getGildenManager().getPlayerGilde(uuid));
 			}
 			p.sendMessage(Text.STATS_RANKING.getText()+getStatsManager().getRankWithString(Stats.KILLS, player));
 		}

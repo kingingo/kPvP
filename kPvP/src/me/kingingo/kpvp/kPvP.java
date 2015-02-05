@@ -65,8 +65,8 @@ public class kPvP extends JavaPlugin{
 	public static PermissionManager permManager;
 	@Getter
 	private GildenManager gildenManager;
-	@Getter
-	private FriendManager friendManager;
+	//@Getter
+	//private FriendManager friendManager;
 	@Getter
 	private NeulingManager neulingManager;
 	@Getter
@@ -103,7 +103,7 @@ public class kPvP extends JavaPlugin{
 		this.hologram_loc.getWorld().loadChunk(this.hologram_loc.getWorld().getChunkAt(this.hologram_loc));
 		this.hologram=new Hologram(this);
 		this.gildenManager=new GildenManager(this,mysql,GildenType.PVP,cmd);
-		this.friendManager=new FriendManager(this,mysql,cmd);
+	//	this.friendManager=new FriendManager(this,mysql,cmd);
 		this.neulingManager=new NeulingManager(this,cmd,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,30);
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
