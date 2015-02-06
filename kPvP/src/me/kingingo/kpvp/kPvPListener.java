@@ -7,6 +7,8 @@ import me.kingingo.kcore.kListener;
 import me.kingingo.kcore.Enum.Text;
 import me.kingingo.kcore.Gilden.Events.GildenPlayerTeleportEvent;
 import me.kingingo.kcore.Hologram.nametags.NameTagMessage;
+import me.kingingo.kcore.Packet.Events.PacketReceiveEvent;
+import me.kingingo.kcore.Packet.Packets.WORLD_CHANGE_DATA;
 import me.kingingo.kcore.PlayerStats.Stats;
 import me.kingingo.kcore.PlayerStats.Event.PlayerStatsCreateEvent;
 import me.kingingo.kcore.Update.UpdateType;
@@ -15,6 +17,7 @@ import me.kingingo.kcore.Util.TabTitle;
 import me.kingingo.kcore.Util.UtilPlayer;
 import me.kingingo.kcore.Util.UtilServer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,6 +47,16 @@ public class kPvPListener extends kListener{
 		super(manager.getInstance(),"[kPvPListener]");
 		this.manager=manager;
 		this.pex = PermissionsEx.getPermissionManager();
+	}
+	
+	@EventHandler
+	public void PacketReceive(PacketReceiveEvent ev){
+		if(ev.getPacket() instanceof WORLD_CHANGE_DATA){
+			WORLD_CHANGE_DATA packet = (WORLD_CHANGE_DATA)ev.getPacket();
+			UtilPlayer.setWorldChangeUUID(Bukkit.getWorld(packet.getWorldName()), packet.getOld_uuid(), packet.getNew_uuid());
+			UtilPlayer.PermissionExChangeUUID(packet.getOld_uuid(), packet.getNew_uuid());
+			//UtilPlayer.EssentialsUser(packet.getOld_uuid(), packet.getNew_uuid());
+		}
 	}
 	
 	@EventHandler
