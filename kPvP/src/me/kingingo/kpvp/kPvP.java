@@ -13,6 +13,7 @@ import me.kingingo.kcore.Command.Admin.CommandMute;
 import me.kingingo.kcore.Command.Admin.CommandToggle;
 import me.kingingo.kcore.Command.Admin.CommandURang;
 import me.kingingo.kcore.Command.Admin.CommandUnBan;
+import me.kingingo.kcore.Command.Admin.CommandkFly;
 import me.kingingo.kcore.Enum.GameType;
 import me.kingingo.kcore.Gilden.GildenManager;
 import me.kingingo.kcore.Gilden.GildenType;
@@ -109,11 +110,11 @@ public class kPvP extends JavaPlugin{
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
 		this.perkManager=new PerkManager(permManager,new Perk[]{new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(cmd)});
 		new PerkListener(perkManager);
-		this.cmd.register(CommandPerk.class, new CommandPerk(perkManager));	
-		this.Shop=new SignShop(this,statsManager);
-		this.cmd.register(CommandMute.class, new CommandMute(permManager));	
-		this.cmd.register(CommandChatMute.class, new CommandChatMute(permManager));
-		this.cmd.register(CommandToggle.class, new CommandToggle(permManager));
+		cmd.register(CommandkFly.class, new CommandkFly(permManager));
+		cmd.register(CommandPerk.class, new CommandPerk(perkManager));
+		cmd.register(CommandMute.class, new CommandMute(permManager));	
+		cmd.register(CommandChatMute.class, new CommandChatMute(permManager));
+		cmd.register(CommandToggle.class, new CommandToggle(permManager));
 		cmd.register(CommandHologram.class, new CommandHologram(this));
 		cmd.register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
 		cmd.register(CommandkSpawn.class, new CommandkSpawn());
@@ -121,7 +122,8 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandUnBan.class, new CommandUnBan(mysql));
 		cmd.register(CommandBanned.class, new CommandBanned(mysql));
 		cmd.register(CommandXP.class, new CommandXP());
-		cmd.register(CommandGroup.class, new CommandGroup(permManager));
+		cmd.register(CommandGroup.class, new CommandGroup(permManager));	
+		this.Shop=new SignShop(this,statsManager);
 		this.restart=new Restart(this);
 		new kPvPListener(this);
 		}catch(Exception e){
