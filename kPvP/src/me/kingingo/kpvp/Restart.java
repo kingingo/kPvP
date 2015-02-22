@@ -3,7 +3,6 @@ package me.kingingo.kpvp;
 import java.io.IOException;
 
 import lombok.Getter;
-import me.kingingo.kcore.kListener;
 import me.kingingo.kcore.Enum.Text;
 import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;

@@ -1,7 +1,7 @@
 package me.kingingo.kpvp;
 
-import me.kingingo.kcore.kListener;
 import me.kingingo.kcore.Kit.PerkManager;
+import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Permission.Permission;
 
 import org.bukkit.event.EventHandler;

@@ -3,10 +3,10 @@ package me.kingingo.kpvp;
 import java.util.HashMap;
 
 import lombok.Getter;
-import me.kingingo.kcore.kListener;
 import me.kingingo.kcore.Enum.Text;
 import me.kingingo.kcore.Gilden.Events.GildenPlayerTeleportEvent;
 import me.kingingo.kcore.Hologram.nametags.NameTagMessage;
+import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Packet.Events.PacketReceiveEvent;
 import me.kingingo.kcore.Packet.Packets.WORLD_CHANGE_DATA;
 import me.kingingo.kcore.PlayerStats.Stats;
