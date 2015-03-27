@@ -13,6 +13,7 @@ import me.kingingo.kcore.PlayerStats.Stats;
 import me.kingingo.kcore.PlayerStats.Event.PlayerStatsCreateEvent;
 import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;
+import me.kingingo.kcore.Util.RestartScheduler;
 import me.kingingo.kcore.Util.TabTitle;
 import me.kingingo.kcore.Util.UtilPlayer;
 import me.kingingo.kcore.Util.UtilServer;
@@ -141,17 +142,17 @@ public class kPvPListener extends kListener{
 		if(ev.getPlayer().isOp()){
 			if(cmd.equalsIgnoreCase("/reload")){
 				ev.setCancelled(true);
-				getManager().getRestart().start();
+				restart();
 			}else if(cmd.equalsIgnoreCase("/restart")){
 				ev.setCancelled(true);
-				getManager().getRestart().start();
+				restart();
 			}else if(cmd.equalsIgnoreCase("/stop")){
 				ev.setCancelled(true);
-				getManager().getRestart().start();
+				restart();
 			}
 		}else{
 			if(!getManager().getAntiManager().is(ev.getPlayer())){
-				if(cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/tpask")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/tpaccept")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
+				if(cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/tpaccet")||cmd.equalsIgnoreCase("/tpyes")||cmd.equalsIgnoreCase("/tpask")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/tpaccept")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
 					ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl §b"+cmd+"§c nicht in Kampf ausführen!");
 					ev.setCancelled(true);
 				}
@@ -161,6 +162,14 @@ public class kPvPListener extends kListener{
 				}
 			}
 		}
+	}
+	
+	public void restart(){
+		RestartScheduler restart = new RestartScheduler(getManager().getInstance());
+		restart.setAnti(getManager().getAntiManager());
+		restart.setGilden(getManager().getGildenManager());
+		restart.setStats(getManager().getStatsManager());
+		restart.start();
 	}
 	
 	@EventHandler

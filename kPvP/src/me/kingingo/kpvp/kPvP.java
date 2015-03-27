@@ -86,8 +86,6 @@ public class kPvP extends JavaPlugin{
 	@Getter
 	private SignShop Shop;
 	@Getter
-	private Restart restart;
-	@Getter
 	private PacketManager packetManager;
 	
 	public void onEnable(){
@@ -128,7 +126,6 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandGiveAll.class, new CommandGiveAll(permManager));
 		cmd.register(CommandGroup.class, new CommandGroup(permManager));	
 		this.Shop=new SignShop(this,statsManager);
-		this.restart=new Restart(this);
 		new kPvPListener(this);
 		}catch(Exception e){
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
