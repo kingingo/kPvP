@@ -34,20 +34,15 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.potion.PotionEffect;
 
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-
 public class kPvPListener extends kListener{
 
 	@Getter
 	private kPvP manager;
-	private PermissionManager pex=null;
 	private HashMap<Player,NameTagMessage> holo = new HashMap<>();
 	
 	public kPvPListener(kPvP manager){
 		super(manager.getInstance(),"[kPvPListener]");
 		this.manager=manager;
-		this.pex = PermissionsEx.getPermissionManager();
 	}
 	
 	@EventHandler
@@ -55,7 +50,7 @@ public class kPvPListener extends kListener{
 		if(ev.getPacket() instanceof WORLD_CHANGE_DATA){
 			WORLD_CHANGE_DATA packet = (WORLD_CHANGE_DATA)ev.getPacket();
 			UtilPlayer.setWorldChangeUUID(Bukkit.getWorld(packet.getWorldName()), packet.getOld_uuid(), packet.getNew_uuid());
-			UtilPlayer.PermissionExChangeUUID(packet.getOld_uuid(), packet.getNew_uuid());
+			//UtilPlayer.PermissionExChangeUUID(packet.getOld_uuid(), packet.getNew_uuid());
 			//UtilPlayer.EssentialsUser(packet.getOld_uuid(), packet.getNew_uuid());
 		}
 	}
@@ -188,9 +183,9 @@ public class kPvPListener extends kListener{
 		setHologramm(ev.getPlayer());
 		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEPICPVP §7-§e PvP Server", "§eShop.EpicPvP.de");
 		if(ev.getPlayer().getName().length()>13){
-			ev.getPlayer().setPlayerListName(pex.getUser(ev.getPlayer()).getPrefix().substring(0, 2).replaceAll("&", "§")+ev.getPlayer().getName().substring(0, 13));
+			ev.getPlayer().setPlayerListName(manager.getPermManager().getPrefix(ev.getPlayer()).substring(0, 2).replaceAll("&", "§")+ev.getPlayer().getName().substring(0, 13));
 		}else{
-			ev.getPlayer().setPlayerListName(pex.getUser(ev.getPlayer()).getPrefix().substring(0, 2).replaceAll("&", "§")+ev.getPlayer().getName());
+			ev.getPlayer().setPlayerListName(manager.getPermManager().getPrefix(ev.getPlayer()).substring(0, 2).replaceAll("&", "§")+ev.getPlayer().getName());
 		}
 		
 		 ev.getPlayer().sendMessage(Text.PREFIX.getText()+Text.WHEREIS_TEXT.getText("PvP"));
