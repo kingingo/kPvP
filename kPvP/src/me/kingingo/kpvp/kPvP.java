@@ -50,6 +50,7 @@ import me.kingingo.kcore.friend.FriendManager;
 import me.kingingo.kcore.memory.MemoryFix;
 import me.kingingo.kpvp.Command.CommandHologram;
 import me.kingingo.kpvp.Command.CommandStats;
+import me.kingingo.kpvp.Command.Commandifix;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -128,7 +129,8 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandXP.class, new CommandXP());
 		cmd.register(CommandPermissionsExConverter.class, new CommandPermissionsExConverter(permManager));
 		cmd.register(CommandGiveAll.class, new CommandGiveAll(permManager));
-		cmd.register(CommandGroup.class, new CommandGroup(permManager));	
+		cmd.register(CommandGroup.class, new CommandGroup(permManager));
+		cmd.register(Commandifix.class, new Commandifix());
 		this.Shop=new SignShop(this,statsManager);
 		new kPvPListener(this);
 		new ChatListener(this, gildenManager,permManager);
