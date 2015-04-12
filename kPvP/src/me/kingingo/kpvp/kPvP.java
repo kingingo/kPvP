@@ -112,14 +112,14 @@ public class kPvP extends JavaPlugin{
 		this.neulingManager=new NeulingManager(this,cmd,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,18);
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
-		this.perkManager=new PerkManager(permManager,null,new Perk[]{new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(cmd)});
+		this.perkManager=new PerkManager(this,null,new Perk[]{new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(cmd)});
 		new PerkListener(perkManager);
 		cmd.register(CommandTreasureChest.class, new CommandTreasureChest(this));
 		cmd.register(CommandFly.class, new CommandFly());
 		cmd.register(CommandPerk.class, new CommandPerk(perkManager));
-		cmd.register(CommandMute.class, new CommandMute(permManager));	
-		cmd.register(CommandChatMute.class, new CommandChatMute(permManager));
-		cmd.register(CommandToggle.class, new CommandToggle(permManager));
+		cmd.register(CommandMute.class, new CommandMute(this));	
+		cmd.register(CommandChatMute.class, new CommandChatMute(this));
+		cmd.register(CommandToggle.class, new CommandToggle(this));
 		cmd.register(CommandHologram.class, new CommandHologram(this));
 		cmd.register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
 		cmd.register(CommandkSpawn.class, new CommandkSpawn());
@@ -128,7 +128,7 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandBanned.class, new CommandBanned(mysql));
 		cmd.register(CommandXP.class, new CommandXP());
 		cmd.register(CommandPermissionsExConverter.class, new CommandPermissionsExConverter(permManager));
-		cmd.register(CommandGiveAll.class, new CommandGiveAll(permManager));
+		cmd.register(CommandGiveAll.class, new CommandGiveAll());
 		cmd.register(CommandGroup.class, new CommandGroup(permManager));
 		cmd.register(Commandifix.class, new Commandifix());
 		this.Shop=new SignShop(this,statsManager);
@@ -144,6 +144,7 @@ public class kPvP extends JavaPlugin{
 		this.gildenManager.AllUpdateGilde();
 		this.mysql.close();
 		this.client.disconnect(false);
+		saveConfig();
 	}
 	
 	public void loadConfig(){
