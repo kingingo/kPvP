@@ -115,7 +115,7 @@ public class kPvP extends JavaPlugin{
 		this.perkManager=new PerkManager(this,null,new Perk[]{new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(cmd)});
 		new PerkListener(perkManager);
 		cmd.register(CommandTreasureChest.class, new CommandTreasureChest(this));
-		cmd.register(CommandFly.class, new CommandFly());
+		cmd.register(CommandFly.class, new CommandFly(this));
 		cmd.register(CommandPerk.class, new CommandPerk(perkManager));
 		cmd.register(CommandMute.class, new CommandMute(this));	
 		cmd.register(CommandChatMute.class, new CommandChatMute(this));

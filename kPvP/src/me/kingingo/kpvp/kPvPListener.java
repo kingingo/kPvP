@@ -22,13 +22,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -85,6 +88,36 @@ public class kPvPListener extends kListener{
 				ev.setItem(null);
 				ev.setCancelled(true);
 			}
+		}
+	}
+	
+	@EventHandler(priority=EventPriority.LOWEST)
+	public void Pickup(PlayerPickupItemEvent ev){
+		if(ev.getItem().getItemStack().getAmount()<0||ev.getItem().getItemStack().getAmount()>64){
+			ev.getItem().remove();
+	        ev.getPlayer().sendMessage("§cFEHLER: BuggUsing ist verboten!");
+		}
+	}
+	
+	@EventHandler(priority=EventPriority.LOWEST)
+	public void Drop(InventoryClickEvent ev){
+		if(ev.getWhoClicked() instanceof Player){
+			if(ev.getInventory()!=null&&ev.getCurrentItem()!=null){
+				
+				if(ev.getCurrentItem().getAmount()<0||ev.getCurrentItem().getAmount()>64){
+					ev.getCurrentItem().setAmount(1);
+					ev.getCurrentItem().setType(Material.AIR);
+					((Player)ev.getWhoClicked()).sendMessage("§cFEHLER: BuggUsing ist verboten!");
+				}
+			}
+		}
+	}
+	
+	@EventHandler(priority=EventPriority.LOWEST)
+	public void Drop(PlayerDropItemEvent ev){
+		if(ev.getItemDrop().getItemStack().getAmount()<0||ev.getItemDrop().getItemStack().getAmount()>64){
+			ev.getItemDrop().remove();
+	        ev.getPlayer().sendMessage("§cFEHLER: BuggUsing ist verboten!");
 		}
 	}
 	
