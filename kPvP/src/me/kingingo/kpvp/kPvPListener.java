@@ -231,7 +231,6 @@ public class kPvPListener extends kListener{
 	}
 	
 	public void setHologramm(Player p){
-		if(UtilPlayer.getVersion(p)>=47)return;
 		getManager().getStatsManager().ExistPlayer(p);
 		if(holo.containsKey(p)){
 			holo.get(p).clear(p);
