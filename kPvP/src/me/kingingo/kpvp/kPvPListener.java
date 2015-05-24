@@ -15,20 +15,26 @@ import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;
 import me.kingingo.kcore.Util.RestartScheduler;
 import me.kingingo.kcore.Util.TabTitle;
+import me.kingingo.kcore.Util.UtilEvent;
+import me.kingingo.kcore.Util.UtilEvent.ActionType;
 import me.kingingo.kcore.Util.UtilPlayer;
 import me.kingingo.kcore.Util.UtilServer;
+import me.kingingo.kcore.Util.UtilWorldGuard;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -36,6 +42,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.potion.PotionEffect;
+
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 public class kPvPListener extends kListener{
 
@@ -178,12 +186,12 @@ public class kPvPListener extends kListener{
 			}
 		}else{
 			if(!getManager().getAntiManager().is(ev.getPlayer())){
-				if(cmd.equalsIgnoreCase("/ereturn")||cmd.equalsIgnoreCase("/return")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/tpaccet")||cmd.equalsIgnoreCase("/tpyes")||cmd.equalsIgnoreCase("/tpask")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/tpaccept")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
+				if(cmd.equalsIgnoreCase("/homes")||cmd.equalsIgnoreCase("/ereturn")||cmd.equalsIgnoreCase("/return")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/tpaccet")||cmd.equalsIgnoreCase("/tpyes")||cmd.equalsIgnoreCase("/tpask")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/tpaccept")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
 					ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl §b"+cmd+"§c nicht in Kampf ausführen!");
 					ev.setCancelled(true);
 				}
 			}else{
-				if(cmd.equalsIgnoreCase("/ereturn")||cmd.equalsIgnoreCase("/return")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/tpask")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/espawn")){
+				if(cmd.equalsIgnoreCase("/homes")||cmd.equalsIgnoreCase("/ereturn")||cmd.equalsIgnoreCase("/return")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/tpask")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/espawn")){
 					ev.setCancelled(true);
 				}
 			}
@@ -220,6 +228,17 @@ public class kPvPListener extends kListener{
 	public void Updater(UpdateEvent ev){
 		if(ev.getType()!=UpdateType.MIN_08)return;
 		for(Player p : UtilServer.getPlayers())setHologramm(p);
+	}
+	
+	@EventHandler
+	public void Rüstung(PlayerInteractEvent ev){
+		if(UtilEvent.isAction(ev, ActionType.BLOCK)){
+			if(ev.getPlayer().getItemInHand().getType() == Material.ARMOR_STAND){
+				if(!UtilWorldGuard.canUse(ev.getPlayer())){
+					ev.setCancelled(true);
+				}
+			}
+		}
 	}
 	
 	public void setHologramm(Player p){
