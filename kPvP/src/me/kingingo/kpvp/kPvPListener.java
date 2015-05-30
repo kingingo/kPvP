@@ -26,8 +26,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -42,8 +40,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.potion.PotionEffect;
-
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 public class kPvPListener extends kListener{
 
@@ -234,7 +230,7 @@ public class kPvPListener extends kListener{
 	public void Rüstung(PlayerInteractEvent ev){
 		if(UtilEvent.isAction(ev, ActionType.BLOCK)){
 			if(ev.getPlayer().getItemInHand().getType() == Material.ARMOR_STAND){
-				if(!UtilWorldGuard.canUse(ev.getPlayer())){
+				if(!UtilWorldGuard.canBuild(ev.getClickedBlock().getLocation(),ev.getPlayer())){
 					ev.setCancelled(true);
 				}
 			}
