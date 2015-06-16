@@ -1,6 +1,8 @@
 package me.kingingo.kpvp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import lombok.Getter;
 import me.kingingo.kcore.Enum.Text;
@@ -8,6 +10,7 @@ import me.kingingo.kcore.Gilden.Events.GildenPlayerTeleportEvent;
 import me.kingingo.kcore.Hologram.nametags.NameTagMessage;
 import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Packet.Events.PacketReceiveEvent;
+import me.kingingo.kcore.Packet.Packets.PLAYER_VOTE;
 import me.kingingo.kcore.Packet.Packets.WORLD_CHANGE_DATA;
 import me.kingingo.kcore.StatsManager.Stats;
 import me.kingingo.kcore.StatsManager.Event.PlayerStatsCreateEvent;
@@ -17,6 +20,7 @@ import me.kingingo.kcore.Util.RestartScheduler;
 import me.kingingo.kcore.Util.TabTitle;
 import me.kingingo.kcore.Util.UtilEvent;
 import me.kingingo.kcore.Util.UtilEvent.ActionType;
+import me.kingingo.kcore.Util.UtilInv;
 import me.kingingo.kcore.Util.UtilPlayer;
 import me.kingingo.kcore.Util.UtilServer;
 import me.kingingo.kcore.Util.UtilWorldGuard;
@@ -39,6 +43,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 public class kPvPListener extends kListener{
@@ -46,17 +51,29 @@ public class kPvPListener extends kListener{
 	@Getter
 	private kPvP manager;
 	private HashMap<Player,NameTagMessage> holo = new HashMap<>();
+	private ArrayList<UUID> vote_list = new ArrayList<>();
 	
 	public kPvPListener(kPvP manager){
 		super(manager.getInstance(),"[kPvPListener]");
 		this.manager=manager;
 	}
 	
+	Player player;
 	@EventHandler
 	public void PacketReceive(PacketReceiveEvent ev){
 		if(ev.getPacket() instanceof WORLD_CHANGE_DATA){
 			WORLD_CHANGE_DATA packet = (WORLD_CHANGE_DATA)ev.getPacket();
 			UtilPlayer.setWorldChangeUUID(Bukkit.getWorld(packet.getWorldName()), packet.getOld_uuid(), packet.getNew_uuid());
+		}else if(ev.getPacket() instanceof PLAYER_VOTE){
+			PLAYER_VOTE vote = (PLAYER_VOTE)ev.getPacket();
+			
+			if(UtilPlayer.isOnline(vote.getPlayer())){
+				player=Bukkit.getPlayer(vote.getPlayer());
+				manager.getStatsManager().setDouble(player, manager.getStatsManager().getDouble(Stats.MONEY, player)+500, Stats.MONEY);
+				UtilInv.repairInventory(player, true);
+			}else{
+				vote_list.add(vote.getUuid());
+			}
 		}
 	}
 	
@@ -93,11 +110,18 @@ public class kPvPListener extends kListener{
 		}
 	}
 	
+	ItemStack a;
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void Pickup(PlayerPickupItemEvent ev){
 		if(ev.getItem().getItemStack().getAmount()<0||ev.getItem().getItemStack().getAmount()>64){
 			ev.getItem().remove();
 	        ev.getPlayer().sendMessage("§cFEHLER: BuggUsing ist verboten!");
+		}else if(ev.getItem().getItemStack().getType()==Material.POTION){
+			a=UtilInv.searchInventoryItem(ev.getPlayer(), Material.POTION,UtilInv.GetData(ev.getItem().getItemStack()), (64-ev.getItem().getItemStack().getAmount()) );
+			if(a!=null){
+				a.setAmount(a.getAmount()+ev.getItem().getItemStack().getAmount());
+				ev.getItem().remove();
+			}
 		}
 	}
 	
@@ -218,6 +242,12 @@ public class kPvPListener extends kListener{
 		setHologramm(ev.getPlayer());
 		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEPICPVP §7-§e PvP Server", "§eShop.EpicPvP.de");
 		 ev.getPlayer().sendMessage(Text.PREFIX.getText()+Text.WHEREIS_TEXT.getText("PvP"));
+		 
+		 if(vote_list.contains( UtilPlayer.getRealUUID(ev.getPlayer()) )){
+			 vote_list.remove(UtilPlayer.getRealUUID(ev.getPlayer()));
+				manager.getStatsManager().setDouble(ev.getPlayer(), manager.getStatsManager().getDouble(Stats.MONEY, ev.getPlayer())+500, Stats.MONEY);
+			 UtilInv.repairInventory(ev.getPlayer(), true);
+		 }
 	}
 	
 	@EventHandler
