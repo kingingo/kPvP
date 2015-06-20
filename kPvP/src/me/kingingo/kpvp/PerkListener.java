@@ -33,6 +33,10 @@ public class PerkListener extends kListener{
 			if(kPvP.permManager.hasPermission(ev.getPlayer(), kPermission.PERK_ITEM_NAME))perkManager.addPlayer("ItemName", ev.getPlayer());
 			if(kPvP.permManager.hasPermission(ev.getPlayer(), kPermission.PERK_JUMP))perkManager.addPlayer("DoubleJump", ev.getPlayer());
 			if(kPvP.permManager.hasPermission(ev.getPlayer(), kPermission.PERK_RUNNER))perkManager.addPlayer("Runner", ev.getPlayer());	
+			if(kPvP.permManager.hasPermission(ev.getPlayer(), kPermission.PERK_APPLE))perkManager.addPlayer("GoldenApple", ev.getPlayer());	
+			if(kPvP.permManager.hasPermission(ev.getPlayer(), kPermission.PERK_WATER_DAMAGE))perkManager.addPlayer("noWaterdamage", ev.getPlayer());	
+			if(kPvP.permManager.hasPermission(ev.getPlayer(), kPermission.PERK_HAT))perkManager.addPlayer("Hat", ev.getPlayer());
+			if(kPvP.permManager.hasPermission(ev.getPlayer(), kPermission.PERK_ARROW_POTIONEFFECT))perkManager.addPlayer("ArrowPotionEffect", ev.getPlayer());
 		}
 	}
 	
