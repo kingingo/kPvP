@@ -11,7 +11,6 @@ import me.kingingo.kcore.Hologram.nametags.NameTagMessage;
 import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Packet.Events.PacketReceiveEvent;
 import me.kingingo.kcore.Packet.Packets.PLAYER_VOTE;
-import me.kingingo.kcore.Packet.Packets.SEND_MESSAGE;
 import me.kingingo.kcore.Packet.Packets.WORLD_CHANGE_DATA;
 import me.kingingo.kcore.StatsManager.Stats;
 import me.kingingo.kcore.StatsManager.Event.PlayerStatsCreateEvent;
@@ -191,6 +190,11 @@ public class kPvPListener extends kListener{
 	      cmd = parts[0];
 	    }else{
 	      cmd = ev.getMessage();
+	    }
+	    
+	    if(cmd.equalsIgnoreCase("/minecraft:")){
+	    	ev.setCancelled(true);
+	    	return;
 	    }
 	     
 		if(ev.getPlayer().isOp()){

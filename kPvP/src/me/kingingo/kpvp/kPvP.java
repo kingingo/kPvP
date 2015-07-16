@@ -2,6 +2,7 @@ package me.kingingo.kpvp;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.kingingo.kcore.AACHack.AACHack;
 import me.kingingo.kcore.AntiLogout.AntiLogoutManager;
 import me.kingingo.kcore.AntiLogout.AntiLogoutType;
 import me.kingingo.kcore.Client.Client;
@@ -43,6 +44,7 @@ import me.kingingo.kcore.Kit.Perks.PerkRunner;
 import me.kingingo.kcore.Kit.Perks.PerkTNT;
 import me.kingingo.kcore.Kit.Perks.PerkWalkEffect;
 import me.kingingo.kcore.Listener.Chat.ChatListener;
+import me.kingingo.kcore.Listener.Command.ListenerCMD;
 import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Neuling.NeulingManager;
 import me.kingingo.kcore.Packet.PacketManager;
@@ -97,15 +99,17 @@ public class kPvP extends JavaPlugin{
 	private SignShop Shop;
 	@Getter
 	private PacketManager packetManager;
+	@Getter
+	private AACHack aACHack;
 	
 	public void onEnable(){
 		try{
 		loadConfig();
-		mysql=new MySQL(getConfig().getString("Config.MySQL.User"),getConfig().getString("Config.MySQL.Password"),getConfig().getString("Config.MySQL.Host"),getConfig().getString("Config.MySQL.DB"),this);
+		this.mysql=new MySQL(getConfig().getString("Config.MySQL.User"),getConfig().getString("Config.MySQL.Password"),getConfig().getString("Config.MySQL.Host"),getConfig().getString("Config.MySQL.DB"),this);
 		this.instance=this;
-		updater=new Updater(this);
+		this.updater=new Updater(this);
 		this.client = new Client(getConfig().getString("Config.Client.Host"),getConfig().getInt("Config.Client.Port"),"PvP",this,updater);
-		cmd=new CommandHandler(this);
+		this.cmd=new CommandHandler(this);
 		new MemoryFix(this);
 		this.packetManager=new PacketManager(this,client);
 		permManager=new PermissionManager(this,GroupTyp.PVP,packetManager,mysql);
@@ -116,6 +120,8 @@ public class kPvP extends JavaPlugin{
 		this.friendManager=new FriendManager(this,mysql,cmd);
 		this.neulingManager=new NeulingManager(this,cmd,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,18);
+		this.aACHack=new AACHack("PVP",getMysql(), getPacketManager());
+		getAACHack().setAntiLogoutManager(getAntiManager());
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
 		this.perkManager=new PerkManager(this,null,new Perk[]{new PerkArrowPotionEffect(),new PerkNoWaterdamage(),new PerkGoldenApple(),new PerkHat(),new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(cmd)});
 		new PerkListener(perkManager);
@@ -138,6 +144,7 @@ public class kPvP extends JavaPlugin{
 		cmd.register(Commandifix.class, new Commandifix());
 		this.Shop=new SignShop(this,statsManager);
 		new kPvPListener(this);
+		new ListenerCMD(this);
 		new ChatListener(this, gildenManager,permManager);
 		}catch(Exception e){
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
