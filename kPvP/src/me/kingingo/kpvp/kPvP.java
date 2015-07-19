@@ -17,6 +17,7 @@ import me.kingingo.kcore.Command.Admin.CommandPermissionsExConverter;
 import me.kingingo.kcore.Command.Admin.CommandToggle;
 import me.kingingo.kcore.Command.Admin.CommandURang;
 import me.kingingo.kcore.Command.Admin.CommandUnBan;
+import me.kingingo.kcore.Command.Admin.CommandgBroadcast;
 import me.kingingo.kcore.Command.Commands.CommandTreasureChest;
 import me.kingingo.kcore.Command.Commands.CommandXP;
 import me.kingingo.kcore.Command.Commands.CommandkSpawn;
@@ -142,6 +143,7 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandGiveAll.class, new CommandGiveAll());
 		cmd.register(CommandGroup.class, new CommandGroup(permManager));
 		cmd.register(Commandifix.class, new Commandifix());
+		cmd.register(CommandgBroadcast.class, new CommandgBroadcast(packetManager));
 		this.Shop=new SignShop(this,statsManager);
 		new kPvPListener(this);
 		new ListenerCMD(this);
