@@ -48,6 +48,7 @@ import me.kingingo.kcore.Listener.Chat.ChatListener;
 import me.kingingo.kcore.Listener.Command.ListenerCMD;
 import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Neuling.NeulingManager;
+import me.kingingo.kcore.Nick.NickManager;
 import me.kingingo.kcore.Packet.PacketManager;
 import me.kingingo.kcore.Permission.GroupTyp;
 import me.kingingo.kcore.Permission.PermissionManager;
@@ -145,6 +146,7 @@ public class kPvP extends JavaPlugin{
 		cmd.register(Commandifix.class, new Commandifix());
 		cmd.register(CommandgBroadcast.class, new CommandgBroadcast(packetManager));
 		this.Shop=new SignShop(this,statsManager);
+		new NickManager(this);
 		new kPvPListener(this);
 		new ListenerCMD(this);
 		new ChatListener(this, gildenManager,permManager);
