@@ -30,6 +30,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -143,6 +144,14 @@ public class kPvPListener extends kListener{
 		if(ev.getItemDrop().getItemStack().getAmount()<0||ev.getItemDrop().getItemStack().getAmount()>64){
 			ev.getItemDrop().remove();
 	        ev.getPlayer().sendMessage("§cFEHLER: BuggUsing ist verboten!");
+		}
+	}
+	
+	@EventHandler
+	public void onClickinEnchant(EnchantItemEvent e){
+		if(e.getItem().getAmount() > 1){
+			e.setCancelled(true);
+			e.getEnchanter().sendMessage("§cFEHLER: BuggUsing ist verboten!");
 		}
 	}
 	

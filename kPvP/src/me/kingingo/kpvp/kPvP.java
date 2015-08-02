@@ -146,7 +146,7 @@ public class kPvP extends JavaPlugin{
 		cmd.register(Commandifix.class, new Commandifix());
 		cmd.register(CommandgBroadcast.class, new CommandgBroadcast(packetManager));
 		this.Shop=new SignShop(this,statsManager);
-		new NickManager(this);
+		new NickManager(permManager);
 		new kPvPListener(this);
 		new ListenerCMD(this);
 		new ChatListener(this, gildenManager,permManager);
