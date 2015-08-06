@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import lombok.Getter;
-import me.kingingo.kcore.Enum.Text;
 import me.kingingo.kcore.Gilden.Events.GildenPlayerTeleportEvent;
 import me.kingingo.kcore.Hologram.nametags.NameTagMessage;
+import me.kingingo.kcore.Language.Language;
 import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Packet.Events.PacketReceiveEvent;
 import me.kingingo.kcore.Packet.Packets.PLAYER_VOTE;
@@ -72,7 +72,7 @@ public class kPvPListener extends kListener{
 				player=Bukkit.getPlayer(vote.getPlayer());
 				manager.getStatsManager().setDouble(player, manager.getStatsManager().getDouble(Stats.MONEY, player)+500, Stats.MONEY);
 				UtilInv.repairInventory(player, true);
-				player.sendMessage(Text.PREFIX.getText()+"§aDanke fürs §lVoten§a du hast deine Belohnung bekommen.");
+				player.sendMessage(Language.getText(player, "PREFIX")+Language.getText(player, "VOTE_THX"));
 			}else{
 				vote_list.add(vote.getUuid());
 			}
@@ -171,7 +171,7 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void GildeHome(GildenPlayerTeleportEvent ev){
 		if(!getManager().getAntiManager().is(ev.getPlayer())){
-			ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl §b/gilden home§c nicht in Kampf ausführen!");
+			ev.getPlayer().sendMessage(Language.getText(player, "PREFIX")+Language.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT_CMD"));
 			ev.setCancelled(true);
 		}
 	}
@@ -220,7 +220,7 @@ public class kPvPListener extends kListener{
 		}else{
 			if(!getManager().getAntiManager().is(ev.getPlayer())){
 				if(cmd.equalsIgnoreCase("etpyes")||cmd.equalsIgnoreCase("/essentials:")||cmd.equalsIgnoreCase("/homes")||cmd.equalsIgnoreCase("/ereturn")||cmd.equalsIgnoreCase("/return")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/etpa")||cmd.equalsIgnoreCase("/tpaccet")||cmd.equalsIgnoreCase("/tpyes")||cmd.equalsIgnoreCase("/tpask")||cmd.equalsIgnoreCase("/etpaccept")||cmd.equalsIgnoreCase("/ewarp")||cmd.equalsIgnoreCase("/tpa")||cmd.equalsIgnoreCase("/eback")||cmd.equalsIgnoreCase("/ehome")||cmd.equalsIgnoreCase("/tpaccept")||cmd.equalsIgnoreCase("/back")||cmd.equalsIgnoreCase("/home")||cmd.equalsIgnoreCase("/spawn")||cmd.equalsIgnoreCase("/espawn")||cmd.equalsIgnoreCase("/warp")){
-					ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§cDu kannst den Befehl §b"+cmd+"§c nicht in Kampf ausführen!");
+					ev.getPlayer().sendMessage(Language.getText(player, "PREFIX")+"§cDu kannst den Befehl §b"+cmd+"§c nicht in Kampf ausführen!");
 					ev.setCancelled(true);
 				}
 			}else{
@@ -254,13 +254,13 @@ public class kPvPListener extends kListener{
 		ev.setJoinMessage(null);
 		setHologramm(ev.getPlayer());
 		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEPICPVP §7-§e PvP Server", "§eShop.EpicPvP.de");
-		 ev.getPlayer().sendMessage(Text.PREFIX.getText()+Text.WHEREIS_TEXT.getText("PvP"));
+		 ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
 		 
 		 if(vote_list.contains( UtilPlayer.getRealUUID(ev.getPlayer()) )){
 			 vote_list.remove(UtilPlayer.getRealUUID(ev.getPlayer()));
 			 manager.getStatsManager().setDouble(ev.getPlayer(), manager.getStatsManager().getDouble(Stats.MONEY, ev.getPlayer())+500, Stats.MONEY);
 			 UtilInv.repairInventory(ev.getPlayer(), true);
-			 ev.getPlayer().sendMessage(Text.PREFIX.getText()+"§aDanke fürs §lVoten§a du hast deine Belohnung bekommen.");
+			 ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "VOTE_THX"));
 		 }
 	}
 	

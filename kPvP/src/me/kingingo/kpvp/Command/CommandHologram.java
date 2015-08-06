@@ -2,7 +2,7 @@ package me.kingingo.kpvp.Command;
 
 import lombok.Getter;
 import me.kingingo.kcore.Command.CommandHandler.Sender;
-import me.kingingo.kcore.Enum.Text;
+import me.kingingo.kcore.Language.Language;
 import me.kingingo.kpvp.kPvP;
 
 import org.bukkit.command.Command;
@@ -28,7 +28,7 @@ public class CommandHologram implements CommandExecutor{
 			manager.getConfig().set("Config.Hologram.Z", p.getLocation().getZ());
 			manager.saveConfig();
 			manager.setHologram_loc(p.getLocation());
-			p.sendMessage(Text.PREFIX.getText()+"§a Das Hologramm wurde gesetzt!");
+			p.sendMessage(Language.getText(p, "PREFIX")+"§a Das Hologramm wurde gesetzt!");
 		}
 		return false;
 	}
