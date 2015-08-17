@@ -138,7 +138,7 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandPvPMute.class, new CommandPvPMute(this));	
 		cmd.register(CommandChatMute.class, new CommandChatMute(this));
 		cmd.register(CommandToggle.class, new CommandToggle(this));
-		this.cmd.register(CommandTrackingRange.class, new CommandTrackingRange());
+		cmd.register(CommandTrackingRange.class, new CommandTrackingRange());
 		cmd.register(CommandHologram.class, new CommandHologram(this));
 		cmd.register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
 		cmd.register(CommandkSpawn.class, new CommandkSpawn());
@@ -146,7 +146,6 @@ public class kPvP extends JavaPlugin{
 		cmd.register(CommandUnBan.class, new CommandUnBan(mysql));
 		cmd.register(CommandBanned.class, new CommandBanned(mysql));
 		cmd.register(CommandXP.class, new CommandXP());
-		cmd.register(CommandPermissionsExConverter.class, new CommandPermissionsExConverter(permManager));
 		cmd.register(CommandGiveAll.class, new CommandGiveAll());
 		cmd.register(CommandGroup.class, new CommandGroup(permManager));
 		cmd.register(Commandifix.class, new Commandifix());

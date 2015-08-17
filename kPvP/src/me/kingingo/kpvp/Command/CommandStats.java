@@ -22,6 +22,7 @@ public class CommandStats implements CommandExecutor{
 	public CommandStats(GildenManager gildenmanager,StatsManager statsmanager){
 		this.gildenManager=gildenmanager;
 		this.statsManager=statsmanager;
+		this.statsManager.setRanking_Stats(Stats.ELO);
 	}
 
 	@me.kingingo.kcore.Command.CommandHandler.Command(command = "stats", alias = {"kdr","money"}, sender = Sender.PLAYER)
@@ -29,6 +30,7 @@ public class CommandStats implements CommandExecutor{
 		Player p = (Player)cs;
 		if(args.length==0){
 			p.sendMessage(Language.getText(p, "STATS_PREFIX"));
+			p.sendMessage(Language.getText(p, "STATS_FAME")+getStatsManager().getInt(Stats.ELO, p));
 			p.sendMessage(Language.getText(p, "STATS_KILLS")+getStatsManager().getInt(Stats.KILLS, p));
 			p.sendMessage(Language.getText(p, "STATS_DEATHS")+getStatsManager().getInt(Stats.DEATHS, p));
 			p.sendMessage(Language.getText(p, "STATS_MONEY")+getStatsManager().getDouble(Stats.MONEY, p));
@@ -40,26 +42,6 @@ public class CommandStats implements CommandExecutor{
 		}else if(args[0].equalsIgnoreCase("ranking")){
 			statsManager.Ranking(p);
 		}
-//		else{
-//			String player=args[0];
-//			if(player.equalsIgnoreCase(p.getName()))return false;
-//			if(!getStatsManager().ExistPlayer(player)){
-//				p.sendMessage("§cDieser Spieler Exestiert nicht!");
-//				return false;
-//			}
-//			int k = getStatsManager().getIntWithString(Stats.KILLS, player);
-//			int d = getStatsManager().getIntWithString(Stats.DEATHS, player);
-//			p.sendMessage(Text.STATS_PREFIX.getText());
-//			p.sendMessage(Text.STATS_KILLS.getText()+k);
-//			p.sendMessage(Text.STATS_DEATHS.getText()+d);
-//			p.sendMessage(Text.STATS_MONEY.getText()+getStatsManager().getDoubleWithString(Stats.MONEY, player));
-//			p.sendMessage(Text.STATS_KDR.getText()+getStatsManager().getKDR(k, d));
-//			UUID uuid = UtilPlayer.getUUID(player, statsManager.getMysql());
-//			if(uuid!=null&&getGildenManager().isPlayerInGilde(uuid)){
-//				p.sendMessage(Text.STATS_GILDE.getText()+getGildenManager().getPlayerGilde(uuid));
-//			}
-//			p.sendMessage(Text.STATS_RANKING.getText()+getStatsManager().getRankWithString(Stats.KILLS, player));
-//		}
 		return false;
 	}
 	

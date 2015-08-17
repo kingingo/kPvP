@@ -12,13 +12,18 @@ import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Packet.Events.PacketReceiveEvent;
 import me.kingingo.kcore.Packet.Packets.PLAYER_VOTE;
 import me.kingingo.kcore.Packet.Packets.WORLD_CHANGE_DATA;
+import me.kingingo.kcore.Permission.Event.PlayerLoadPermissionEvent;
 import me.kingingo.kcore.StatsManager.Stats;
+import me.kingingo.kcore.StatsManager.StatsManager;
 import me.kingingo.kcore.StatsManager.Event.PlayerStatsCreateEvent;
 import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;
 import me.kingingo.kcore.Util.RestartScheduler;
 import me.kingingo.kcore.Util.TabTitle;
+import me.kingingo.kcore.Util.UtilELO;
 import me.kingingo.kcore.Util.UtilEvent;
+import me.kingingo.kcore.Util.UtilNumber;
+import me.kingingo.kcore.Util.UtilScoreboard;
 import me.kingingo.kcore.Util.UtilEvent.ActionType;
 import me.kingingo.kcore.Util.UtilInv;
 import me.kingingo.kcore.Util.UtilPlayer;
@@ -46,6 +51,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scoreboard.DisplaySlot;
 
 public class kPvPListener extends kListener{
 
@@ -182,13 +188,20 @@ public class kPvPListener extends kListener{
 		if(ev.getEntity() instanceof Player){
 			Player v = (Player)ev.getEntity();
 			getManager().getStatsManager().setInt(v, getManager().getStatsManager().getInt(Stats.DEATHS, v)+1, Stats.DEATHS);
-			if(ev.getEntity().getKiller() instanceof Player)getManager().getStatsManager().setInt(ev.getEntity().getKiller(), getManager().getStatsManager().getInt(Stats.KILLS, ev.getEntity().getKiller())+1, Stats.KILLS);
+			if(ev.getEntity().getKiller() instanceof Player){
+				getManager().getStatsManager().setDouble(ev.getEntity().getKiller(), UtilELO.eloBerechnen(getManager().getStatsManager().getDouble(Stats.ELO, ev.getEntity().getKiller()), getManager().getStatsManager().getDouble(Stats.ELO, ((Player)ev.getEntity()))), Stats.ELO);
+				getManager().getStatsManager().setInt(ev.getEntity().getKiller(), getManager().getStatsManager().getInt(Stats.KILLS, ev.getEntity().getKiller())+1, Stats.KILLS);
+			}
+			getManager().getStatsManager().setDouble(v, UtilELO.START_WERT, Stats.ELO);
+			updateFame(ev.getEntity().getKiller());
+			updateFame( ((Player)ev.getEntity()) );
 		}
 	}
 	
 	@EventHandler
 	public void NEW(PlayerStatsCreateEvent ev){
 		getManager().getNeulingManager().add(ev.getPlayer());
+		getManager().getStatsManager().setDouble(ev.getPlayer(), UtilELO.START_WERT, Stats.ELO);
 	}
 	
 	@EventHandler
@@ -247,6 +260,20 @@ public class kPvPListener extends kListener{
 			holo.remove(ev.getPlayer());
 		}
 		getManager().getStatsManager().SaveAllPlayerData(ev.getPlayer());
+	}
+	
+	public void updateFame(Player player){
+		for(Player p : UtilServer.getPlayers()){
+			UtilScoreboard.setScore(player.getScoreboard(), p.getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, player)));
+		}
+	}
+	
+	@EventHandler
+	public void loadPerm(PlayerLoadPermissionEvent ev){
+		for(Player player : UtilServer.getPlayers()){
+			UtilScoreboard.setScore(player.getScoreboard(), ev.getPlayer().getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, player)));
+		}
+		updateFame(ev.getPlayer());
 	}
 	
 	@EventHandler
