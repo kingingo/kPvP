@@ -192,6 +192,8 @@ public class kPvPListener extends kListener{
 				getManager().getStatsManager().setDouble(ev.getEntity().getKiller(), UtilELO.eloBerechnen(getManager().getStatsManager().getDouble(Stats.ELO, ev.getEntity().getKiller()), getManager().getStatsManager().getDouble(Stats.ELO, ((Player)ev.getEntity()))), Stats.ELO);
 				getManager().getStatsManager().setInt(ev.getEntity().getKiller(), getManager().getStatsManager().getInt(Stats.KILLS, ev.getEntity().getKiller())+1, Stats.KILLS);
 			}
+			getManager().getStatsManager().setDouble(v, getManager().getStatsManager().getDouble(Stats.ELO, v), Stats.TIME_ELO);
+			getManager().getStatsManager().setDouble(player, (int)System.currentTimeMillis(), Stats.TIME);
 			getManager().getStatsManager().setDouble(v, UtilELO.START_WERT, Stats.ELO);
 			updateFame(ev.getEntity().getKiller());
 			updateFame( ((Player)ev.getEntity()) );
@@ -202,6 +204,8 @@ public class kPvPListener extends kListener{
 	public void NEW(PlayerStatsCreateEvent ev){
 		getManager().getNeulingManager().add(ev.getPlayer());
 		getManager().getStatsManager().setDouble(ev.getPlayer(), UtilELO.START_WERT, Stats.ELO);
+		getManager().getStatsManager().setDouble(ev.getPlayer(), 0, Stats.TIME_ELO);
+		getManager().getStatsManager().setInt(ev.getPlayer(), (int)System.currentTimeMillis(), Stats.TIME);
 	}
 	
 	@EventHandler

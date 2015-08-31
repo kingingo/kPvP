@@ -4,8 +4,10 @@ import lombok.Getter;
 import me.kingingo.kcore.Command.CommandHandler.Sender;
 import me.kingingo.kcore.Gilden.GildenManager;
 import me.kingingo.kcore.Language.Language;
+import me.kingingo.kcore.StatsManager.Ranking;
 import me.kingingo.kcore.StatsManager.Stats;
 import me.kingingo.kcore.StatsManager.StatsManager;
+import me.kingingo.kcore.Util.TimeSpan;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,11 +20,22 @@ public class CommandStats implements CommandExecutor{
 	private GildenManager gildenManager;
 	@Getter
 	private StatsManager statsManager;
+	private Ranking ranking_day;
+	private Ranking ranking_week;
+	private Ranking ranking_month;
+	private Ranking ranking;
 	
 	public CommandStats(GildenManager gildenmanager,StatsManager statsmanager){
 		this.gildenManager=gildenmanager;
 		this.statsManager=statsmanager;
-		this.statsManager.setRanking_Stats(Stats.ELO);
+		this.ranking_day=new Ranking(statsManager, Stats.ELO, TimeSpan.DAY, 10);
+		this.statsManager.addRanking(ranking_day);
+		this.ranking_week=new Ranking(statsManager, Stats.ELO, TimeSpan.DAY*7, 10);
+		this.statsManager.addRanking(ranking_week);
+		this.ranking_month=new Ranking(statsManager, Stats.ELO, TimeSpan.DAY*30, 10);
+		this.statsManager.addRanking(ranking_month);
+		this.ranking=new Ranking(statsManager, Stats.ELO, -1, 10);
+		this.statsManager.addRanking(ranking);
 	}
 
 	@me.kingingo.kcore.Command.CommandHandler.Command(command = "stats", alias = {"kdr","money"}, sender = Sender.PLAYER)
@@ -40,7 +53,15 @@ public class CommandStats implements CommandExecutor{
 			}
 			p.sendMessage(Language.getText(p, "STATS_RANKING")+getStatsManager().getRank(Stats.KILLS, p));
 		}else if(args[0].equalsIgnoreCase("ranking")){
-			statsManager.Ranking(p);
+			if(args[1].equalsIgnoreCase("day")||args[1].equalsIgnoreCase("tag")){
+				getStatsManager().SendRankingMessage(p, ranking_day, "Tag");
+			}else if(args[1].equalsIgnoreCase("week")||args[1].equalsIgnoreCase("woche")){
+				getStatsManager().SendRankingMessage(p, ranking_week, "Woche");
+			}else if(args[1].equalsIgnoreCase("month")||args[1].equalsIgnoreCase("Monat")){
+				getStatsManager().SendRankingMessage(p, ranking_month, "Monat");
+			}else{
+				getStatsManager().SendRankingMessage(p, ranking);
+			}
 		}
 		return false;
 	}
