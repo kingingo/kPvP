@@ -280,7 +280,7 @@ public class kPvPListener extends kListener{
 	public void Join(PlayerJoinEvent ev){
 		ev.setJoinMessage(null);
 		setHologramm(ev.getPlayer());
-		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEPICPVP §7-§e PvP Server", "§eShop.EpicPvP.de");
+		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEpicPvP§8.§eeu §8| §aPvP Server", "§aTeamSpeak: §7ts.EpicPvP.eu §8| §eWebsite: §7EpicPvP.eu");
 		 ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
 		 
 		 if(vote_list.contains( UtilPlayer.getRealUUID(ev.getPlayer()) )){
