@@ -43,7 +43,7 @@ public class CommandStats implements CommandExecutor{
 		Player p = (Player)cs;
 		if(args.length==0){
 			p.sendMessage(Language.getText(p, "STATS_PREFIX"));
-			p.sendMessage(Language.getText(p, "STATS_FAME")+getStatsManager().getInt(Stats.ELO, p));
+			p.sendMessage(Language.getText(p, "STATS_FAME")+getStatsManager().getDouble(Stats.ELO, p));
 			p.sendMessage(Language.getText(p, "STATS_KILLS")+getStatsManager().getInt(Stats.KILLS, p));
 			p.sendMessage(Language.getText(p, "STATS_DEATHS")+getStatsManager().getInt(Stats.DEATHS, p));
 			p.sendMessage(Language.getText(p, "STATS_MONEY")+getStatsManager().getDouble(Stats.MONEY, p));
@@ -53,15 +53,20 @@ public class CommandStats implements CommandExecutor{
 			}
 			p.sendMessage(Language.getText(p, "STATS_RANKING")+getStatsManager().getRank(Stats.KILLS, p));
 		}else if(args[0].equalsIgnoreCase("ranking")){
-			if(args[1].equalsIgnoreCase("day")||args[1].equalsIgnoreCase("tag")){
-				getStatsManager().SendRankingMessage(p, ranking_day, "Tag");
-			}else if(args[1].equalsIgnoreCase("week")||args[1].equalsIgnoreCase("woche")){
-				getStatsManager().SendRankingMessage(p, ranking_week, "Woche");
-			}else if(args[1].equalsIgnoreCase("month")||args[1].equalsIgnoreCase("Monat")){
-				getStatsManager().SendRankingMessage(p, ranking_month, "Monat");
-			}else{
+			if(args[1]==null){
 				getStatsManager().SendRankingMessage(p, ranking);
+			}else{
+				if(args[1].equalsIgnoreCase("day")||args[1].equalsIgnoreCase("tag")){
+					getStatsManager().SendRankingMessage(p, ranking_day, "Tag");
+				}else if(args[1].equalsIgnoreCase("week")||args[1].equalsIgnoreCase("woche")){
+					getStatsManager().SendRankingMessage(p, ranking_week, "Woche");
+				}else if(args[1].equalsIgnoreCase("month")||args[1].equalsIgnoreCase("Monat")){
+					getStatsManager().SendRankingMessage(p, ranking_month, "Monat");
+				}else{
+					getStatsManager().SendRankingMessage(p, ranking);
+				}
 			}
+			
 		}
 		return false;
 	}

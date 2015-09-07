@@ -14,7 +14,6 @@ import me.kingingo.kcore.Packet.Packets.PLAYER_VOTE;
 import me.kingingo.kcore.Packet.Packets.WORLD_CHANGE_DATA;
 import me.kingingo.kcore.Permission.Event.PlayerLoadPermissionEvent;
 import me.kingingo.kcore.StatsManager.Stats;
-import me.kingingo.kcore.StatsManager.StatsManager;
 import me.kingingo.kcore.StatsManager.Event.PlayerStatsCreateEvent;
 import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;
@@ -22,11 +21,11 @@ import me.kingingo.kcore.Util.RestartScheduler;
 import me.kingingo.kcore.Util.TabTitle;
 import me.kingingo.kcore.Util.UtilELO;
 import me.kingingo.kcore.Util.UtilEvent;
-import me.kingingo.kcore.Util.UtilNumber;
-import me.kingingo.kcore.Util.UtilScoreboard;
 import me.kingingo.kcore.Util.UtilEvent.ActionType;
 import me.kingingo.kcore.Util.UtilInv;
+import me.kingingo.kcore.Util.UtilNumber;
 import me.kingingo.kcore.Util.UtilPlayer;
+import me.kingingo.kcore.Util.UtilScoreboard;
 import me.kingingo.kcore.Util.UtilServer;
 import me.kingingo.kcore.Util.UtilWorldGuard;
 
@@ -193,7 +192,7 @@ public class kPvPListener extends kListener{
 				getManager().getStatsManager().setInt(ev.getEntity().getKiller(), getManager().getStatsManager().getInt(Stats.KILLS, ev.getEntity().getKiller())+1, Stats.KILLS);
 			}
 			getManager().getStatsManager().setDouble(v, getManager().getStatsManager().getDouble(Stats.ELO, v), Stats.TIME_ELO);
-			getManager().getStatsManager().setDouble(player, (int)System.currentTimeMillis(), Stats.TIME);
+			getManager().getStatsManager().setInt(player, (int)System.currentTimeMillis(), Stats.TIME);
 			getManager().getStatsManager().setDouble(v, UtilELO.START_WERT, Stats.ELO);
 			updateFame(ev.getEntity().getKiller());
 			updateFame( ((Player)ev.getEntity()) );
@@ -275,6 +274,8 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void loadPerm(PlayerLoadPermissionEvent ev){
 		for(Player player : UtilServer.getPlayers()){
+			if(player.getScoreboard()==null)player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+			if(player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME)==null)UtilScoreboard.addBoard(player.getScoreboard(), DisplaySlot.BELOW_NAME, "§bFame");		
 			UtilScoreboard.setScore(player.getScoreboard(), ev.getPlayer().getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, player)));
 		}
 		updateFame(ev.getPlayer());
@@ -323,6 +324,7 @@ public class kPvPListener extends kListener{
 			"§6Gilde§b "+getManager().getGildenManager().getPlayerGilde(p),
 			"§6Ranking§b "+getManager().getStatsManager().getRank(Stats.KILLS, p),
 			"§6Kills§b "+getManager().getStatsManager().getInt(Stats.KILLS, p),
+			"§6Fame§b "+getManager().getStatsManager().getInt(Stats.ELO, p),
 			"§6Tode§b "+getManager().getStatsManager().getInt(Stats.DEATHS, p),
 			"§6Money§b "+getManager().getStatsManager().getDouble(Stats.MONEY, p),
 			"§6KDR§b "+getManager().getStatsManager().getKDR(getManager().getStatsManager().getInt(Stats.KILLS, p), getManager().getStatsManager().getInt(Stats.DEATHS, p)),
