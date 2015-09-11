@@ -20,10 +20,14 @@ public class CommandStats implements CommandExecutor{
 	private GildenManager gildenManager;
 	@Getter
 	private StatsManager statsManager;
-	private Ranking ranking_day;
-	private Ranking ranking_week;
-	private Ranking ranking_month;
-	private Ranking ranking;
+	@Getter
+	private static Ranking ranking_day;
+	@Getter
+	private static Ranking ranking_week;
+	@Getter
+	private static Ranking ranking_month;
+	@Getter
+	private static Ranking ranking;
 	
 	public CommandStats(GildenManager gildenmanager,StatsManager statsmanager){
 		this.gildenManager=gildenmanager;
@@ -53,7 +57,7 @@ public class CommandStats implements CommandExecutor{
 			}
 			p.sendMessage(Language.getText(p, "STATS_RANKING")+getStatsManager().getRank(Stats.KILLS, p));
 		}else if(args[0].equalsIgnoreCase("ranking")){
-			if(args[1]==null){
+			if(args.length==1){
 				getStatsManager().SendRankingMessage(p, ranking);
 			}else{
 				if(args[1].equalsIgnoreCase("day")||args[1].equalsIgnoreCase("tag")){

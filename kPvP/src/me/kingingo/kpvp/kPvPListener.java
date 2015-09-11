@@ -12,6 +12,7 @@ import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Packet.Events.PacketReceiveEvent;
 import me.kingingo.kcore.Packet.Packets.PLAYER_VOTE;
 import me.kingingo.kcore.Packet.Packets.WORLD_CHANGE_DATA;
+import me.kingingo.kcore.Permission.kPermission;
 import me.kingingo.kcore.Permission.Event.PlayerLoadPermissionEvent;
 import me.kingingo.kcore.StatsManager.Stats;
 import me.kingingo.kcore.StatsManager.Event.PlayerStatsCreateEvent;
@@ -28,12 +29,16 @@ import me.kingingo.kcore.Util.UtilPlayer;
 import me.kingingo.kcore.Util.UtilScoreboard;
 import me.kingingo.kcore.Util.UtilServer;
 import me.kingingo.kcore.Util.UtilWorldGuard;
+import me.kingingo.kpvp.Command.CommandHologram;
+import me.kingingo.kpvp.Command.CommandStats;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -48,6 +53,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -57,11 +63,29 @@ public class kPvPListener extends kListener{
 	@Getter
 	private kPvP manager;
 	private HashMap<Player,NameTagMessage> holo = new HashMap<>();
+	public static NameTagMessage ranking_day;
+	public static NameTagMessage ranking_week;
+	public static NameTagMessage ranking_month;
+	public static NameTagMessage ranking_total;
 	private ArrayList<UUID> vote_list = new ArrayList<>();
 	
 	public kPvPListener(kPvP manager){
 		super(manager.getInstance(),"[kPvPListener]");
 		this.manager=manager;
+		this.ranking_day=manager.getHologram().createNameTagMessage(CommandHologram.getToday(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
+		this.ranking_week=manager.getHologram().createNameTagMessage(CommandHologram.getWeek(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
+		this.ranking_month=manager.getHologram().createNameTagMessage(CommandHologram.getMonth(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
+		this.ranking_total=manager.getHologram().createNameTagMessage(CommandHologram.getTotal(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
+	}
+	
+	@EventHandler
+	public void Sign(SignChangeEvent ev){
+		if(ev.getPlayer().hasPermission(kPermission.CHAT_FARBIG.getPermissionToString())){
+			ev.setLine(0, ev.getLine(0).replaceAll("&", "§"));
+			ev.setLine(1, ev.getLine(1).replaceAll("&", "§"));
+			ev.setLine(2, ev.getLine(2).replaceAll("&", "§"));
+			ev.setLine(3, ev.getLine(3).replaceAll("&", "§"));
+		}
 	}
 	
 	Player player;
@@ -186,13 +210,14 @@ public class kPvPListener extends kListener{
 		ev.setDeathMessage(null);
 		if(ev.getEntity() instanceof Player){
 			Player v = (Player)ev.getEntity();
+
 			getManager().getStatsManager().setInt(v, getManager().getStatsManager().getInt(Stats.DEATHS, v)+1, Stats.DEATHS);
 			if(ev.getEntity().getKiller() instanceof Player){
-				getManager().getStatsManager().setDouble(ev.getEntity().getKiller(), UtilELO.eloBerechnen(getManager().getStatsManager().getDouble(Stats.ELO, ev.getEntity().getKiller()), getManager().getStatsManager().getDouble(Stats.ELO, ((Player)ev.getEntity()))), Stats.ELO);
+				getManager().getStatsManager().setDouble(ev.getEntity().getKiller(), UtilELO.eloBerechnen(getManager().getStatsManager().getDouble(Stats.ELO, ev.getEntity().getKiller()), getManager().getStatsManager().getDouble(Stats.ELO, v)), Stats.ELO);
 				getManager().getStatsManager().setInt(ev.getEntity().getKiller(), getManager().getStatsManager().getInt(Stats.KILLS, ev.getEntity().getKiller())+1, Stats.KILLS);
 			}
 			getManager().getStatsManager().setDouble(v, getManager().getStatsManager().getDouble(Stats.ELO, v), Stats.TIME_ELO);
-			getManager().getStatsManager().setInt(player, (int)System.currentTimeMillis(), Stats.TIME);
+			getManager().getStatsManager().setString(v, ""+System.currentTimeMillis(), Stats.TIME);
 			getManager().getStatsManager().setDouble(v, UtilELO.START_WERT, Stats.ELO);
 			updateFame(ev.getEntity().getKiller());
 			updateFame( ((Player)ev.getEntity()) );
@@ -204,7 +229,7 @@ public class kPvPListener extends kListener{
 		getManager().getNeulingManager().add(ev.getPlayer());
 		getManager().getStatsManager().setDouble(ev.getPlayer(), UtilELO.START_WERT, Stats.ELO);
 		getManager().getStatsManager().setDouble(ev.getPlayer(), 0, Stats.TIME_ELO);
-		getManager().getStatsManager().setInt(ev.getPlayer(), (int)System.currentTimeMillis(), Stats.TIME);
+		getManager().getStatsManager().setString(ev.getPlayer(), ""+System.currentTimeMillis(), Stats.TIME);
 	}
 	
 	@EventHandler
@@ -267,16 +292,19 @@ public class kPvPListener extends kListener{
 	
 	public void updateFame(Player player){
 		for(Player p : UtilServer.getPlayers()){
-			UtilScoreboard.setScore(player.getScoreboard(), p.getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, player)));
+			UtilScoreboard.setScore(player.getScoreboard(), p.getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, p)));
 		}
 	}
 	
 	@EventHandler
 	public void loadPerm(PlayerLoadPermissionEvent ev){
+		if(ev.getPlayer().getScoreboard()==null)ev.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+		if(ev.getPlayer().getScoreboard().getObjective(DisplaySlot.BELOW_NAME)==null)UtilScoreboard.addBoard(ev.getPlayer().getScoreboard(), DisplaySlot.BELOW_NAME, "§bFame");	
 		for(Player player : UtilServer.getPlayers()){
+			if(player.getName().equalsIgnoreCase(ev.getPlayer().getName()))continue;
 			if(player.getScoreboard()==null)player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 			if(player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME)==null)UtilScoreboard.addBoard(player.getScoreboard(), DisplaySlot.BELOW_NAME, "§bFame");		
-			UtilScoreboard.setScore(player.getScoreboard(), ev.getPlayer().getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, player)));
+			UtilScoreboard.setScore(player.getScoreboard(), ev.getPlayer().getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, ev.getPlayer())));
 		}
 		updateFame(ev.getPlayer());
 	}
@@ -285,6 +313,10 @@ public class kPvPListener extends kListener{
 	public void Join(PlayerJoinEvent ev){
 		ev.setJoinMessage(null);
 		setHologramm(ev.getPlayer());
+		this.ranking_day.sendToPlayer(ev.getPlayer());
+		this.ranking_week.sendToPlayer(ev.getPlayer());
+		this.ranking_total.sendToPlayer(ev.getPlayer());
+		this.ranking_month.sendToPlayer(ev.getPlayer());
 		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEpicPvP§8.§eeu §8| §aPvP Server", "§aTeamSpeak: §7ts.EpicPvP.eu §8| §eWebsite: §7EpicPvP.eu");
 		 ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
 		 
@@ -298,9 +330,42 @@ public class kPvPListener extends kListener{
 	
 	@EventHandler
 	public void Updater(UpdateEvent ev){
-		if(ev.getType()!=UpdateType.MIN_08)return;
-		for(Player p : UtilServer.getPlayers())setHologramm(p);
+		if(ev.getType()==UpdateType.MIN_08){
+			for(Player p : UtilServer.getPlayers())setHologramm(p);
+		}else if(ev.getType()==UpdateType.MIN_16){
+			for(Player p : UtilServer.getPlayers()){
+				ranking_day.clear(p);
+				ranking_week.clear(p);
+				ranking_month.clear(p);
+				ranking_total.clear(p);
+			}
+
+			this.ranking_day=manager.getHologram().createNameTagMessage(CommandHologram.getToday(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
+			this.ranking_week=manager.getHologram().createNameTagMessage(CommandHologram.getWeek(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
+			this.ranking_month=manager.getHologram().createNameTagMessage(CommandHologram.getMonth(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
+			this.ranking_total=manager.getHologram().createNameTagMessage(CommandHologram.getTotal(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
+			
+			for(Player p : UtilServer.getPlayers()){
+				this.ranking_day.sendToPlayer(p);
+				this.ranking_week.sendToPlayer(p);
+				this.ranking_month.sendToPlayer(p);
+				this.ranking_total.sendToPlayer(p);
+			}
+		}
 	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onChunkLoad(ChunkLoadEvent event) {
+		if(ranking_day.getLocation().getChunk().equals(event.getChunk())){
+			for(Player p : UtilServer.getPlayers()){
+				this.ranking_day.sendToPlayer(p);
+				this.ranking_week.sendToPlayer(p);
+				this.ranking_month.sendToPlayer(p);
+				this.ranking_total.sendToPlayer(p);
+				this.holo.get(p).sendToPlayer(p);
+			}
+		}
+    }
 	
 	@EventHandler
 	public void Rüstung(PlayerInteractEvent ev){
@@ -319,12 +384,13 @@ public class kPvPListener extends kListener{
 			holo.get(p).clear(p);
 			holo.remove(p);
 		}
-		holo.put(p, getManager().getHologram().sendText(p, getManager().getHologram_loc(), new String[]{
+		
+		holo.put(p, getManager().getHologram().sendText(p, CommandHologram.getPlayer(), new String[]{
 			"§6Name§a "+p.getName(),
 			"§6Gilde§b "+getManager().getGildenManager().getPlayerGilde(p),
 			"§6Ranking§b "+getManager().getStatsManager().getRank(Stats.KILLS, p),
 			"§6Kills§b "+getManager().getStatsManager().getInt(Stats.KILLS, p),
-			"§6Fame§b "+getManager().getStatsManager().getInt(Stats.ELO, p),
+			"§6Fame§b "+getManager().getStatsManager().getDouble(Stats.ELO, p),
 			"§6Tode§b "+getManager().getStatsManager().getInt(Stats.DEATHS, p),
 			"§6Money§b "+getManager().getStatsManager().getDouble(Stats.MONEY, p),
 			"§6KDR§b "+getManager().getStatsManager().getKDR(getManager().getStatsManager().getInt(Stats.KILLS, p), getManager().getStatsManager().getInt(Stats.DEATHS, p)),

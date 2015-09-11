@@ -31,6 +31,7 @@ import me.kingingo.kcore.Command.Admin.CommandURang;
 import me.kingingo.kcore.Command.Admin.CommandUnBan;
 import me.kingingo.kcore.Command.Admin.CommandVanish;
 import me.kingingo.kcore.Command.Admin.CommandgBroadcast;
+import me.kingingo.kcore.Command.Commands.CommandBack;
 import me.kingingo.kcore.Command.Commands.CommandClearInventory;
 import me.kingingo.kcore.Command.Commands.CommandDelHome;
 import me.kingingo.kcore.Command.Commands.CommandEnderchest;
@@ -133,9 +134,6 @@ public class kPvP extends JavaPlugin{
 	@Getter
 	private Hologram hologram;
 	@Getter
-	@Setter
-	private Location hologram_loc;
-	@Getter
 	private SignShop Shop;
 	@Getter
 	private PacketManager packetManager;
@@ -158,8 +156,6 @@ public class kPvP extends JavaPlugin{
 		new MemoryFix(this);
 		this.packetManager=new PacketManager(this,client);
 		permManager=new PermissionManager(this,GroupTyp.PVP,packetManager,mysql);
-		this.hologram_loc=new Location(Bukkit.getWorld("world"),getConfig().getDouble("Config.Hologram.X"),getConfig().getDouble("Config.Hologram.Y"),getConfig().getDouble("Config.Hologram.Z"));
-		this.hologram_loc.getWorld().loadChunk(this.hologram_loc.getWorld().getChunkAt(this.hologram_loc));
 		this.hologram=new Hologram(this);
 		this.friendManager=new FriendManager(this,mysql,cmd);
 		this.neulingManager=new NeulingManager(this,cmd,20);
@@ -202,7 +198,7 @@ public class kPvP extends JavaPlugin{
 		this.cmd.register(CommandTag.class, new CommandTag());
 		this.cmd.register(CommandNacht.class, new CommandNacht());
 		this.cmd.register(CommandHeal.class, new CommandHeal());
-		this.cmd.register(CommandHome.class, new CommandHome(getUserData(), teleport));
+		this.cmd.register(CommandHome.class, new CommandHome(getUserData(), teleport,this.cmd));
 		this.cmd.register(CommandSpawnmob.class, new CommandSpawnmob());
 		this.cmd.register(CommandSpawner.class, new CommandSpawner());
 		this.cmd.register(CommandSetHome.class, new CommandSetHome(getUserData(), getPermManager()));
@@ -224,6 +220,7 @@ public class kPvP extends JavaPlugin{
 		this.cmd.register(CommandkSpawn.class, new CommandkSpawn());
 		this.cmd.register(CommandMore.class, new CommandMore());
 		this.cmd.register(CommandFlyspeed.class, new CommandFlyspeed());
+		this.cmd.register(CommandBack.class, new CommandBack(this));
 		
 		this.Shop=new SignShop(this,statsManager);
 		new kPvPListener(this);
