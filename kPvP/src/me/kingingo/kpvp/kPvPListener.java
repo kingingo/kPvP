@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import lombok.Getter;
+import me.kingingo.kcore.ELO.ELO;
 import me.kingingo.kcore.Gilden.Events.GildenPlayerTeleportEvent;
 import me.kingingo.kcore.Hologram.nametags.NameTagMessage;
 import me.kingingo.kcore.Language.Language;
@@ -20,7 +21,6 @@ import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;
 import me.kingingo.kcore.Util.RestartScheduler;
 import me.kingingo.kcore.Util.TabTitle;
-import me.kingingo.kcore.Util.UtilELO;
 import me.kingingo.kcore.Util.UtilEvent;
 import me.kingingo.kcore.Util.UtilEvent.ActionType;
 import me.kingingo.kcore.Util.UtilInv;
@@ -34,7 +34,6 @@ import me.kingingo.kpvp.Command.CommandStats;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -213,12 +212,11 @@ public class kPvPListener extends kListener{
 
 			getManager().getStatsManager().setInt(v, getManager().getStatsManager().getInt(Stats.DEATHS, v)+1, Stats.DEATHS);
 			if(ev.getEntity().getKiller() instanceof Player){
-				getManager().getStatsManager().setDouble(ev.getEntity().getKiller(), UtilELO.eloBerechnen(getManager().getStatsManager().getDouble(Stats.ELO, ev.getEntity().getKiller()), getManager().getStatsManager().getDouble(Stats.ELO, v)), Stats.ELO);
+				ELO.eloCHANGEProzent(ev.getEntity().getKiller(), v,20, manager.getStatsManager());
 				getManager().getStatsManager().setInt(ev.getEntity().getKiller(), getManager().getStatsManager().getInt(Stats.KILLS, ev.getEntity().getKiller())+1, Stats.KILLS);
+			}else{
+				ELO.eloCHANGE(v, manager.getStatsManager());
 			}
-			getManager().getStatsManager().setDouble(v, getManager().getStatsManager().getDouble(Stats.ELO, v), Stats.TIME_ELO);
-			getManager().getStatsManager().setString(v, ""+System.currentTimeMillis(), Stats.TIME);
-			getManager().getStatsManager().setDouble(v, UtilELO.START_WERT, Stats.ELO);
 			updateFame(ev.getEntity().getKiller());
 			updateFame( ((Player)ev.getEntity()) );
 		}
@@ -227,9 +225,10 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void NEW(PlayerStatsCreateEvent ev){
 		getManager().getNeulingManager().add(ev.getPlayer());
-		getManager().getStatsManager().setDouble(ev.getPlayer(), UtilELO.START_WERT, Stats.ELO);
+		getManager().getStatsManager().setDouble(ev.getPlayer(), ELO.START_WERT, Stats.ELO);
 		getManager().getStatsManager().setDouble(ev.getPlayer(), 0, Stats.TIME_ELO);
 		getManager().getStatsManager().setString(ev.getPlayer(), ""+System.currentTimeMillis(), Stats.TIME);
+		ev.getPlayer().teleport(ev.getPlayer().getWorld().getSpawnLocation());
 	}
 	
 	@EventHandler
@@ -299,11 +298,11 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void loadPerm(PlayerLoadPermissionEvent ev){
 		if(ev.getPlayer().getScoreboard()==null)ev.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-		if(ev.getPlayer().getScoreboard().getObjective(DisplaySlot.BELOW_NAME)==null)UtilScoreboard.addBoard(ev.getPlayer().getScoreboard(), DisplaySlot.BELOW_NAME, "§bFame");	
+		if(ev.getPlayer().getScoreboard().getObjective(DisplaySlot.BELOW_NAME)==null)UtilScoreboard.addBoard(ev.getPlayer().getScoreboard(), DisplaySlot.BELOW_NAME, "§6FAME");	
 		for(Player player : UtilServer.getPlayers()){
 			if(player.getName().equalsIgnoreCase(ev.getPlayer().getName()))continue;
 			if(player.getScoreboard()==null)player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-			if(player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME)==null)UtilScoreboard.addBoard(player.getScoreboard(), DisplaySlot.BELOW_NAME, "§bFame");		
+			if(player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME)==null)UtilScoreboard.addBoard(player.getScoreboard(), DisplaySlot.BELOW_NAME, "§6FAME");		
 			UtilScoreboard.setScore(player.getScoreboard(), ev.getPlayer().getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, ev.getPlayer())));
 		}
 		updateFame(ev.getPlayer());
