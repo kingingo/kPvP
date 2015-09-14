@@ -17,6 +17,7 @@ import me.kingingo.kcore.Permission.kPermission;
 import me.kingingo.kcore.Permission.Event.PlayerLoadPermissionEvent;
 import me.kingingo.kcore.StatsManager.Stats;
 import me.kingingo.kcore.StatsManager.Event.PlayerStatsCreateEvent;
+import me.kingingo.kcore.StatsManager.Event.RankingUpdateEvent;
 import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;
 import me.kingingo.kcore.Util.RestartScheduler;
@@ -209,15 +210,19 @@ public class kPvPListener extends kListener{
 		ev.setDeathMessage(null);
 		if(ev.getEntity() instanceof Player){
 			Player v = (Player)ev.getEntity();
-
+			v.sendMessage(Language.getText(ev.getEntity().getKiller(), "PREFIX")+Language.getText(ev.getEntity().getKiller(), "PVP_DEATH"));
+			
 			getManager().getStatsManager().setInt(v, getManager().getStatsManager().getInt(Stats.DEATHS, v)+1, Stats.DEATHS);
 			if(ev.getEntity().getKiller() instanceof Player){
-				ELO.eloCHANGEProzent(ev.getEntity().getKiller(), v,20, manager.getStatsManager());
+				double elo = manager.getStatsManager().getDouble(Stats.ELO, ev.getEntity().getKiller());
+				ELO.eloCHANGEProzent(ev.getEntity().getKiller(), v,10, manager.getStatsManager());
+				elo=manager.getStatsManager().getDouble(Stats.ELO, ev.getEntity().getKiller())-elo;
 				getManager().getStatsManager().setInt(ev.getEntity().getKiller(), getManager().getStatsManager().getInt(Stats.KILLS, ev.getEntity().getKiller())+1, Stats.KILLS);
+				ev.getEntity().getKiller().sendMessage(Language.getText(ev.getEntity().getKiller(), "PREFIX")+Language.getText(ev.getEntity().getKiller(), "PVP_KILL",new Object[]{v.getName(),elo} ));
+				updateFame(ev.getEntity().getKiller());
 			}else{
 				ELO.eloCHANGE(v, manager.getStatsManager());
 			}
-			updateFame(ev.getEntity().getKiller());
 			updateFame( ((Player)ev.getEntity()) );
 		}
 	}
@@ -291,7 +296,11 @@ public class kPvPListener extends kListener{
 	
 	public void updateFame(Player player){
 		for(Player p : UtilServer.getPlayers()){
-			UtilScoreboard.setScore(player.getScoreboard(), p.getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, p)));
+			if(player!=null){
+				if(player.getScoreboard()!=null){
+					UtilScoreboard.setScore(player.getScoreboard(), p.getName(), DisplaySlot.BELOW_NAME, UtilNumber.toInt(getManager().getStatsManager().getDouble(Stats.ELO, p)));
+				}
+			}
 		}
 	}
 	
@@ -331,7 +340,7 @@ public class kPvPListener extends kListener{
 	public void Updater(UpdateEvent ev){
 		if(ev.getType()==UpdateType.MIN_08){
 			for(Player p : UtilServer.getPlayers())setHologramm(p);
-		}else if(ev.getType()==UpdateType.MIN_16){
+			
 			for(Player p : UtilServer.getPlayers()){
 				ranking_day.clear(p);
 				ranking_week.clear(p);

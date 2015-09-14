@@ -32,13 +32,13 @@ public class CommandStats implements CommandExecutor{
 	public CommandStats(GildenManager gildenmanager,StatsManager statsmanager){
 		this.gildenManager=gildenmanager;
 		this.statsManager=statsmanager;
-		this.ranking_day=new Ranking(statsManager, Stats.ELO, TimeSpan.DAY, 10);
+		this.ranking_day=new Ranking(statsManager, Stats.TIME_ELO, TimeSpan.DAY, 10);
 		this.statsManager.addRanking(ranking_day);
-		this.ranking_week=new Ranking(statsManager, Stats.ELO, TimeSpan.DAY*7, 10);
+		this.ranking_week=new Ranking(statsManager, Stats.TIME_ELO, TimeSpan.DAY*7, 10);
 		this.statsManager.addRanking(ranking_week);
-		this.ranking_month=new Ranking(statsManager, Stats.ELO, TimeSpan.DAY*30, 10);
+		this.ranking_month=new Ranking(statsManager, Stats.TIME_ELO, TimeSpan.DAY*30, 10);
 		this.statsManager.addRanking(ranking_month);
-		this.ranking=new Ranking(statsManager, Stats.ELO, -1, 10);
+		this.ranking=new Ranking(statsManager, Stats.TIME_ELO, -1, 10);
 		this.statsManager.addRanking(ranking);
 	}
 

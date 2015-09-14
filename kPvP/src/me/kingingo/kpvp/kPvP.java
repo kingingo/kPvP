@@ -56,9 +56,11 @@ import me.kingingo.kcore.Command.Commands.CommandSpawnmob;
 import me.kingingo.kcore.Command.Commands.CommandTag;
 import me.kingingo.kcore.Command.Commands.CommandTreasureChest;
 import me.kingingo.kcore.Command.Commands.CommandWarp;
+import me.kingingo.kcore.Command.Commands.CommandWorkbench;
 import me.kingingo.kcore.Command.Commands.CommandXP;
 import me.kingingo.kcore.Command.Commands.CommandkSpawn;
 import me.kingingo.kcore.Enum.GameType;
+import me.kingingo.kcore.Enum.ServerType;
 import me.kingingo.kcore.Gilden.GildenManager;
 import me.kingingo.kcore.Gilden.GildenType;
 import me.kingingo.kcore.Hologram.Hologram;
@@ -192,7 +194,7 @@ public class kPvP extends JavaPlugin{
 		this.cmd.register(Commandifix.class, new Commandifix());
 		this.cmd.register(CommandgBroadcast.class, new CommandgBroadcast(packetManager));
 		this.cmd.register(CommandPermissionTest.class, new CommandPermissionTest(getPermManager()));
-		this.cmd.register(CommandMoney.class, new CommandMoney(getStatsManager()));
+		this.cmd.register(CommandMoney.class, new CommandMoney(getStatsManager(),ServerType.PVP));
 		this.cmd.register(CommandMsg.class, new CommandMsg());
 		this.cmd.register(CommandR.class, new CommandR(this));
 		this.cmd.register(CommandSocialspy.class, new CommandSocialspy(this));
@@ -228,6 +230,7 @@ public class kPvP extends JavaPlugin{
 		this.cmd.register(CommandGive.class, new CommandGive());
 		this.cmd.register(CommandExt.class, new CommandExt());
 		this.cmd.register(CommandHead.class, new CommandHead());
+		this.cmd.register(CommandWorkbench.class, new CommandWorkbench());
 		
 		this.Shop=new SignShop(this,statsManager);
 		new kPvPListener(this);

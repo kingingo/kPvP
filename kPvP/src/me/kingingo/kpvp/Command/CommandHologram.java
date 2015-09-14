@@ -134,6 +134,8 @@ public class CommandHologram implements CommandExecutor{
 					config.save();
 					setPlayer(p.getLocation());
 					p.sendMessage(Language.getText(p, "PREFIX")+"§a Das Player Stats Hologram wurde hier gesetzt!");
+				}else if(args[0].equalsIgnoreCase("c")){
+					
 				}
 			}
 		}
