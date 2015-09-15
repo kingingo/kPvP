@@ -215,8 +215,8 @@ public class kPvP extends JavaPlugin{
 		this.cmd.register(CommandSpawn.class, new CommandSpawn(getTeleport()));
 		this.cmd.register(CommandClearInventory.class, new CommandClearInventory());
 		this.cmd.register(CommandRenameItem.class, new CommandRenameItem());
-		this.cmd.register(CommandInvsee.class, new CommandInvsee(this));
-		this.cmd.register(CommandEnderchest.class, new CommandEnderchest(this));
+		this.cmd.register(CommandInvsee.class, new CommandInvsee(mysql));
+		this.cmd.register(CommandEnderchest.class, new CommandEnderchest(mysql));
 		this.cmd.register(CommandBroadcast.class, new CommandBroadcast());
 		this.cmd.register(CommandTppos.class, new CommandTppos());
 		this.cmd.register(CommandItem.class, new CommandItem());
