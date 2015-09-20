@@ -167,9 +167,9 @@ public class kPvP extends JavaPlugin{
 		this.neulingManager=new NeulingManager(this,cmd,20);
 		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,18);
 		this.aACHack=new AACHack("PVP",getMysql(), getPacketManager());
+		getAACHack().setAntiLogoutManager(getAntiManager());
 		this.userData=new UserDataConfig(this);
 		this.teleport=new TeleportManager(getCmd(), getPermManager(), 5);
-		getAACHack().setAntiLogoutManager(getAntiManager());
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
 		this.gildenManager=new GildenManager(mysql,GildenType.PVP,cmd,statsManager);
 		this.perkManager=new PerkManager(this,null,new Perk[]{new PerkArrowPotionEffect(),new PerkNoWaterdamage(),new PerkGoldenApple(),new PerkHat(),new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(cmd)});
