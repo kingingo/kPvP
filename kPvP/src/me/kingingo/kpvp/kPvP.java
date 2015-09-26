@@ -1,7 +1,6 @@
 package me.kingingo.kpvp;
 
 import lombok.Getter;
-import lombok.Setter;
 import me.kingingo.kcore.AACHack.AACHack;
 import me.kingingo.kcore.AntiLogout.AntiLogoutManager;
 import me.kingingo.kcore.AntiLogout.AntiLogoutType;
@@ -20,7 +19,6 @@ import me.kingingo.kcore.Command.Admin.CommandInvsee;
 import me.kingingo.kcore.Command.Admin.CommandItem;
 import me.kingingo.kcore.Command.Admin.CommandMore;
 import me.kingingo.kcore.Command.Admin.CommandPermissionTest;
-import me.kingingo.kcore.Command.Admin.CommandPermissionsExConverter;
 import me.kingingo.kcore.Command.Admin.CommandPvPMute;
 import me.kingingo.kcore.Command.Admin.CommandSocialspy;
 import me.kingingo.kcore.Command.Admin.CommandToggle;
@@ -59,11 +57,14 @@ import me.kingingo.kcore.Command.Commands.CommandWarp;
 import me.kingingo.kcore.Command.Commands.CommandWorkbench;
 import me.kingingo.kcore.Command.Commands.CommandXP;
 import me.kingingo.kcore.Command.Commands.CommandkSpawn;
+import me.kingingo.kcore.DeliveryPet.DeliveryObject;
+import me.kingingo.kcore.DeliveryPet.DeliveryPet;
 import me.kingingo.kcore.Enum.GameType;
 import me.kingingo.kcore.Enum.ServerType;
 import me.kingingo.kcore.Gilden.GildenManager;
 import me.kingingo.kcore.Gilden.GildenType;
 import me.kingingo.kcore.Hologram.Hologram;
+import me.kingingo.kcore.Inventory.Item.Click;
 import me.kingingo.kcore.JumpPad.CommandJump;
 import me.kingingo.kcore.Kit.Perk;
 import me.kingingo.kcore.Kit.PerkManager;
@@ -82,23 +83,25 @@ import me.kingingo.kcore.Kit.Perks.PerkNoHunger;
 import me.kingingo.kcore.Kit.Perks.PerkNoWaterdamage;
 import me.kingingo.kcore.Kit.Perks.PerkPotionClear;
 import me.kingingo.kcore.Kit.Perks.PerkRunner;
-import me.kingingo.kcore.Kit.Perks.PerkTNT;
-import me.kingingo.kcore.Kit.Perks.PerkWalkEffect;
 import me.kingingo.kcore.Language.Language;
 import me.kingingo.kcore.Listener.Chat.ChatListener;
 import me.kingingo.kcore.Listener.Command.ListenerCMD;
+import me.kingingo.kcore.Listener.EnderChest.EnderChestListener;
 import me.kingingo.kcore.Listener.Enderpearl.EnderpearlListener;
 import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Neuling.NeulingManager;
-import me.kingingo.kcore.Nick.NickManager;
 import me.kingingo.kcore.Packet.PacketManager;
 import me.kingingo.kcore.Permission.GroupTyp;
 import me.kingingo.kcore.Permission.PermissionManager;
+import me.kingingo.kcore.Permission.kPermission;
 import me.kingingo.kcore.SignShop.SignShop;
+import me.kingingo.kcore.StatsManager.Stats;
 import me.kingingo.kcore.StatsManager.StatsManager;
 import me.kingingo.kcore.TeleportManager.TeleportManager;
 import me.kingingo.kcore.Update.Updater;
 import me.kingingo.kcore.UserDataConfig.UserDataConfig;
+import me.kingingo.kcore.Util.TimeSpan;
+import me.kingingo.kcore.Util.UtilEvent.ActionType;
 import me.kingingo.kcore.Util.UtilException;
 import me.kingingo.kcore.Util.UtilServer;
 import me.kingingo.kcore.friend.FriendManager;
@@ -108,7 +111,9 @@ import me.kingingo.kpvp.Command.CommandStats;
 import me.kingingo.kpvp.Command.Commandifix;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class kPvP extends JavaPlugin{
@@ -232,6 +237,48 @@ public class kPvP extends JavaPlugin{
 		this.cmd.register(CommandHead.class, new CommandHead());
 		this.cmd.register(CommandWorkbench.class, new CommandWorkbench());
 		
+		UtilServer.createDeliveryPet(new DeliveryPet(null,new DeliveryObject[]{
+				new DeliveryObject(new String[]{"","§7Click for Vote!","","§eRewards:","§7   100 Coins"},kPermission.RANK_COINS_DAILY,false,10,"§aVote for EpicPvP",Material.PAPER,new Click(){
+
+					@Override
+					public void onClick(Player p, ActionType a,Object obj) {
+						p.closeInventory();
+						p.sendMessage(Language.getText(p,"PREFIX")+"§7-----------------------------------------");
+						p.sendMessage(Language.getText(p,"PREFIX")+" ");
+						p.sendMessage(Language.getText(p,"PREFIX")+"Vote Link:§a http://goo.gl/wxdAj4");
+						p.sendMessage(Language.getText(p,"PREFIX")+" ");
+						p.sendMessage(Language.getText(p,"PREFIX")+"§7-----------------------------------------");
+					}
+					
+				},-1),
+				new DeliveryObject(new String[]{"","§eRewards:","§7   100 Coins"},kPermission.RANK_COINS_DAILY,true,12,"§cRank Day Reward",Material.EMERALD,new Click(){
+
+					@Override
+					public void onClick(Player p, ActionType a,Object obj) {
+						getStatsManager().addInt(p, 100, Stats.MONEY);
+					}
+					
+				},TimeSpan.DAY),
+				new DeliveryObject(new String[]{"","§eRewards:","§7   1000 Coins"},kPermission.RANK_COINS_MONTH,true,14,"§cRank Month Reward",Material.EMERALD_BLOCK,new Click(){
+
+					@Override
+					public void onClick(Player p, ActionType a,Object obj) {
+						getStatsManager().addInt(p, 100, Stats.MONEY);
+					}
+					
+				},TimeSpan.DAY*30),
+				new DeliveryObject(new String[]{"","§eRewards:","§7   300 Coins"},null,true,16,"§cTwitter Reward",Material.getMaterial(351),4,new Click(){
+
+					@Override
+					public void onClick(Player p, ActionType a,Object obj) {
+						getStatsManager().addInt(p, 300, Stats.MONEY);
+					}
+					
+				},TimeSpan.DAY*7),
+		},"§bThe Delivery Jockey!",EntityType.CHICKEN,Bukkit.getWorld("world").getSpawnLocation(),ServerType.GAME,getHologram(),getMysql())
+		);
+		
+		new EnderChestListener(this.userData);
 		this.Shop=new SignShop(this,statsManager);
 		new kPvPListener(this);
 		new ListenerCMD(this);
