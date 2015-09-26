@@ -39,6 +39,9 @@ public class CommandHologram implements CommandExecutor{
 	@Setter
 	@Getter
 	private static Location player;
+	@Setter
+	@Getter
+	private static Location delivery;
 	
 	public CommandHologram(kPvP manager){
 		this.manager=manager;
@@ -46,7 +49,6 @@ public class CommandHologram implements CommandExecutor{
 		
 		if(config.getString("Hologram.today")!=null&&Bukkit.getWorld(config.getString("Hologram.today.world"))!=null){
 			if(config.isSet("Hologram.today")){
-				System.out.println("LOAD TODAY!!!!!!!!!!!!");
 				setToday(config.getLocation("Hologram.today"));
 			}else{
 				today=Bukkit.getWorld("world").getSpawnLocation();
@@ -84,6 +86,14 @@ public class CommandHologram implements CommandExecutor{
 				week=Bukkit.getWorld("world").getSpawnLocation();
 			}
 		}
+		
+		if(config.getString("DeliveryPet")!=null&&Bukkit.getWorld(config.getString("DeliveryPet.world"))!=null){
+			if(config.isSet("DeliveryPet")){
+				delivery=config.getLocation("DeliveryPet");
+			}else{
+				delivery=Bukkit.getWorld("world").getSpawnLocation();
+			}
+		}
 	}
 
 	@me.kingingo.kcore.Command.CommandHandler.Command(command = "setholo", sender = Sender.PLAYER)
@@ -96,6 +106,7 @@ public class CommandHologram implements CommandExecutor{
 				p.sendMessage(Language.getText(p, "PREFIX")+"/setholo month");
 				p.sendMessage(Language.getText(p, "PREFIX")+"/setholo total");
 				p.sendMessage(Language.getText(p, "PREFIX")+"/setholo player");
+				p.sendMessage(Language.getText(p, "PREFIX")+"/setholo delivery");
 			}else{
 				if(args[0].equalsIgnoreCase("today")){
 					config.setLocation("Hologram.today", p.getLocation());
@@ -134,8 +145,11 @@ public class CommandHologram implements CommandExecutor{
 					config.save();
 					setPlayer(p.getLocation());
 					p.sendMessage(Language.getText(p, "PREFIX")+"§a Das Player Stats Hologram wurde hier gesetzt!");
-				}else if(args[0].equalsIgnoreCase("c")){
-					
+				}else if(args[0].equalsIgnoreCase("delivery")){
+					config.setLocation("DeliveryPet", p.getLocation());
+					config.save();
+					setDelivery(p.getLocation());
+					p.sendMessage(Language.getText(p, "PREFIX")+"§a Die Location für das DeliveryPet wurde gesetzt!");
 				}
 			}
 		}

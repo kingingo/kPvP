@@ -12,6 +12,7 @@ import me.kingingo.kcore.Language.Language;
 import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Packet.Events.PacketReceiveEvent;
 import me.kingingo.kcore.Packet.Packets.PLAYER_VOTE;
+import me.kingingo.kcore.Packet.Packets.TWITTER_PLAYER_FOLLOW;
 import me.kingingo.kcore.Packet.Packets.WORLD_CHANGE_DATA;
 import me.kingingo.kcore.Permission.kPermission;
 import me.kingingo.kcore.Permission.Event.PlayerLoadPermissionEvent;
@@ -99,11 +100,30 @@ public class kPvPListener extends kListener{
 			
 			if(UtilPlayer.isOnline(vote.getPlayer())){
 				player=Bukkit.getPlayer(vote.getPlayer());
-				manager.getStatsManager().setDouble(player, manager.getStatsManager().getDouble(Stats.MONEY, player)+500, Stats.MONEY);
+				if(UtilServer.getDeliveryPet()!=null){
+					UtilServer.getDeliveryPet().deliveryUSE(player, Material.PAPER, true);
+				}
+				manager.getStatsManager().setDouble(player, manager.getStatsManager().getDouble(Stats.MONEY, player)+200, Stats.MONEY);
 				UtilInv.repairInventory(player, true);
 				player.sendMessage(Language.getText(player, "PREFIX")+Language.getText(player, "VOTE_THX"));
 			}else{
 				vote_list.add(vote.getUuid());
+			}
+		}else if(ev.getPacket() instanceof TWITTER_PLAYER_FOLLOW){
+			TWITTER_PLAYER_FOLLOW tw = (TWITTER_PLAYER_FOLLOW)ev.getPacket();
+			
+			if(UtilPlayer.isOnline(tw.getPlayer())){
+				Player p = Bukkit.getPlayer(tw.getPlayer());
+				if(!tw.isFollow()){
+					getManager().getMysql().Update("DELETE FROM BG_TWITTER WHERE uuid='" + UtilPlayer.getRealUUID(p) + "'");
+					p.sendMessage(Language.getText(p,"PREFIX")+Language.getText(p, "TWITTER_FOLLOW_N"));
+					p.sendMessage(Language.getText(p,"PREFIX")+Language.getText(p, "TWITTER_REMOVE"));
+				}else{
+					UtilServer.getDeliveryPet().deliveryBlock(p, Material.getMaterial(351));
+					getManager().getStatsManager().addDouble(p, 300, Stats.MONEY);
+					p.setLevel(p.getLevel()+15);
+					p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","300"}));
+				}
 			}
 		}
 	}
@@ -329,8 +349,11 @@ public class kPvPListener extends kListener{
 		 ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
 		 
 		 if(vote_list.contains( UtilPlayer.getRealUUID(ev.getPlayer()) )){
+			 if(UtilServer.getDeliveryPet()!=null){
+				 UtilServer.getDeliveryPet().deliveryUSE(ev.getPlayer(), Material.PAPER, true);
+			 }
 			 vote_list.remove(UtilPlayer.getRealUUID(ev.getPlayer()));
-			 manager.getStatsManager().setDouble(ev.getPlayer(), manager.getStatsManager().getDouble(Stats.MONEY, ev.getPlayer())+500, Stats.MONEY);
+			 manager.getStatsManager().setDouble(ev.getPlayer(), manager.getStatsManager().getDouble(Stats.MONEY, ev.getPlayer())+200, Stats.MONEY);
 			 UtilInv.repairInventory(ev.getPlayer(), true);
 			 ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "VOTE_THX"));
 		 }
