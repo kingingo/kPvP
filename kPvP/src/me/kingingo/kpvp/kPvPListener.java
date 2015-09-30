@@ -18,7 +18,6 @@ import me.kingingo.kcore.Permission.kPermission;
 import me.kingingo.kcore.Permission.Event.PlayerLoadPermissionEvent;
 import me.kingingo.kcore.StatsManager.Stats;
 import me.kingingo.kcore.StatsManager.Event.PlayerStatsCreateEvent;
-import me.kingingo.kcore.StatsManager.Event.RankingUpdateEvent;
 import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;
 import me.kingingo.kcore.Util.RestartScheduler;
@@ -54,7 +53,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -305,12 +303,17 @@ public class kPvPListener extends kListener{
 	}
 	
 	@EventHandler
-	public void Quit(PlayerQuitEvent ev){
-		ev.setQuitMessage(null);
+	public void SendHologram(PlayerQuitEvent ev){
 		if(holo.containsKey(ev.getPlayer())){
 			holo.get(ev.getPlayer()).clear(ev.getPlayer());
+			holo.get(ev.getPlayer()).remove();
 			holo.remove(ev.getPlayer());
 		}
+	}
+	
+	@EventHandler
+	public void saveStats(PlayerQuitEvent ev){
+		ev.setQuitMessage(null);
 		getManager().getStatsManager().SaveAllPlayerData(ev.getPlayer());
 	}
 	
@@ -337,15 +340,20 @@ public class kPvPListener extends kListener{
 		updateFame(ev.getPlayer());
 	}
 	
+
 	@EventHandler
-	public void Join(PlayerJoinEvent ev){
-		ev.setJoinMessage(null);
+	public void SendRanking(PlayerJoinEvent ev){
 		setHologramm(ev.getPlayer());
 		this.ranking_day.sendToPlayer(ev.getPlayer());
 		this.ranking_week.sendToPlayer(ev.getPlayer());
 		this.ranking_total.sendToPlayer(ev.getPlayer());
 		this.ranking_month.sendToPlayer(ev.getPlayer());
 		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEpicPvP§8.§eeu §8| §aPvP Server", "§aTeamSpeak: §7ts.EpicPvP.eu §8| §eWebsite: §7EpicPvP.eu");
+	}
+	
+	@EventHandler
+	public void Join(PlayerJoinEvent ev){
+		ev.setJoinMessage(null);
 		 ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
 		 
 		 if(vote_list.contains( UtilPlayer.getRealUUID(ev.getPlayer()) )){
@@ -385,19 +393,6 @@ public class kPvPListener extends kListener{
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onChunkLoad(ChunkLoadEvent event) {
-		if(ranking_day.getLocation().getChunk().equals(event.getChunk())){
-			for(Player p : UtilServer.getPlayers()){
-				this.ranking_day.sendToPlayer(p);
-				this.ranking_week.sendToPlayer(p);
-				this.ranking_month.sendToPlayer(p);
-				this.ranking_total.sendToPlayer(p);
-				this.holo.get(p).sendToPlayer(p);
-			}
-		}
-    }
-	
 	@EventHandler
 	public void Rüstung(PlayerInteractEvent ev){
 		if(UtilEvent.isAction(ev, ActionType.BLOCK)){
@@ -413,6 +408,7 @@ public class kPvPListener extends kListener{
 		getManager().getStatsManager().ExistPlayer(p);
 		if(holo.containsKey(p)){
 			holo.get(p).clear(p);
+			holo.get(p).remove();
 			holo.remove(p);
 		}
 		

@@ -55,7 +55,6 @@ import me.kingingo.kcore.Command.Commands.CommandTag;
 import me.kingingo.kcore.Command.Commands.CommandTreasureChest;
 import me.kingingo.kcore.Command.Commands.CommandWarp;
 import me.kingingo.kcore.Command.Commands.CommandWorkbench;
-import me.kingingo.kcore.Command.Commands.CommandXP;
 import me.kingingo.kcore.Command.Commands.CommandkSpawn;
 import me.kingingo.kcore.DeliveryPet.DeliveryObject;
 import me.kingingo.kcore.DeliveryPet.DeliveryPet;
@@ -173,9 +172,12 @@ public class kPvP extends JavaPlugin{
 		this.hologram=new Hologram(this);
 		this.friendManager=new FriendManager(this,mysql,cmd);
 		this.neulingManager=new NeulingManager(this,cmd,20);
-		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,40);
-		this.aACHack=new AACHack("PVP",getMysql(), getPacketManager());
-		getAACHack().setAntiLogoutManager(getAntiManager());
+		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,20);
+		if(Bukkit.getPluginManager().getPlugin("AAC")!=null){
+			this.aACHack=new AACHack("PVP",getMysql(), getPacketManager());
+			getAACHack().setAntiLogoutManager(getAntiManager());
+			System.err.println("[PvP]: AACHack Manager was enabled!");
+		}
 		this.userData=new UserDataConfig(this);
 		this.teleport=new TeleportManager(getCmd(), getPermManager(), 5);
 		this.statsManager=new StatsManager(this,mysql,GameType.PVP);
@@ -183,7 +185,6 @@ public class kPvP extends JavaPlugin{
 		this.perkManager=new PerkManager(this,null,new Perk[]{new PerkArrowPotionEffect(),new PerkNoWaterdamage(),new PerkGoldenApple(),new PerkHat(),new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(cmd)});
 		new PerkListener(perkManager);
 		
-		this.cmd.register(CommandTreasureChest.class, new CommandTreasureChest(this));
 		this.cmd.register(CommandFly.class, new CommandFly(this));
 		this.cmd.register(CommandPerk.class, new CommandPerk(perkManager));
 		this.cmd.register(CommandCMDMute.class, new CommandCMDMute(this));	
