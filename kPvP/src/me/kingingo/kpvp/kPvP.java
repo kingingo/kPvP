@@ -52,9 +52,9 @@ import me.kingingo.kcore.Command.Commands.CommandSpawn;
 import me.kingingo.kcore.Command.Commands.CommandSpawner;
 import me.kingingo.kcore.Command.Commands.CommandSpawnmob;
 import me.kingingo.kcore.Command.Commands.CommandTag;
-import me.kingingo.kcore.Command.Commands.CommandTreasureChest;
 import me.kingingo.kcore.Command.Commands.CommandWarp;
 import me.kingingo.kcore.Command.Commands.CommandWorkbench;
+import me.kingingo.kcore.Command.Commands.CommandXP;
 import me.kingingo.kcore.Command.Commands.CommandkSpawn;
 import me.kingingo.kcore.DeliveryPet.DeliveryObject;
 import me.kingingo.kcore.DeliveryPet.DeliveryPet;
@@ -172,7 +172,7 @@ public class kPvP extends JavaPlugin{
 		this.hologram=new Hologram(this);
 		this.friendManager=new FriendManager(this,mysql,cmd);
 		this.neulingManager=new NeulingManager(this,cmd,20);
-		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,20);
+		this.antiManager=new AntiLogoutManager(this,AntiLogoutType.KILL,40);
 		if(Bukkit.getPluginManager().getPlugin("AAC")!=null){
 			this.aACHack=new AACHack("PVP",getMysql(), getPacketManager());
 			getAACHack().setAntiLogoutManager(getAntiManager());
@@ -197,7 +197,7 @@ public class kPvP extends JavaPlugin{
 		this.cmd.register(CommandURang.class, new CommandURang(permManager,mysql));
 		this.cmd.register(CommandUnBan.class, new CommandUnBan(mysql));
 		this.cmd.register(CommandBanned.class, new CommandBanned(mysql));
-//		this.cmd.register(CommandXP.class, new CommandXP());
+		this.cmd.register(CommandXP.class, new CommandXP());
 		this.cmd.register(CommandGiveAll.class, new CommandGiveAll());
 		this.cmd.register(CommandGroup.class, new CommandGroup(permManager));
 		this.cmd.register(Commandifix.class, new Commandifix());

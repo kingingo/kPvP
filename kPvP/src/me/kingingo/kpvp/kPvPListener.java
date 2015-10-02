@@ -340,15 +340,18 @@ public class kPvPListener extends kListener{
 		updateFame(ev.getPlayer());
 	}
 	
+	@EventHandler
+	public void SendHolo(PlayerJoinEvent ev){
+		setHologramm(ev.getPlayer());
+		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEpicPvP§8.§eeu §8| §aPvP Server", "§aTeamSpeak: §7ts.EpicPvP.eu §8| §eWebsite: §7EpicPvP.eu");
+	}
 
 	@EventHandler
 	public void SendRanking(PlayerJoinEvent ev){
-		setHologramm(ev.getPlayer());
 		this.ranking_day.sendToPlayer(ev.getPlayer());
 		this.ranking_week.sendToPlayer(ev.getPlayer());
 		this.ranking_total.sendToPlayer(ev.getPlayer());
 		this.ranking_month.sendToPlayer(ev.getPlayer());
-		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEpicPvP§8.§eeu §8| §aPvP Server", "§aTeamSpeak: §7ts.EpicPvP.eu §8| §eWebsite: §7EpicPvP.eu");
 	}
 	
 	@EventHandler
