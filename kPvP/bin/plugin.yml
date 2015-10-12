@@ -1,0 +1,5 @@
+name: kPvP
+author: KingIngo
+version: 1.8
+main: me.kingingo.kpvp.kPvP
+depend: [kCore]
