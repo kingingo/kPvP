@@ -63,11 +63,6 @@ public class kPvP extends JavaPlugin{
 		this.hologram=new Hologram(this);
 		this.userData=new UserDataConfig(this);
 		
-		if(Bukkit.getPluginManager().getPlugin("AAC")!=null){
-			this.aACHack=new AACHack("PVP",getMysql(), getPacketManager());
-			System.err.println("[PvP]: AACHack Manager was enabled!");
-		}
-		
 		switch(getConfig().getString("Config.Mode")){
 		case "Event":
 			
