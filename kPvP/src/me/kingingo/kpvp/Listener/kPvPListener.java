@@ -7,6 +7,7 @@ import java.util.UUID;
 import lombok.Getter;
 import me.kingingo.kcore.AntiLogout.Events.AntiLogoutAddPlayerEvent;
 import me.kingingo.kcore.AntiLogout.Events.AntiLogoutDelPlayerEvent;
+import me.kingingo.kcore.Command.Admin.CommandLocations;
 import me.kingingo.kcore.ELO.ELO;
 import me.kingingo.kcore.Gilden.Events.GildenPlayerTeleportEvent;
 import me.kingingo.kcore.Hologram.nametags.NameTagMessage;
@@ -28,14 +29,12 @@ import me.kingingo.kcore.Util.UtilNumber;
 import me.kingingo.kcore.Util.UtilPlayer;
 import me.kingingo.kcore.Util.UtilScoreboard;
 import me.kingingo.kcore.Util.UtilServer;
-import me.kingingo.kpvp.Command.CommandHologram;
 import me.kingingo.kpvp.Command.CommandStats;
 import me.kingingo.kpvp.Manager.kPvPManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -61,10 +60,10 @@ public class kPvPListener extends kListener{
 	public kPvPListener(kPvPManager manager){
 		super(manager.getPvP(),"[kPvPListener]");
 		this.manager=manager;
-		this.ranking_day=manager.getPvP().getHologram().sendText(CommandHologram.getToday(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
-		this.ranking_week=manager.getPvP().getHologram().sendText(CommandHologram.getWeek(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
-		this.ranking_month=manager.getPvP().getHologram().sendText(CommandHologram.getMonth(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
-		this.ranking_total=manager.getPvP().getHologram().sendText(CommandHologram.getTotal(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
+		this.ranking_day=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Today"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
+		this.ranking_week=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Week"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
+		this.ranking_month=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Month"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
+		this.ranking_total=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Total"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
 	}
 	
 	Player player;
@@ -273,10 +272,10 @@ public class kPvPListener extends kListener{
 			this.ranking_month.remove();
 			this.ranking_total.remove();
 
-			this.ranking_day=manager.getPvP().getHologram().sendText(CommandHologram.getToday(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
-			this.ranking_week=manager.getPvP().getHologram().sendText(CommandHologram.getWeek(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
-			this.ranking_month=manager.getPvP().getHologram().sendText(CommandHologram.getMonth(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
-			this.ranking_total=manager.getPvP().getHologram().sendText(CommandHologram.getTotal(), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
+			this.ranking_day=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Today"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
+			this.ranking_week=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Week"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
+			this.ranking_month=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Month"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
+			this.ranking_total=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Total"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
 		}
 	}
 	
@@ -287,7 +286,7 @@ public class kPvPListener extends kListener{
 			holo.remove(p);
 		}
 		
-		holo.put(p, getManager().getPvP().getHologram().sendText(p, CommandHologram.getPlayer(), new String[]{
+		holo.put(p, getManager().getPvP().getHologram().sendText(p, CommandLocations.getLocation("Player_Stats"), new String[]{
 			"§6Name§a "+p.getName(),
 			"§6Gilde§b "+getManager().getGildenManager().getPlayerGilde(p),
 			"§6Ranking§b "+getManager().getStatsManager().getRank(Stats.KILLS, p),

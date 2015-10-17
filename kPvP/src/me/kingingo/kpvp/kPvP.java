@@ -61,6 +61,7 @@ public class kPvP extends JavaPlugin{
 		this.packetManager=new PacketManager(this,client);
 		this.permManager=new PermissionManager(this,GroupTyp.PVP,packetManager,mysql);
 		this.hologram=new Hologram(this);
+		this.hologram.RemoveText();
 		this.userData=new UserDataConfig(this);
 		
 		switch(getConfig().getString("Config.Mode")){
@@ -82,7 +83,6 @@ public class kPvP extends JavaPlugin{
 	}
 	
 	public void onDisable(){
-		getHologram().RemoveText();
 		this.manager.onDisable();
 		this.mysql.close();
 		this.client.disconnect(false);

@@ -5,6 +5,7 @@ import me.kingingo.kcore.AntiLogout.AntiLogoutManager;
 import me.kingingo.kcore.AntiLogout.AntiLogoutType;
 import me.kingingo.kcore.Command.Admin.CommandBanned;
 import me.kingingo.kcore.Command.Admin.CommandGroup;
+import me.kingingo.kcore.Command.Admin.CommandLocations;
 import me.kingingo.kcore.Command.Admin.CommandPermissionTest;
 import me.kingingo.kcore.Command.Admin.CommandURang;
 import me.kingingo.kcore.Command.Admin.CommandUnBan;
@@ -69,7 +70,6 @@ import me.kingingo.kcore.Util.UtilPlayer;
 import me.kingingo.kcore.Util.UtilServer;
 import me.kingingo.kcore.friend.FriendManager;
 import me.kingingo.kpvp.kPvP;
-import me.kingingo.kpvp.Command.CommandHologram;
 import me.kingingo.kpvp.Command.CommandStats;
 import me.kingingo.kpvp.Command.Commandifix;
 import me.kingingo.kpvp.Listener.PerkListener;
@@ -127,7 +127,7 @@ public class kPvPManager extends IPvPManager{
 		getPvP().getCmd().register(CommandPet.class, new CommandPet(petHandler));
 		getPvP().getCmd().register(CommandHandel.class, new CommandHandel(getPvP()));
 		getPvP().getCmd().register(CommandPerk.class, new CommandPerk(perkManager,getBase()));
-		getPvP().getCmd().register(CommandHologram.class, new CommandHologram(this));
+		getPvP().getCmd().register(CommandLocations.class, new CommandLocations(PvP));
 		getPvP().getCmd().register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
 		getPvP().getCmd().register(CommandURang.class, new CommandURang(getPvP().getPermManager(),getPvP().getMysql()));
 		getPvP().getCmd().register(CommandUnBan.class, new CommandUnBan(getPvP().getMysql()));
@@ -199,7 +199,7 @@ public class kPvPManager extends IPvPManager{
 					}
 					
 				},TimeSpan.DAY*7),
-		},"§bThe Delivery Jockey!",EntityType.CHICKEN,CommandHologram.getDelivery(),ServerType.PVP,getPvP().getHologram(),getPvP().getMysql())
+		},"§bThe Delivery Jockey!",EntityType.CHICKEN,CommandLocations.getLocation("DeliveryPet"),ServerType.PVP,getPvP().getHologram(),getPvP().getMysql())
 		);
 		
 
