@@ -11,6 +11,7 @@ import me.kingingo.kcore.Command.Admin.CommandURang;
 import me.kingingo.kcore.Command.Admin.CommandUnBan;
 import me.kingingo.kcore.Command.Commands.CommandDelHome;
 import me.kingingo.kcore.Command.Commands.CommandExt;
+import me.kingingo.kcore.Command.Commands.CommandFill;
 import me.kingingo.kcore.Command.Commands.CommandHandel;
 import me.kingingo.kcore.Command.Commands.CommandHead;
 import me.kingingo.kcore.Command.Commands.CommandHeal;
@@ -124,6 +125,7 @@ public class kPvPManager extends IPvPManager{
 			getPvP().getAACHack().setAntiLogoutManager(getAntiManager());
 		}
 
+		getPvP().getCmd().register(CommandFill.class, new CommandFill());
 		getPvP().getCmd().register(CommandPet.class, new CommandPet(petHandler));
 		getPvP().getCmd().register(CommandHandel.class, new CommandHandel(getPvP()));
 		getPvP().getCmd().register(CommandPerk.class, new CommandPerk(perkManager,getBase()));
