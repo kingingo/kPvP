@@ -148,7 +148,7 @@ public class kPvPManager extends IPvPManager{
 		getPvP().getCmd().register(CommandSonne.class, new CommandSonne());
 		getPvP().getCmd().register(CommandDelHome.class, new CommandDelHome(getPvP().getUserData()));
 		getPvP().getCmd().register(CommandRenameItem.class, new CommandRenameItem());
-		getPvP().getCmd().register(CommandkSpawn.class, new CommandkSpawn());
+		getPvP().getCmd().register(CommandkSpawn.class, new CommandkSpawn(getAntiManager()));
 		getPvP().getCmd().register(CommandExt.class, new CommandExt());
 		getPvP().getCmd().register(CommandHead.class, new CommandHead());
 		getPvP().getCmd().register(CommandWorkbench.class, new CommandWorkbench());
