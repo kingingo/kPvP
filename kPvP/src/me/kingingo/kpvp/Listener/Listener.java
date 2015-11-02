@@ -125,6 +125,7 @@ public class Listener extends kListener{
 	
 	public void restart(){
 		RestartScheduler restart = new RestartScheduler(manager.getPvP());
+		if(manager instanceof kPvPManager)restart.setGems(((kPvPManager)manager).getGems().getGems());
 		if(manager instanceof kPvPManager)restart.setAnti(((kPvPManager)manager).getAntiManager());
 		if(manager instanceof kPvPManager)restart.setGilden(((kPvPManager)manager).getGildenManager());
 		if(manager instanceof kPvPManager)restart.setStats(((kPvPManager)manager).getStatsManager());
