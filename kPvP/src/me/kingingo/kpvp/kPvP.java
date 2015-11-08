@@ -7,6 +7,7 @@ import me.kingingo.kcore.Command.CommandHandler;
 import me.kingingo.kcore.GemsShop.GemsShop;
 import me.kingingo.kcore.Hologram.Hologram;
 import me.kingingo.kcore.Language.Language;
+import me.kingingo.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
 import me.kingingo.kcore.Listener.Command.ListenerCMD;
 import me.kingingo.kcore.MySQL.MySQL;
 import me.kingingo.kcore.Packet.PacketManager;
@@ -73,6 +74,7 @@ public class kPvP extends JavaPlugin{
 			break;
 		}
 
+		new BungeeCordFirewallListener(mysql, "pvp");
 		new Listener(getManager());
 		new MemoryFix(this);
 		new ListenerCMD(this);
