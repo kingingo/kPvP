@@ -4,7 +4,6 @@ import lombok.Getter;
 import me.kingingo.kcore.AACHack.AACHack;
 import me.kingingo.kcore.Client.Client;
 import me.kingingo.kcore.Command.CommandHandler;
-import me.kingingo.kcore.GemsShop.GemsShop;
 import me.kingingo.kcore.Hologram.Hologram;
 import me.kingingo.kcore.Language.Language;
 import me.kingingo.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
@@ -19,7 +18,6 @@ import me.kingingo.kcore.Util.UtilException;
 import me.kingingo.kcore.Util.UtilServer;
 import me.kingingo.kcore.memory.MemoryFix;
 import me.kingingo.kpvp.Listener.Listener;
-import me.kingingo.kpvp.Manager.IPvPManager;
 import me.kingingo.kpvp.Manager.kPvPManager;
 
 import org.bukkit.Bukkit;
@@ -48,7 +46,7 @@ public class kPvP extends JavaPlugin{
 	@Getter
 	private Hologram hologram;
 	@Getter
-	private IPvPManager manager;
+	private kPvPManager manager;
 	
 	public void onEnable(){
 		try{
@@ -64,15 +62,7 @@ public class kPvP extends JavaPlugin{
 		this.hologram=new Hologram(this);
 		this.hologram.RemoveText();
 		this.userData=new UserDataConfig(this);
-		
-		switch(getConfig().getString("Config.Mode")){
-		case "Event":
-			
-			break;
-		default:
-			this.manager=new kPvPManager(this);
-			break;
-		}
+		this.manager=new kPvPManager(this);
 
 		new BungeeCordFirewallListener(mysql, "pvp");
 		new Listener(getManager());
@@ -93,7 +83,6 @@ public class kPvP extends JavaPlugin{
 	}
 	
 	public void loadConfig(){
-		getConfig().addDefault("Config.Mode", "Server");
 		getConfig().addDefault("Config.MySQL.Host", "NONE");
 	    getConfig().addDefault("Config.MySQL.DB", "NONE");
 	    getConfig().addDefault("Config.MySQL.User", "NONE");

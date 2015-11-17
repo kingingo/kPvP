@@ -3,7 +3,6 @@ package me.kingingo.kpvp.Listener;
 import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Permission.kPermission;
 import me.kingingo.kcore.Util.RestartScheduler;
-import me.kingingo.kpvp.Manager.IPvPManager;
 import me.kingingo.kpvp.Manager.kPvPManager;
 
 import org.bukkit.Material;
@@ -24,9 +23,9 @@ import org.bukkit.potion.PotionEffect;
 
 public class Listener extends kListener{
 
-	private IPvPManager manager;
+	private kPvPManager manager;
 	
-	public Listener(IPvPManager manager) {
+	public Listener(kPvPManager manager) {
 		super(manager.getPvP(), "Listener");
 		this.manager=manager;
 	}
@@ -125,10 +124,10 @@ public class Listener extends kListener{
 	
 	public void restart(){
 		RestartScheduler restart = new RestartScheduler(manager.getPvP());
-		if(manager instanceof kPvPManager)restart.setGems(((kPvPManager)manager).getGems().getGems());
-		if(manager instanceof kPvPManager)restart.setAnti(((kPvPManager)manager).getAntiManager());
-		if(manager instanceof kPvPManager)restart.setGilden(((kPvPManager)manager).getGildenManager());
-		if(manager instanceof kPvPManager)restart.setStats(((kPvPManager)manager).getStatsManager());
+		restart.setGems(((kPvPManager)manager).getGems().getGems());
+		restart.setAnti(((kPvPManager)manager).getAntiManager());
+		restart.setGilden(((kPvPManager)manager).getGildenManager());
+		restart.setStats(((kPvPManager)manager).getStatsManager());
 		restart.start();
 	}
 	
