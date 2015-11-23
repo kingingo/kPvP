@@ -115,7 +115,7 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void playerTeleport(PlayerTeleportEvent ev){
 		if(!getManager().getAntiManager().is(ev.getPlayer())){
-			ev.getPlayer().sendMessage(Language.getText(player, "PREFIX")+Language.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT_CMD"));
+			ev.getPlayer().sendMessage(Language.getText(player, "PREFIX")+Language.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT"));
 			ev.setCancelled(true);
 		}
 	}
@@ -123,7 +123,7 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void GildeHome(GildenPlayerTeleportEvent ev){
 		if(!getManager().getAntiManager().is(ev.getPlayer())){
-			ev.getPlayer().sendMessage(Language.getText(player, "PREFIX")+Language.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT_CMD"));
+			ev.getPlayer().sendMessage(Language.getText(player, "PREFIX")+Language.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT_CMD","/gilde home"));
 			ev.setCancelled(true);
 		}
 	}
