@@ -47,6 +47,7 @@ import me.kingingo.kcore.Command.Commands.CommandMoney;
 import me.kingingo.kcore.Command.Commands.CommandMsg;
 import me.kingingo.kcore.Command.Commands.CommandNacht;
 import me.kingingo.kcore.Command.Commands.CommandNear;
+import me.kingingo.kcore.Command.Commands.CommandPotion;
 import me.kingingo.kcore.Command.Commands.CommandR;
 import me.kingingo.kcore.Command.Commands.CommandRemoveEnchantment;
 import me.kingingo.kcore.Command.Commands.CommandRenameItem;
@@ -232,6 +233,7 @@ public class kPvPManager{
 		getPvP().getCmd().register(CommandNear.class, new CommandNear());
 		getPvP().getCmd().register(CommandRemoveEnchantment.class, new CommandRemoveEnchantment());
 		getPvP().getCmd().register(CommandEnchantmentTable.class, new CommandEnchantmentTable());
+		getPvP().getCmd().register(CommandPotion.class, new CommandPotion(getPvP().getPermManager()));
 		
 		UtilServer.createDeliveryPet(new DeliveryPet(getBase(),null,new DeliveryObject[]{
 			new DeliveryObject(new String[]{"","§7Click for Vote!","","§ePvP Rewards:","§7   200 Epics","§7   1x Inventory Repair","","§eGame Rewards:","§7   25 Gems","§7   100 Coins","","§eSkyBlock Rewards:","§7   200 Epics","§7   2x Diamonds","§7   2x Iron Ingot","§7   2x Gold Ingot"},kPermission.DELIVERY_PET_VOTE,false,28,"§aVote for EpicPvP",Material.PAPER,Material.REDSTONE_BLOCK,new Click(){
