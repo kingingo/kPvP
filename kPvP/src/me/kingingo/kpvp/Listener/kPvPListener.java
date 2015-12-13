@@ -33,7 +33,6 @@ import me.kingingo.kpvp.Command.CommandStats;
 import me.kingingo.kpvp.Manager.kPvPManager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
