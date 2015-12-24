@@ -229,7 +229,7 @@ public class kPvPManager{
 		getPvP().getCmd().register(CommandHead.class, new CommandHead());
 		getPvP().getCmd().register(CommandWorkbench.class, new CommandWorkbench());
 		getPvP().getCmd().register(CommandSuffix.class, new CommandSuffix(getPvP().getUserData()));
-		getPvP().getCmd().register(CommandAmboss.class, new CommandAmboss());
+//		getPvP().getCmd().register(CommandAmboss.class, new CommandAmboss());
 		getPvP().getCmd().register(CommandNear.class, new CommandNear());
 		getPvP().getCmd().register(CommandRemoveEnchantment.class, new CommandRemoveEnchantment());
 		getPvP().getCmd().register(CommandEnchantmentTable.class, new CommandEnchantmentTable());
