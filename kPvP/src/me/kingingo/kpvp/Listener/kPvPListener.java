@@ -202,7 +202,8 @@ public class kPvPListener extends kListener{
 	
 	@EventHandler
 	public void AddBoard(PlayerSetScoreboardEvent ev){
-		UtilPlayer.setScoreboard(ev.getPlayer(), getManager().getGems().getGems());
+		UtilPlayer.setScoreboard(ev.getPlayer(), 
+				UtilServer.getGemsShop().getGems());
 	}
 	
 	@EventHandler

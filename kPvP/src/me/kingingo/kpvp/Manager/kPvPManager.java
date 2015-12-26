@@ -136,8 +136,6 @@ public class kPvPManager{
 	@Getter
 	private StatsManager statsManager;
 	@Getter
-	private GemsShop gems;
-	@Getter
 	private PetManager petManager;
 	@Getter
 	private InventoryBase base;
@@ -161,7 +159,7 @@ public class kPvPManager{
 		this.neulingManager=new NeulingManager(getPvP(),getPvP().getCmd(),20);
 		this.antiManager=new AntiLogoutManager(getPvP(),AntiLogoutType.KILL,40);
 		this.Shop=new SignShop(getPvP(),getPvP().getCmd(),getStatsManager());
-		this.gems=new GemsShop(PvP.getHologram(),PvP.getCmd(), getBase(),PvP.getPermManager(), ServerType.PVP);
+		UtilServer.createGemsShop(new GemsShop(PvP.getHologram(),PvP.getCmd(), getBase(),PvP.getPermManager(), ServerType.PVP));
 		this.petHandler = new PlayerPetHandler(ServerType.PVP, getPetManager(), getBase(), PvP.getPermManager());
 		
 		if(getPvP().getAACHack()!=null){
@@ -324,7 +322,7 @@ public class kPvPManager{
 	}
 	
 	public void onDisable(){
-		getGems().onDisable();
+		UtilServer.getGemsShop().onDisable();
 		if(UtilServer.getDeliveryPet()!=null){
 			UtilServer.getDeliveryPet().onDisable();
 		}

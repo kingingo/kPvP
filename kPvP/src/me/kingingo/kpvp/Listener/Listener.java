@@ -3,6 +3,7 @@ package me.kingingo.kpvp.Listener;
 import me.kingingo.kcore.Listener.kListener;
 import me.kingingo.kcore.Permission.kPermission;
 import me.kingingo.kcore.Util.RestartScheduler;
+import me.kingingo.kcore.Util.UtilServer;
 import me.kingingo.kpvp.Manager.kPvPManager;
 
 import org.bukkit.Material;
@@ -124,7 +125,7 @@ public class Listener extends kListener{
 	
 	public void restart(){
 		RestartScheduler restart = new RestartScheduler(manager.getPvP());
-		restart.setGems(((kPvPManager)manager).getGems().getGems());
+		restart.setGems(UtilServer.getGemsShop().getGems());
 		restart.setAnti(((kPvPManager)manager).getAntiManager());
 		restart.setGilden(((kPvPManager)manager).getGildenManager());
 		restart.setStats(((kPvPManager)manager).getStatsManager());
