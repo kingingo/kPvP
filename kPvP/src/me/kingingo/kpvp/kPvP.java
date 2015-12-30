@@ -55,7 +55,7 @@ public class kPvP extends JavaPlugin{
 		Language.load(mysql);
 		this.instance=this;
 		this.updater=new Updater(this);
-		this.client = new Client(getConfig().getString("Config.Client.Host"),getConfig().getInt("Config.Client.Port"),"PvP",this,updater);
+		this.client = new Client(this,getConfig().getString("Config.Client.Host"),getConfig().getInt("Config.Client.Port"),"PvP");
 		this.cmd=new CommandHandler(this);
 		this.packetManager=new PacketManager(this,client);
 		this.permManager=new PermissionManager(this,GroupTyp.PVP,packetManager,mysql);
