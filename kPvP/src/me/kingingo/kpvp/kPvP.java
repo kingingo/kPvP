@@ -67,7 +67,6 @@ public class kPvP extends JavaPlugin{
 
 		new BungeeCordFirewallListener(mysql, "pvp");
 		new Listener(getManager());
-		new MemoryFix(this);
 		new ListenerCMD(this);
 		new AntiCrashListener(this.packetManager,this.mysql);
 		UtilServer.createLagListener(cmd);
@@ -81,6 +80,7 @@ public class kPvP extends JavaPlugin{
 		this.mysql.close();
 		this.client.disconnect(false);
 		updater.stop();
+		UtilServer.getUpdaterAsync().stop();
 		saveConfig();
 	}
 	

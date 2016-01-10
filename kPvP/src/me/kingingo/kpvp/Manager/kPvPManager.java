@@ -1,5 +1,7 @@
 package me.kingingo.kpvp.Manager;
 
+import javax.rmi.CORBA.UtilDelegate;
+
 import lombok.Getter;
 import me.kingingo.kcore.AntiLogout.AntiLogoutManager;
 import me.kingingo.kcore.AntiLogout.AntiLogoutType;
@@ -152,7 +154,9 @@ public class kPvPManager{
 		this.base=new InventoryBase(PvP);
 		this.petManager=new PetManager(PvP);
 		this.statsManager=new StatsManager(getPvP(),getPvP().getMysql(),GameType.PVP);
+		this.statsManager.setAsync(true);
 		this.gildenManager=new GildenManager(getPvP().getMysql(),GildenType.PVP,getPvP().getCmd(),getStatsManager());
+		this.gildenManager.setAsync(true);
 		this.perkManager=new PerkManager(getPvP(),null,new Perk[]{new PerkArrowPotionEffect(),new PerkNoWaterdamage(),new PerkGoldenApple(),new PerkHat(),new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(getPvP().getCmd())});
 		new PerkListener(perkManager);
 		this.friendManager=new FriendManager(getPvP(),getPvP().getMysql(),getPvP().getCmd());
@@ -160,12 +164,14 @@ public class kPvPManager{
 		this.antiManager=new AntiLogoutManager(getPvP(),AntiLogoutType.KILL,40);
 		this.Shop=new SignShop(getPvP(),getPvP().getCmd(),getStatsManager());
 		UtilServer.createGemsShop(new GemsShop(PvP.getHologram(),PvP.getCmd(), getBase(),PvP.getPermManager(), ServerType.PVP));
+		UtilServer.getGemsShop().getGems().setAsync(true);
 		this.petHandler = new PlayerPetHandler(ServerType.PVP, getPetManager(), getBase(), PvP.getPermManager());
+		this.petHandler.setAsync(true);
 		
 		if(getPvP().getAACHack()!=null){
 			getPvP().getAACHack().setAntiLogoutManager(getAntiManager());
 		}
-	
+		
 		getPvP().getCmd().register(CommandDebug.class, new CommandDebug());
 		getPvP().getCmd().register(CommandFly.class, new CommandFly(getPvP()));
 		getPvP().getCmd().register(CommandR.class, new CommandR(getPvP()));
@@ -314,7 +320,7 @@ public class kPvPManager{
 		},"§bThe Delivery Jockey!",EntityType.CHICKEN,CommandLocations.getLocation("DeliveryPet"),ServerType.PVP,getPvP().getHologram(),getPvP().getMysql())
 		);
 		
-
+		
 		new EnderChestListener(getPvP().getUserData());
 		new kPvPListener(this);
 		new ChatListener(getPvP(), gildenManager,getPvP().getPermManager(),getPvP().getUserData());
