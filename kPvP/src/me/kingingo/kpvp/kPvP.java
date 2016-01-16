@@ -65,7 +65,7 @@ public class kPvP extends JavaPlugin{
 		this.userData=new UserDataConfig(this);
 		this.manager=new kPvPManager(this);
 
-		new BungeeCordFirewallListener(mysql, "pvp");
+		new BungeeCordFirewallListener(mysql,cmd, "pvp");
 		new Listener(getManager());
 		new ListenerCMD(this);
 		new AntiCrashListener(this.packetManager,this.mysql);

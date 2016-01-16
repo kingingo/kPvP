@@ -249,6 +249,7 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void Join(PlayerJoinEvent ev){
 		ev.setJoinMessage(null);
+//		getManager().getStatsManager().loadPlayerStats(ev.getPlayer());
 		 ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
 		 
 		 if(vote_list.contains( UtilPlayer.getRealUUID(ev.getPlayer()) )){
