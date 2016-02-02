@@ -21,6 +21,7 @@ import me.kingingo.kcore.Permission.Event.PlayerLoadPermissionEvent;
 import me.kingingo.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
 import me.kingingo.kcore.StatsManager.Stats;
 import me.kingingo.kcore.StatsManager.Event.PlayerStatsCreateEvent;
+import me.kingingo.kcore.StatsManager.Event.PlayerStatsLoadedEvent;
 import me.kingingo.kcore.Update.UpdateType;
 import me.kingingo.kcore.Update.Event.UpdateEvent;
 import me.kingingo.kcore.Util.TabTitle;
@@ -48,21 +49,21 @@ public class kPvPListener extends kListener{
 
 	@Getter
 	private kPvPManager manager;
-	private HashMap<Player,NameTagMessage> holo = new HashMap<>();
+//	private HashMap<Player,NameTagMessage> holo = new HashMap<>();
 	private HashMap<Player,String> pet_respawn = new HashMap<>();
-	public static NameTagMessage ranking_day;
-	public static NameTagMessage ranking_week;
-	public static NameTagMessage ranking_month;
-	public static NameTagMessage ranking_total;
+//	public static NameTagMessage ranking_day;
+//	public static NameTagMessage ranking_week;
+//	public static NameTagMessage ranking_month;
+//	public static NameTagMessage ranking_total;
 	private ArrayList<UUID> vote_list = new ArrayList<>();
 	
 	public kPvPListener(kPvPManager manager){
 		super(manager.getPvP(),"[kPvPListener]");
 		this.manager=manager;
-		this.ranking_day=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Today"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
-		this.ranking_week=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Week"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
-		this.ranking_month=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Month"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
-		this.ranking_total=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Total"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
+//		this.ranking_day=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Today"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
+//		this.ranking_week=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Week"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
+//		this.ranking_month=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Month"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
+//		this.ranking_total=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Total"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
 	}
 	
 	Player player;
@@ -175,14 +176,14 @@ public class kPvPListener extends kListener{
 		ev.getPlayer().teleport(ev.getPlayer().getWorld().getSpawnLocation());
 	}
 	
-	@EventHandler
-	public void SendHologram(PlayerQuitEvent ev){
-		if(holo.containsKey(ev.getPlayer())){
-			holo.get(ev.getPlayer()).clear(ev.getPlayer());
-			holo.get(ev.getPlayer()).remove();
-			holo.remove(ev.getPlayer());
-		}
-	}
+//	@EventHandler
+//	public void SendHologram(PlayerQuitEvent ev){
+//		if(holo.containsKey(ev.getPlayer())){
+//			holo.get(ev.getPlayer()).clear(ev.getPlayer());
+//			holo.get(ev.getPlayer()).remove();
+//			holo.remove(ev.getPlayer());
+//		}
+//	}
 	
 	@EventHandler
 	public void saveStats(PlayerQuitEvent ev){
@@ -221,17 +222,17 @@ public class kPvPListener extends kListener{
 	
 	@EventHandler
 	public void SendHolo(PlayerJoinEvent ev){
-		setHologramm(ev.getPlayer());
+//		setHologramm(ev.getPlayer());
 		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEpicPvP§8.§eeu §8| §aPvP Server", "§aTeamSpeak: §7ts.EpicPvP.eu §8| §eWebsite: §7EpicPvP.eu");
 	}
 
-	@EventHandler
-	public void SendRanking(PlayerJoinEvent ev){
-		this.ranking_day.sendToPlayer(ev.getPlayer());
-		this.ranking_week.sendToPlayer(ev.getPlayer());
-		this.ranking_total.sendToPlayer(ev.getPlayer());
-		this.ranking_month.sendToPlayer(ev.getPlayer());
-	}
+//	@EventHandler
+//	public void SendRanking(PlayerJoinEvent ev){
+//		this.ranking_day.sendToPlayer(ev.getPlayer());
+//		this.ranking_week.sendToPlayer(ev.getPlayer());
+//		this.ranking_total.sendToPlayer(ev.getPlayer());
+//		this.ranking_month.sendToPlayer(ev.getPlayer());
+//	}
 	
 	@EventHandler
 	public void pet(EntityDamageByEntityEvent ev){
@@ -247,12 +248,8 @@ public class kPvPListener extends kListener{
 	}
 	
 	@EventHandler
-	public void Join(PlayerJoinEvent ev){
-		ev.setJoinMessage(null);
-//		getManager().getStatsManager().loadPlayerStats(ev.getPlayer());
-		 ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
-		 
-		 if(vote_list.contains( UtilPlayer.getRealUUID(ev.getPlayer()) )){
+	public void loadedStats(PlayerStatsLoadedEvent ev){
+		if(vote_list.contains( UtilPlayer.getRealUUID(ev.getPlayer()) )){
 			 if(UtilServer.getDeliveryPet()!=null){
 				 UtilServer.getDeliveryPet().deliveryUSE(ev.getPlayer(), "§aVote for EpicPvP", true);
 			 }
@@ -264,39 +261,47 @@ public class kPvPListener extends kListener{
 	}
 	
 	@EventHandler
-	public void Updater(UpdateEvent ev){
-		if(ev.getType()==UpdateType.MIN_08){
-			for(Player p : UtilServer.getPlayers())setHologramm(p);
-			
-			this.ranking_day.remove();
-			this.ranking_week.remove();
-			this.ranking_month.remove();
-			this.ranking_total.remove();
-
-			this.ranking_day=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Today"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
-			this.ranking_week=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Week"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
-			this.ranking_month=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Month"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
-			this.ranking_total=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Total"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
-		}
+	public void Join(PlayerJoinEvent ev){
+		ev.setJoinMessage(null);
+		getManager().getStatsManager().loadPlayerStats(ev.getPlayer());
+		getManager().getGildenManager().loadPlayer(ev.getPlayer());
+		ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
 	}
 	
-	public void setHologramm(Player p){
-		getManager().getStatsManager().ExistPlayer(p);
-		if(holo.containsKey(p)){
-			holo.get(p).remove();
-			holo.remove(p);
-		}
-		
-		holo.put(p, getManager().getPvP().getHologram().sendText(p, CommandLocations.getLocation("Player_Stats"), new String[]{
-			"§6Name§a "+p.getName(),
-			"§6Gilde§b "+getManager().getGildenManager().getPlayerGilde(p),
-			"§6Ranking§b "+getManager().getStatsManager().getRank(Stats.KILLS, p),
-			"§6Kills§b "+getManager().getStatsManager().getInt(Stats.KILLS, p),
-			"§6Fame§b "+getManager().getStatsManager().getDouble(Stats.ELO, p),
-			"§6Tode§b "+getManager().getStatsManager().getInt(Stats.DEATHS, p),
-			"§6Money§b "+getManager().getStatsManager().getDouble(Stats.MONEY, p),
-			"§6KDR§b "+getManager().getStatsManager().getKDR(getManager().getStatsManager().getInt(Stats.KILLS, p), getManager().getStatsManager().getInt(Stats.DEATHS, p)),
-		}));
-	}
+//	@EventHandler
+//	public void Updater(UpdateEvent ev){
+//		if(ev.getType()==UpdateType.MIN_08){
+//			for(Player p : UtilServer.getPlayers())setHologramm(p);
+//			
+//			this.ranking_day.remove();
+//			this.ranking_week.remove();
+//			this.ranking_month.remove();
+//			this.ranking_total.remove();
+//
+//			this.ranking_day=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Today"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_day(),"Tag"));
+//			this.ranking_week=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Week"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_week(),"Woche"));
+//			this.ranking_month=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Month"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking_month(),"Monat"));
+//			this.ranking_total=manager.getPvP().getHologram().sendText(CommandLocations.getLocation("Ranking_Total"), manager.getStatsManager().getRankingMessage(CommandStats.getRanking()));
+//		}
+//	}
+	
+//	public void setHologramm(Player p){
+//		getManager().getStatsManager().ExistPlayer(p);
+//		if(holo.containsKey(p)){
+//			holo.get(p).remove();
+//			holo.remove(p);
+//		}
+//		
+//		holo.put(p, getManager().getPvP().getHologram().sendText(p, CommandLocations.getLocation("Player_Stats"), new String[]{
+//			"§6Name§a "+p.getName(),
+//			"§6Gilde§b "+getManager().getGildenManager().getPlayerGilde(p),
+//			"§6Ranking§b "+getManager().getStatsManager().getRank(Stats.KILLS, p),
+//			"§6Kills§b "+getManager().getStatsManager().getInt(Stats.KILLS, p),
+//			"§6Fame§b "+getManager().getStatsManager().getDouble(Stats.ELO, p),
+//			"§6Tode§b "+getManager().getStatsManager().getInt(Stats.DEATHS, p),
+//			"§6Money§b "+getManager().getStatsManager().getDouble(Stats.MONEY, p),
+//			"§6KDR§b "+getManager().getStatsManager().getKDR(getManager().getStatsManager().getInt(Stats.KILLS, p), getManager().getStatsManager().getInt(Stats.DEATHS, p)),
+//		}));
+//	}
 	
 }

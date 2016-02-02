@@ -68,7 +68,6 @@ public class kPvP extends JavaPlugin{
 		new BungeeCordFirewallListener(mysql,cmd, "pvp");
 		new Listener(getManager());
 		new ListenerCMD(this);
-		new AntiCrashListener(this.packetManager,this.mysql);
 		UtilServer.createLagListener(cmd);
 		}catch(Exception e){
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
