@@ -74,6 +74,7 @@ import me.kingingo.kcore.Gilden.GildenManager;
 import me.kingingo.kcore.Gilden.GildenType;
 import me.kingingo.kcore.Inventory.InventoryBase;
 import me.kingingo.kcore.Inventory.Item.Click;
+import me.kingingo.kcore.ItemShop.ItemShop;
 import me.kingingo.kcore.JumpPad.CommandJump;
 import me.kingingo.kcore.Kit.Perk;
 import me.kingingo.kcore.Kit.PerkManager;
@@ -157,11 +158,11 @@ public class kPvPManager{
 		this.statsManager.setAsync(true);
 		this.gildenManager=new GildenManager(getPvP().getMysql(),GildenType.PVP,getPvP().getCmd(),getStatsManager());
 		this.gildenManager.setAsync(true);
-		this.perkManager=new PerkManager(getPvP(),null,new Perk[]{new PerkArrowPotionEffect(),new PerkNoWaterdamage(),new PerkGoldenApple(),new PerkHat(),new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(getPvP().getCmd())});
+		this.perkManager=new PerkManager(getPvP(),new Perk[]{new PerkArrowPotionEffect(),new PerkNoWaterdamage(),new PerkGoldenApple(),new PerkHat(),new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(getPvP().getCmd())});
 		new PerkListener(perkManager);
 		this.friendManager=new FriendManager(getPvP(),getPvP().getMysql(),getPvP().getCmd());
 		this.neulingManager=new NeulingManager(getPvP(),getPvP().getCmd(),20);
-		this.antiManager=new AntiLogoutManager(getPvP(),AntiLogoutType.KILL,40);
+		this.antiManager=new AntiLogoutManager(getPvP(),AntiLogoutType.DROP_AMOR,40);
 		this.Shop=new SignShop(getPvP(),getPvP().getCmd(),getStatsManager());
 		UtilServer.createGemsShop(new GemsShop(PvP.getHologram(),PvP.getCmd(), getBase(),PvP.getPermManager(), ServerType.PVP));
 		UtilServer.getGemsShop().getGems().setAsync(true);
@@ -171,6 +172,8 @@ public class kPvPManager{
 		if(getPvP().getAACHack()!=null){
 			getPvP().getAACHack().setAntiLogoutManager(getAntiManager());
 		}
+
+//		new ItemShop(statsManager, getPvP().getCmd());
 		
 		getPvP().getCmd().register(CommandDebug.class, new CommandDebug());
 		getPvP().getCmd().register(CommandFly.class, new CommandFly(getPvP()));
@@ -208,7 +211,7 @@ public class kPvPManager{
 		getPvP().getCmd().register(CommandFill.class, new CommandFill());
 		getPvP().getCmd().register(CommandPet.class, new CommandPet(petHandler));
 		getPvP().getCmd().register(CommandHandel.class, new CommandHandel(getPvP()));
-		getPvP().getCmd().register(CommandPerk.class, new CommandPerk(perkManager,getBase()));
+		getPvP().getCmd().register(CommandPerk.class, new CommandPerk(perkManager));
 		getPvP().getCmd().register(CommandLocations.class, new CommandLocations(PvP));
 		getPvP().getCmd().register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
 		getPvP().getCmd().register(CommandURang.class, new CommandURang(getPvP().getPermManager(),getPvP().getMysql()));
@@ -325,6 +328,7 @@ public class kPvPManager{
 		new kPvPListener(this);
 		new ChatListener(getPvP(), gildenManager,getPvP().getPermManager(),getPvP().getUserData());
 		new EnderpearlListener(getPvP());
+		getPerkManager().setPerkEntity(CommandLocations.getLocation("perk"));
 	}
 	
 	public void onDisable(){

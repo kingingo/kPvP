@@ -5,6 +5,7 @@ import me.kingingo.kcore.AACHack.AACHack;
 import me.kingingo.kcore.Client.Client;
 import me.kingingo.kcore.Command.CommandHandler;
 import me.kingingo.kcore.Hologram.Hologram;
+import me.kingingo.kcore.ItemShop.ItemShop;
 import me.kingingo.kcore.Language.Language;
 import me.kingingo.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import me.kingingo.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
@@ -17,7 +18,6 @@ import me.kingingo.kcore.Update.Updater;
 import me.kingingo.kcore.UserDataConfig.UserDataConfig;
 import me.kingingo.kcore.Util.UtilException;
 import me.kingingo.kcore.Util.UtilServer;
-import me.kingingo.kcore.memory.MemoryFix;
 import me.kingingo.kpvp.Listener.Listener;
 import me.kingingo.kpvp.Manager.kPvPManager;
 
@@ -69,6 +69,8 @@ public class kPvP extends JavaPlugin{
 		new Listener(getManager());
 		new ListenerCMD(this);
 		UtilServer.createLagListener(cmd);
+		
+		
 		}catch(Exception e){
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
 		}
