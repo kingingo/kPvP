@@ -1,18 +1,18 @@
-package me.kingingo.kpvp.Command;
-
-import lombok.Getter;
-import me.kingingo.kcore.Command.CommandHandler.Sender;
-import me.kingingo.kcore.Gilden.GildenManager;
-import me.kingingo.kcore.Language.Language;
-import me.kingingo.kcore.StatsManager.Ranking;
-import me.kingingo.kcore.StatsManager.Stats;
-import me.kingingo.kcore.StatsManager.StatsManager;
-import me.kingingo.kcore.Util.TimeSpan;
+package eu.epicpvp.kpvp.Command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import dev.wolveringer.dataclient.gamestats.StatsKey;
+import lombok.Getter;
+import eu.epicpvp.kcore.Command.CommandHandler.Sender;
+import eu.epicpvp.kcore.Gilden.GildenManager;
+import eu.epicpvp.kcore.Language.Language;
+import eu.epicpvp.kcore.StatsManager.Ranking;
+import eu.epicpvp.kcore.StatsManager.StatsManager;
+import eu.epicpvp.kcore.Util.TimeSpan;
 
 public class CommandStats implements CommandExecutor{
 	
@@ -32,30 +32,30 @@ public class CommandStats implements CommandExecutor{
 	public CommandStats(GildenManager gildenmanager,StatsManager statsmanager){
 		this.gildenManager=gildenmanager;
 		this.statsManager=statsmanager;
-		this.ranking_day=new Ranking(statsManager, Stats.TIME_ELO, TimeSpan.DAY, 10);
+		this.ranking_day=new Ranking(gildenmanager.getMysql(),statsManager, StatsKey.TIME_ELO, TimeSpan.DAY, 10);
 		this.statsManager.addRanking(ranking_day);
-		this.ranking_week=new Ranking(statsManager, Stats.TIME_ELO, TimeSpan.DAY*7, 10);
+		this.ranking_week=new Ranking(gildenmanager.getMysql(),statsManager, StatsKey.TIME_ELO, TimeSpan.DAY*7, 10);
 		this.statsManager.addRanking(ranking_week);
-		this.ranking_month=new Ranking(statsManager, Stats.TIME_ELO, TimeSpan.DAY*30, 10);
+		this.ranking_month=new Ranking(gildenmanager.getMysql(),statsManager, StatsKey.TIME_ELO, TimeSpan.DAY*30, 10);
 		this.statsManager.addRanking(ranking_month);
-		this.ranking=new Ranking(statsManager, Stats.TIME_ELO, -1, 10);
+		this.ranking=new Ranking(gildenmanager.getMysql(),statsManager, StatsKey.TIME_ELO, -1, 10);
 		this.statsManager.addRanking(ranking);
 	}
 
-	@me.kingingo.kcore.Command.CommandHandler.Command(command = "stats", alias = {"kdr","money"}, sender = Sender.PLAYER)
+	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "stats", alias = {"kdr","money"}, sender = Sender.PLAYER)
 	public boolean onCommand(CommandSender cs, Command cmd, String arg2,String[] args) {
 		Player p = (Player)cs;
 		if(args.length==0){
 			p.sendMessage(Language.getText(p, "STATS_PREFIX"));
-			p.sendMessage(Language.getText(p, "STATS_FAME")+getStatsManager().getDouble(Stats.ELO, p));
-			p.sendMessage(Language.getText(p, "STATS_KILLS")+getStatsManager().getInt(Stats.KILLS, p));
-			p.sendMessage(Language.getText(p, "STATS_DEATHS")+getStatsManager().getInt(Stats.DEATHS, p));
-			p.sendMessage(Language.getText(p, "STATS_MONEY")+getStatsManager().getDouble(Stats.MONEY, p));
-			p.sendMessage(Language.getText(p, "STATS_KDR")+getStatsManager().getKDR(getStatsManager().getInt(Stats.KILLS, p), getStatsManager().getInt(Stats.DEATHS, p)));
+			p.sendMessage(Language.getText(p, "STATS_FAME")+getStatsManager().getDouble(p, StatsKey.ELO));
+			p.sendMessage(Language.getText(p, "STATS_KILLS")+getStatsManager().getInt(p, StatsKey.KILLS));
+			p.sendMessage(Language.getText(p, "STATS_DEATHS")+getStatsManager().getInt(p, StatsKey.DEATHS));
+			p.sendMessage(Language.getText(p, "STATS_MONEY")+getStatsManager().getDouble(p, StatsKey.MONEY));
+			p.sendMessage(Language.getText(p, "STATS_KDR")+getStatsManager().getKDR(getStatsManager().getInt(p, StatsKey.KILLS), getStatsManager().getInt(p, StatsKey.DEATHS)));
 			if(getGildenManager().isPlayerInGilde(p)){
 				p.sendMessage(Language.getText(p, "STATS_GILDE")+getGildenManager().getPlayerGilde(p));
 			}
-			p.sendMessage(Language.getText(p, "STATS_RANKING")+getStatsManager().getRank(Stats.KILLS, p));
+//			p.sendMessage(Language.getText(p, "STATS_RANKING")+getStatsManager().getRank(StatsKey.KILLS, p));
 		}else if(args[0].equalsIgnoreCase("ranking")){
 			if(args.length==1){
 				getStatsManager().SendRankingMessage(p, ranking);

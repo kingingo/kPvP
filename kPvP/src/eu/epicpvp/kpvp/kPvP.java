@@ -1,33 +1,32 @@
-package me.kingingo.kpvp;
+package eu.epicpvp.kpvp;
 
 import lombok.Getter;
-import me.kingingo.kcore.AACHack.AACHack;
-import me.kingingo.kcore.Client.Client;
-import me.kingingo.kcore.Command.CommandHandler;
-import me.kingingo.kcore.Hologram.Hologram;
-import me.kingingo.kcore.ItemShop.ItemShop;
-import me.kingingo.kcore.Language.Language;
-import me.kingingo.kcore.Listener.AntiCrashListener.AntiCrashListener;
-import me.kingingo.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
-import me.kingingo.kcore.Listener.Command.ListenerCMD;
-import me.kingingo.kcore.MySQL.MySQL;
-import me.kingingo.kcore.Packet.PacketManager;
-import me.kingingo.kcore.Permission.GroupTyp;
-import me.kingingo.kcore.Permission.PermissionManager;
-import me.kingingo.kcore.Update.Updater;
-import me.kingingo.kcore.UserDataConfig.UserDataConfig;
-import me.kingingo.kcore.Util.UtilException;
-import me.kingingo.kcore.Util.UtilServer;
-import me.kingingo.kpvp.Listener.Listener;
-import me.kingingo.kpvp.Manager.kPvPManager;
+import eu.epicpvp.kcore.AACHack.AACHack;
+import eu.epicpvp.kcore.Command.CommandHandler;
+import eu.epicpvp.kcore.Hologram.Hologram;
+import eu.epicpvp.kcore.ItemShop.ItemShop;
+import eu.epicpvp.kcore.Language.Language;
+import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
+import eu.epicpvp.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
+import eu.epicpvp.kcore.Listener.Command.ListenerCMD;
+import eu.epicpvp.kcore.MySQL.MySQL;
+import eu.epicpvp.kcore.Permission.PermissionManager;
+import eu.epicpvp.kcore.Update.Updater;
+import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
+import eu.epicpvp.kcore.Util.UtilException;
+import eu.epicpvp.kcore.Util.UtilServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import dev.wolveringer.client.ClientWrapper;
+import dev.wolveringer.client.connection.ClientType;
+import eu.epicpvp.kpvp.Listener.Listener;
+
 public class kPvP extends JavaPlugin{
 
 	@Getter
-	private Client client;
+	private ClientWrapper client;
 	@Getter
 	private JavaPlugin instance;
 	@Getter
@@ -37,9 +36,7 @@ public class kPvP extends JavaPlugin{
 	@Getter
 	private CommandHandler cmd;
 	@Getter
-	public PermissionManager permManager;
-	@Getter
-	private PacketManager packetManager;
+	public PermissionManager permissionManager;
 	@Getter
 	private AACHack aACHack;
 	@Getter
@@ -56,10 +53,9 @@ public class kPvP extends JavaPlugin{
 		Language.load(mysql);
 		this.instance=this;
 		this.updater=new Updater(this);
-		this.client = new Client(this,getConfig().getString("Config.Client.Host"),getConfig().getInt("Config.Client.Port"),"PvP");
+		this.client = UtilServer.createClient(this,ClientType.OTHER, getConfig().getString("Config.Client.Host"), getConfig().getInt("Config.Client.Port"), "PvP");
 		this.cmd=new CommandHandler(this);
-		this.packetManager=new PacketManager(this,client);
-		this.permManager=new PermissionManager(this,GroupTyp.PVP,packetManager,mysql);
+		this.permissionManager=new PermissionManager(this);
 		this.hologram=new Hologram(this);
 		this.hologram.RemoveText();
 		this.userData=new UserDataConfig(this);
@@ -79,7 +75,7 @@ public class kPvP extends JavaPlugin{
 	public void onDisable(){
 		this.manager.onDisable();
 		this.mysql.close();
-		this.client.disconnect(false);
+		this.client.getHandle().disconnect();
 		updater.stop();
 		UtilServer.getUpdaterAsync().stop();
 		saveConfig();

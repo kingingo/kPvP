@@ -1,10 +1,10 @@
-package me.kingingo.kpvp.Listener;
+package eu.epicpvp.kpvp.Listener;
 
-import me.kingingo.kcore.Listener.kListener;
-import me.kingingo.kcore.Permission.kPermission;
-import me.kingingo.kcore.Util.RestartScheduler;
-import me.kingingo.kcore.Util.UtilServer;
-import me.kingingo.kpvp.Manager.kPvPManager;
+import eu.epicpvp.kcore.Listener.kListener;
+import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.Util.RestartScheduler;
+import eu.epicpvp.kcore.Util.UtilServer;
+import eu.epicpvp.kpvp.kPvPManager;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,7 +33,7 @@ public class Listener extends kListener{
 	
 	@EventHandler
 	public void Sign(SignChangeEvent ev){
-		if(ev.getPlayer().hasPermission(kPermission.CHAT_FARBIG.getPermissionToString())){
+		if(ev.getPlayer().hasPermission(PermissionType.CHAT_FARBIG.getPermissionToString())){
 			ev.setLine(0, ev.getLine(0).replaceAll("&", "§"));
 			ev.setLine(1, ev.getLine(1).replaceAll("&", "§"));
 			ev.setLine(2, ev.getLine(2).replaceAll("&", "§"));
@@ -125,7 +125,7 @@ public class Listener extends kListener{
 	
 	public void restart(){
 		RestartScheduler restart = new RestartScheduler(manager.getPvP());
-		restart.setGems(UtilServer.getGemsShop().getGems());
+		restart.setMoney(UtilServer.getGemsShop().getGems());
 		restart.setAnti(((kPvPManager)manager).getAntiManager());
 		restart.setGilden(((kPvPManager)manager).getGildenManager());
 		restart.setStats(((kPvPManager)manager).getStatsManager());

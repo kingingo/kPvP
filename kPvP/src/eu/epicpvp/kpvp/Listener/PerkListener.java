@@ -1,9 +1,9 @@
-package me.kingingo.kpvp.Listener;
+package eu.epicpvp.kpvp.Listener;
 
-import me.kingingo.kcore.Kit.PerkManager;
-import me.kingingo.kcore.Listener.kListener;
-import me.kingingo.kcore.Permission.Event.PlayerLoadPermissionEvent;
-import me.kingingo.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
+import eu.epicpvp.kcore.Kit.PerkManager;
+import eu.epicpvp.kcore.Listener.kListener;
+import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
+import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
