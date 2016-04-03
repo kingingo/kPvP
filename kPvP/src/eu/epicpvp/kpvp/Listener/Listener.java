@@ -34,10 +34,10 @@ public class Listener extends kListener{
 	@EventHandler
 	public void Sign(SignChangeEvent ev){
 		if(ev.getPlayer().hasPermission(PermissionType.CHAT_FARBIG.getPermissionToString())){
-			ev.setLine(0, ev.getLine(0).replaceAll("&", "§"));
-			ev.setLine(1, ev.getLine(1).replaceAll("&", "§"));
-			ev.setLine(2, ev.getLine(2).replaceAll("&", "§"));
-			ev.setLine(3, ev.getLine(3).replaceAll("&", "§"));
+			ev.setLine(0, ev.getLine(0).replaceAll("&", "Â§"));
+			ev.setLine(1, ev.getLine(1).replaceAll("&", "Â§"));
+			ev.setLine(2, ev.getLine(2).replaceAll("&", "Â§"));
+			ev.setLine(3, ev.getLine(3).replaceAll("&", "Â§"));
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class Listener extends kListener{
 	public void Pickup(PlayerPickupItemEvent ev){
 		if(ev.getItem().getItemStack().getAmount()<0||ev.getItem().getItemStack().getAmount()>64){
 			ev.getItem().remove();
-	        ev.getPlayer().sendMessage("§cFEHLER: BuggUsing ist verboten!");
+	        ev.getPlayer().sendMessage("Â§cFEHLER: BuggUsing ist verboten!");
 		}else if(ev.getItem().getItemStack().getType()==Material.POTION){
 			ev.getPlayer().getInventory().addItem(ev.getItem().getItemStack());
 			ev.getItem().remove();
@@ -87,7 +87,7 @@ public class Listener extends kListener{
 				if(ev.getCurrentItem().getAmount()<0||ev.getCurrentItem().getAmount()>64){
 					ev.getCurrentItem().setAmount(1);
 					ev.getCurrentItem().setType(Material.AIR);
-					((Player)ev.getWhoClicked()).sendMessage("§cFEHLER: BuggUsing ist verboten!");
+					((Player)ev.getWhoClicked()).sendMessage("Â§cFEHLER: BuggUsing ist verboten!");
 				}
 			}
 		}
@@ -97,7 +97,7 @@ public class Listener extends kListener{
 	public void Drop(PlayerDropItemEvent ev){
 		if(ev.getItemDrop().getItemStack().getAmount()<0||ev.getItemDrop().getItemStack().getAmount()>64){
 			ev.getItemDrop().remove();
-	        ev.getPlayer().sendMessage("§cFEHLER: BuggUsing ist verboten!");
+	        ev.getPlayer().sendMessage("Â§cFEHLER: BuggUsing ist verboten!");
 		}
 	}
 	
@@ -105,7 +105,7 @@ public class Listener extends kListener{
 	public void onClickinEnchant(EnchantItemEvent e){
 		if(e.getItem().getAmount() > 1){
 			e.setCancelled(true);
-			e.getEnchanter().sendMessage("§cFEHLER: BuggUsing ist verboten!");
+			e.getEnchanter().sendMessage("Â§cFEHLER: BuggUsing ist verboten!");
 		}
 	}
 	
@@ -116,7 +116,7 @@ public class Listener extends kListener{
 	        (e.getCurrentItem().getAmount() > 1)){
 	        e.setCancelled(true);
 	        Player ps = (Player)e.getWhoClicked();
-	        ps.sendMessage("§cFEHLER: BuggUsing ist verboten!");
+	        ps.sendMessage("Â§cFEHLER: BuggUsing ist verboten!");
 	      }
 	    }
 	    catch (Exception localException){}

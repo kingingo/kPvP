@@ -5,11 +5,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffectType;
 
-import dev.wolveringer.dataclient.gamestats.GameType;
-import dev.wolveringer.dataclient.gamestats.ServerType;
-import dev.wolveringer.dataclient.gamestats.StatsKey;
+import dev.wolveringer.dataserver.gamestats.GameType;
+import dev.wolveringer.dataserver.gamestats.ServerType;
+import dev.wolveringer.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.AntiLogout.AntiLogoutManager;
 import eu.epicpvp.kcore.AntiLogout.AntiLogoutType;
 import eu.epicpvp.kcore.Command.Admin.CommandAddEpics;
@@ -142,6 +143,8 @@ public class kPvPManager{
 	@Getter
 	private StatsManager statsManager;
 	@Getter
+	private StatsManager money;
+	@Getter
 	private PetManager petManager;
 	@Getter
 	private InventoryBase base;
@@ -157,6 +160,7 @@ public class kPvPManager{
 		this.teleport=new TeleportManager(getPvP().getCmd(), getPvP().getPermissionManager(), 5);
 		this.base=new InventoryBase(PvP);
 		this.petManager=new PetManager(PvP);
+		this.money=new StatsManager(PvP, PvP.getClient(), GameType.Money);
 		this.statsManager=new StatsManager(PvP, PvP.getClient(), GameType.PVP);
 		this.gildenManager=new GildenManager(getPvP().getMysql(),GildenType.PVP,getPvP().getCmd(),getStatsManager());
 		this.gildenManager.setAsync(true);
@@ -165,7 +169,7 @@ public class kPvPManager{
 		this.friendManager=new FriendManager(getPvP(),getPvP().getMysql(),getPvP().getCmd());
 		this.neulingManager=new NeulingManager(getPvP(),getPvP().getCmd(),20);
 		this.antiManager=new AntiLogoutManager(getPvP(),AntiLogoutType.DROP_AMOR,40);
-		UtilServer.createGemsShop(new GemsShop(PvP.getHologram(),new StatsManager(PvP, PvP.getClient(), GameType.Money),PvP.getCmd(), getBase(),PvP.getPermissionManager(), ServerType.PVP));
+		UtilServer.createGemsShop(new GemsShop(PvP.getHologram(),this.money,PvP.getCmd(), getBase(),PvP.getPermissionManager(), ServerType.PVP));
 		this.petHandler = new PlayerPetHandler(ServerType.PVP, PvP.getMysql(),getPetManager(), getBase(), PvP.getPermissionManager());
 		this.petHandler.setAsync(true);
 		new ItemShop(statsManager, getPvP().getCmd());
@@ -173,7 +177,6 @@ public class kPvPManager{
 		if(getPvP().getAACHack()!=null){
 			getPvP().getAACHack().setAntiLogoutManager(getAntiManager());
 		}
-
 		
 		getPvP().getCmd().register(CommandDebug.class, new CommandDebug());
 		getPvP().getCmd().register(CommandFly.class, new CommandFly(getPvP()));
@@ -241,70 +244,70 @@ public class kPvPManager{
 		
 		
 		UtilServer.createDeliveryPet(new DeliveryPet(getBase(),null,new DeliveryObject[]{
-			new DeliveryObject(new String[]{"","�7Click for Vote!","","�ePvP Rewards:","�7   200 Epics","�7   1x Inventory Repair","","�eGame Rewards:","�7   25 Gems","�7   100 Coins","","�eSkyBlock Rewards:","�7   200 Epics","�7   2x Diamonds","�7   2x Iron Ingot","�7   2x Gold Ingot"},PermissionType.DELIVERY_PET_VOTE,false,28,"�aVote for EpicPvP",Material.PAPER,Material.REDSTONE_BLOCK,new Click(){
+			new DeliveryObject(new String[]{"","§7Click for Vote!","","§ePvP Rewards:","§7   200 Epics","§7   1x Inventory Repair","","§eGame Rewards:","§7   25 Gems","§7   100 Coins","","§eSkyBlock Rewards:","§7   200 Epics","§7   2x Diamonds","§7   2x Iron Ingot","§7   2x Gold Ingot"},PermissionType.DELIVERY_PET_VOTE,false,28,"§aVote for EpicPvP",Material.PAPER,Material.REDSTONE_BLOCK,new Click(){
 
 					@Override
 					public void onClick(Player p, ActionType a,Object obj) {
 						p.closeInventory();
-						p.sendMessage(Language.getText(p,"PREFIX")+"�7-----------------------------------------");
+						p.sendMessage(Language.getText(p,"PREFIX")+"§7-----------------------------------------");
 						p.sendMessage(Language.getText(p,"PREFIX")+" ");
-						p.sendMessage(Language.getText(p,"PREFIX")+"Vote Link:�a http://goo.gl/wxdAj4");
+						p.sendMessage(Language.getText(p,"PREFIX")+"Vote Link:§a http://goo.gl/wxdAj4");
 						p.sendMessage(Language.getText(p,"PREFIX")+" ");
-						p.sendMessage(Language.getText(p,"PREFIX")+"�7-----------------------------------------");
+						p.sendMessage(Language.getText(p,"PREFIX")+"§7-----------------------------------------");
 					}
 					
 				},-1),
-				new DeliveryObject(new String[]{"�aOnly for �eVIP�a!","","�ePvP Rewards:","�7   200 Epics","�7   10 Level","","�eGame Rewards:","�7   200 Coins","�7   2x TTT Paesse","","�eSkyBlock Rewards:","�7   200 Epics","�7   2x Diamonds","�7   2x Iron Ingot","�7   2x Gold Ingot"},PermissionType.DELIVERY_PET_VIP_WEEK,true,11,"�cRank �eVIP�c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
+				new DeliveryObject(new String[]{"§aOnly for §eVIP§a!","","§ePvP Rewards:","§7   200 Epics","§7   10 Level","","§eGame Rewards:","§7   200 Coins","§7   2x TTT Paesse","","§eSkyBlock Rewards:","§7   200 Epics","§7   2x Diamonds","§7   2x Iron Ingot","§7   2x Gold Ingot"},PermissionType.DELIVERY_PET_VIP_WEEK,true,11,"§cRank §eVIP§c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
 
 					@Override
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 200, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+10);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"�bThe Delivery Jockey!","200"}));
+						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","200"}));
 					}
 					
 				},TimeSpan.DAY*7),
-				new DeliveryObject(new String[]{"�aOnly for �6ULTRA�a!","","�ePvP Rewards:","�7   300 Epics","�7   15 Level","","�eGame Rewards:","�7   300 Coins","�7   2x TTT Paesse","","�eSkyBlock Rewards:","�7   300 Epics","�7   4x Diamonds","�7   4x Iron Ingot","�7   4x Gold Ingot"},PermissionType.DELIVERY_PET_ULTRA_WEEK,true,12,"�cRank �6ULTRA�c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
+				new DeliveryObject(new String[]{"§aOnly for §6ULTRA§a!","","§ePvP Rewards:","§7   300 Epics","§7   15 Level","","§eGame Rewards:","§7   300 Coins","§7   2x TTT Paesse","","§eSkyBlock Rewards:","§7   300 Epics","§7   4x Diamonds","§7   4x Iron Ingot","§7   4x Gold Ingot"},PermissionType.DELIVERY_PET_ULTRA_WEEK,true,12,"§cRank §6ULTRA§c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
 
 					@Override
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 300, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+15);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"�bThe Delivery Jockey!","300"}));
+						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","300"}));
 					}
 					
 				},TimeSpan.DAY*7),
-				new DeliveryObject(new String[]{"�aOnly for �aLEGEND�a!","","�ePvP Rewards:","�7   400 Epics","�7   20 Level","","�eGame Rewards:","�7   400 Coins","�7   3x TTT Paesse","","�eSkyBlock Rewards:","�7   400 Epics","�7   6x Diamonds","�7   6x Iron Ingot","�7   6x Gold Ingot"},PermissionType.DELIVERY_PET_LEGEND_WEEK,true,13,"�cRank �5LEGEND�c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
+				new DeliveryObject(new String[]{"§aOnly for §aLEGEND§a!","","§ePvP Rewards:","§7   400 Epics","§7   20 Level","","§eGame Rewards:","§7   400 Coins","§7   3x TTT Paesse","","§eSkyBlock Rewards:","§7   400 Epics","§7   6x Diamonds","§7   6x Iron Ingot","§7   6x Gold Ingot"},PermissionType.DELIVERY_PET_LEGEND_WEEK,true,13,"§cRank §5LEGEND§c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
 
 					@Override
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 400, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+20);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"�bThe Delivery Jockey!","400"}));
+						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","400"}));
 					}
 					
 				},TimeSpan.DAY*7),
-				new DeliveryObject(new String[]{"�aOnly for �bMVP�a!","","�ePvP Rewards:","�7   500 Epics","�7   25 Level","","�eGame Rewards:","�7   500 Coins","�7   3x TTT Paesse","","�eSkyBlock Rewards:","�7   500 Epics","�7   8x Diamonds","�7   8x Iron Ingot","�7   8x Gold Ingot"},PermissionType.DELIVERY_PET_MVP_WEEK,true,14,"�cRank �3MVP�c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
+				new DeliveryObject(new String[]{"§aOnly for §bMVP§a!","","§ePvP Rewards:","§7   500 Epics","§7   25 Level","","§eGame Rewards:","§7   500 Coins","§7   3x TTT Paesse","","§eSkyBlock Rewards:","§7   500 Epics","§7   8x Diamonds","§7   8x Iron Ingot","§7   8x Gold Ingot"},PermissionType.DELIVERY_PET_MVP_WEEK,true,14,"§cRank §3MVP§c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
 
 					@Override
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 500, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+25);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"�bThe Delivery Jockey!","500"}));
+						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","500"}));
 					}
 					
 				},TimeSpan.DAY*7),
-				new DeliveryObject(new String[]{"�aOnly for �bMVP�c+�a!","","�ePvP Rewards:","�7   600 Epics","�7   30 Level","","�eGame Rewards:","�7   600 Coins","�7   4x TTT Paesse","","�eSkyBlock Rewards:","�7   600 Epics","�7   10x Diamonds","�7   10x Iron Ingot","�7   10x Gold Ingot"},PermissionType.DELIVERY_PET_MVPPLUS_WEEK,true,15,"�cRank �9MVP�e+�c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
+				new DeliveryObject(new String[]{"§aOnly for §bMVP§c+§a!","","§ePvP Rewards:","§7   600 Epics","§7   30 Level","","§eGame Rewards:","§7   600 Coins","§7   4x TTT Paesse","","§eSkyBlock Rewards:","§7   600 Epics","§7   10x Diamonds","§7   10x Iron Ingot","§7   10x Gold Ingot"},PermissionType.DELIVERY_PET_MVPPLUS_WEEK,true,15,"§cRank §9MVP§e+§c Reward",Material.getMaterial(342),Material.MINECART,new Click(){
 
 					@Override
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 600, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+30);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"�bThe Delivery Jockey!","600"}));
+						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","600"}));
 					}
 					
 				},TimeSpan.DAY*7),
-				new DeliveryObject(new String[]{"�7/twitter [TwitterName]","","�ePvP Rewards:","�7   300 Epics","�7   15 Level","","�eGame Rewards:","�7   300 Coins","","�eSkyBlock Rewards:","�7   300 Epics","�7   15 Level"},PermissionType.DELIVERY_PET_TWITTER,false,34,"�cTwitter Reward",Material.getMaterial(351),4,new Click(){
+				new DeliveryObject(new String[]{"§7/twitter [TwitterName]","","§ePvP Rewards:","§7   300 Epics","§7   15 Level","","§eGame Rewards:","§7   300 Coins","","§eSkyBlock Rewards:","§7   300 Epics","§7   15 Level"},PermissionType.DELIVERY_PET_TWITTER,false,34,"§cTwitter Reward",Material.getMaterial(351),4,new Click(){
 
 					@Override
 					public void onClick(Player p, ActionType a,Object obj) {
@@ -318,7 +321,7 @@ public class kPvPManager{
 					}
 					
 				},TimeSpan.DAY*7),
-		},"�bThe Delivery Jockey!",EntityType.CHICKEN,CommandLocations.getLocation("DeliveryPet"),ServerType.PVP,getPvP().getHologram(),getPvP().getMysql())
+		},"§bThe Delivery Jockey!",EntityType.CHICKEN,CommandLocations.getLocation("DeliveryPet"),ServerType.PVP,getPvP().getHologram(),getPvP().getMysql())
 		);
 		
 		
@@ -342,7 +345,7 @@ public class kPvPManager{
 	
 	public void setRandomCreature(Location loc){
 		IronGolem e = (IronGolem) loc.getWorld().spawnEntity(loc, EntityType.IRON_GOLEM);
-		NameTagMessage m = new NameTagMessage(NameTagType.SERVER, e.getLocation().add(0, 2.8, 0), "�a�lRandom Teleporter");
+		NameTagMessage m = new NameTagMessage(NameTagType.SERVER, e.getLocation().add(0, 2.8, 0), "§a§lRandom Teleporter");
 		m.send();
 		UtilEnt.setNoAI(e, true);
 		UtilEnt.setSilent(e, true);
@@ -373,9 +376,9 @@ public class kPvPManager{
 							c.onClick(p, null, null);
 						}
 						
-					}, "�a�lRandom Teleport", UtilServer.getGemsShop().getGems(), 25,0);
+					}, "§a§lRandom Teleport", UtilServer.getGemsShop().getGems(), 25,0);
 					getBase().addAnother(buy);
-					p.openInventory(buy);
+					p.openInventory((Inventory) buy);
 					
 				}else{
 					config.set("RandomPort", 1);

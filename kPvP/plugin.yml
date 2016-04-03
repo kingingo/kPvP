@@ -1,5 +1,5 @@
 name: kPvP
 author: KingIngo
 version: 1.8
-main: me.kingingo.kpvp.kPvP
+main: eu.epicpvp.kpvp.kPvP
 depend: [kCore]
