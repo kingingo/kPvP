@@ -65,8 +65,6 @@ public class kPvP extends JavaPlugin{
 		new Listener(getManager());
 		new ListenerCMD(this);
 		UtilServer.createLagListener(cmd);
-		
-		
 		}catch(Exception e){
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
 		}

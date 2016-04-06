@@ -1,13 +1,16 @@
 package eu.epicpvp.kpvp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+import dev.wolveringer.client.Callback;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import dev.wolveringer.dataserver.gamestats.ServerType;
 import dev.wolveringer.dataserver.gamestats.StatsKey;
@@ -66,6 +69,7 @@ import eu.epicpvp.kcore.Command.Commands.CommandSonne;
 import eu.epicpvp.kcore.Command.Commands.CommandSpawn;
 import eu.epicpvp.kcore.Command.Commands.CommandSpawner;
 import eu.epicpvp.kcore.Command.Commands.CommandSpawnmob;
+import eu.epicpvp.kcore.Command.Commands.CommandStats;
 import eu.epicpvp.kcore.Command.Commands.CommandSuffix;
 import eu.epicpvp.kcore.Command.Commands.CommandTag;
 import eu.epicpvp.kcore.Command.Commands.CommandWarp;
@@ -107,6 +111,7 @@ import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.Listener.EnderChest.EnderChestListener;
 import eu.epicpvp.kcore.Listener.Enderpearl.EnderpearlListener;
 import eu.epicpvp.kcore.Listener.EntityClick.EntityClickListener;
+import eu.epicpvp.kcore.Listener.VoteListener.VoteListener;
 import eu.epicpvp.kcore.Neuling.NeulingManager;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Pet.PetManager;
@@ -117,12 +122,13 @@ import eu.epicpvp.kcore.TeleportManager.TeleportManager;
 import eu.epicpvp.kcore.Util.TimeSpan;
 import eu.epicpvp.kcore.Util.UtilEnt;
 import eu.epicpvp.kcore.Util.UtilEvent.ActionType;
+import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilLocation;
 import eu.epicpvp.kcore.Util.UtilMath;
+import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.friend.FriendManager;
 import eu.epicpvp.kcore.kConfig.kConfig;
-import eu.epicpvp.kpvp.Command.CommandStats;
 import eu.epicpvp.kpvp.Command.Commandifix;
 import eu.epicpvp.kpvp.Listener.PerkListener;
 import eu.epicpvp.kpvp.Listener.kPvPListener;
@@ -215,7 +221,7 @@ public class kPvPManager{
 		getPvP().getCmd().register(CommandHandel.class, new CommandHandel(getPvP()));
 		getPvP().getCmd().register(CommandPerk.class, new CommandPerk(perkManager));
 		getPvP().getCmd().register(CommandLocations.class, new CommandLocations(PvP));
-		getPvP().getCmd().register(CommandStats.class, new CommandStats(getGildenManager(),getStatsManager()));
+		getPvP().getCmd().register(CommandStats.class, new CommandStats(getStatsManager()));
 		getPvP().getCmd().register(CommandURang.class, new CommandURang(getPvP().getPermissionManager(),getPvP().getMysql()));
 		getPvP().getCmd().register(CommandUnBan.class, new CommandUnBan(getPvP().getMysql()));
 		getPvP().getCmd().register(CommandBanned.class, new CommandBanned(getPvP().getMysql()));
@@ -331,6 +337,23 @@ public class kPvPManager{
 		new EnderpearlListener(getPvP());
 		getPerkManager().setPerkEntity(CommandLocations.getLocation("perk"));
 		setRandomCreature(CommandLocations.getLocation("random"));
+		
+		new VoteListener(getPvP(),true, new Callback<String>() {
+			
+			@Override
+			public void call(String playerName) {
+				if(UtilPlayer.isOnline(playerName)){
+					Player player = Bukkit.getPlayer(playerName);
+					if(UtilServer.getDeliveryPet()!=null){
+						UtilServer.getDeliveryPet().deliveryUSE(player, "§aVote for EpicPvP", true);
+					}
+					
+					getStatsManager().addDouble(player, 200, StatsKey.MONEY);
+					UtilInv.repairInventory(player, true);
+					player.sendMessage(Language.getText(player, "PREFIX")+Language.getText(player, "VOTE_THX"));
+				}
+			}
+		});
 	}
 	
 	public void onDisable(){
