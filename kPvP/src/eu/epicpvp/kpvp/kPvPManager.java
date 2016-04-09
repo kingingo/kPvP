@@ -7,7 +7,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import dev.wolveringer.client.Callback;
@@ -106,7 +105,6 @@ import eu.epicpvp.kcore.Kit.Perks.PerkNoWaterdamage;
 import eu.epicpvp.kcore.Kit.Perks.PerkPotionClear;
 import eu.epicpvp.kcore.Kit.Perks.PerkRunner;
 import eu.epicpvp.kcore.Kit.Perks.PerkStrength;
-import eu.epicpvp.kcore.Language.Language;
 import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.Listener.EnderChest.EnderChestListener;
 import eu.epicpvp.kcore.Listener.Enderpearl.EnderpearlListener;
@@ -119,6 +117,7 @@ import eu.epicpvp.kcore.Pet.Commands.CommandPet;
 import eu.epicpvp.kcore.Pet.Shop.PlayerPetHandler;
 import eu.epicpvp.kcore.StatsManager.StatsManager;
 import eu.epicpvp.kcore.TeleportManager.TeleportManager;
+import eu.epicpvp.kcore.Translation.TranslationManager;
 import eu.epicpvp.kcore.Util.TimeSpan;
 import eu.epicpvp.kcore.Util.UtilEnt;
 import eu.epicpvp.kcore.Util.UtilEvent.ActionType;
@@ -255,11 +254,11 @@ public class kPvPManager{
 					@Override
 					public void onClick(Player p, ActionType a,Object obj) {
 						p.closeInventory();
-						p.sendMessage(Language.getText(p,"PREFIX")+"§7-----------------------------------------");
-						p.sendMessage(Language.getText(p,"PREFIX")+" ");
-						p.sendMessage(Language.getText(p,"PREFIX")+"Vote Link:§a http://goo.gl/wxdAj4");
-						p.sendMessage(Language.getText(p,"PREFIX")+" ");
-						p.sendMessage(Language.getText(p,"PREFIX")+"§7-----------------------------------------");
+						p.sendMessage(TranslationManager.getText(p,"PREFIX")+"§7-----------------------------------------");
+						p.sendMessage(TranslationManager.getText(p,"PREFIX")+" ");
+						p.sendMessage(TranslationManager.getText(p,"PREFIX")+"Vote Link:§a http://goo.gl/wxdAj4");
+						p.sendMessage(TranslationManager.getText(p,"PREFIX")+" ");
+						p.sendMessage(TranslationManager.getText(p,"PREFIX")+"§7-----------------------------------------");
 					}
 					
 				},-1),
@@ -269,7 +268,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 200, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+10);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","200"}));
+						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","200"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -279,7 +278,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 300, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+15);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","300"}));
+						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","300"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -289,7 +288,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 400, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+20);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","400"}));
+						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","400"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -299,7 +298,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 500, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+25);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","500"}));
+						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","500"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -309,7 +308,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 600, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+30);
-						p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","600"}));
+						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","600"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -350,7 +349,7 @@ public class kPvPManager{
 					
 					getStatsManager().addDouble(player, 200, StatsKey.MONEY);
 					UtilInv.repairInventory(player, true);
-					player.sendMessage(Language.getText(player, "PREFIX")+Language.getText(player, "VOTE_THX"));
+					player.sendMessage(TranslationManager.getText(player, "PREFIX")+TranslationManager.getText(player, "VOTE_THX"));
 				}
 			}
 		});

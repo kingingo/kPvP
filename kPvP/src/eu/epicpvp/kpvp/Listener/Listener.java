@@ -1,11 +1,5 @@
 package eu.epicpvp.kpvp.Listener;
 
-import eu.epicpvp.kcore.Listener.kListener;
-import eu.epicpvp.kcore.Permission.PermissionType;
-import eu.epicpvp.kcore.Util.RestartScheduler;
-import eu.epicpvp.kcore.Util.UtilServer;
-import eu.epicpvp.kpvp.kPvPManager;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +15,12 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+
+import eu.epicpvp.kcore.Listener.kListener;
+import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.Util.RestartScheduler;
+import eu.epicpvp.kcore.Util.UtilServer;
+import eu.epicpvp.kpvp.kPvPManager;
 
 public class Listener extends kListener{
 

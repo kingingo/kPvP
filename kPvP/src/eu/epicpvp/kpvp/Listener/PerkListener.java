@@ -1,13 +1,12 @@
 package eu.epicpvp.kpvp.Listener;
 
-import eu.epicpvp.kcore.Kit.PerkManager;
-import eu.epicpvp.kcore.Listener.kListener;
-import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
-import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import eu.epicpvp.kcore.Kit.PerkManager;
+import eu.epicpvp.kcore.Listener.kListener;
+import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
 
 public class PerkListener extends kListener{
 	

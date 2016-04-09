@@ -20,11 +20,11 @@ import dev.wolveringer.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.AntiLogout.Events.AntiLogoutAddPlayerEvent;
 import eu.epicpvp.kcore.AntiLogout.Events.AntiLogoutDelPlayerEvent;
 import eu.epicpvp.kcore.Gilden.Events.GildenPlayerTeleportEvent;
-import eu.epicpvp.kcore.Language.Language;
 import eu.epicpvp.kcore.Listener.kListener;
 import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsCreateEvent;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsLoadedEvent;
+import eu.epicpvp.kcore.Translation.TranslationManager;
 import eu.epicpvp.kcore.Util.TabTitle;
 import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilPlayer;
@@ -93,7 +93,7 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void playerTeleport(PlayerTeleportEvent ev){
 		if(!getManager().getAntiManager().is(ev.getPlayer())){
-			ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT"));
+			ev.getPlayer().sendMessage(TranslationManager.getText(ev.getPlayer(), "PREFIX")+TranslationManager.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT"));
 			ev.setCancelled(true);
 		}
 	}
@@ -101,7 +101,7 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void GildeHome(GildenPlayerTeleportEvent ev){
 		if(!getManager().getAntiManager().is(ev.getPlayer())){
-			ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT_CMD","/gilde home"));
+			ev.getPlayer().sendMessage(TranslationManager.getText(ev.getPlayer(), "PREFIX")+TranslationManager.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT_CMD","/gilde home"));
 			ev.setCancelled(true);
 		}
 	}
@@ -127,13 +127,13 @@ public class kPvPListener extends kListener{
 		ev.setDeathMessage(null);
 		if(ev.getEntity() instanceof Player){
 			Player v = (Player)ev.getEntity();
-			v.sendMessage(Language.getText(v, "PREFIX")+Language.getText(v, "PVP_DEATH"));
+			v.sendMessage(TranslationManager.getText(v, "PREFIX")+TranslationManager.getText(v, "PVP_DEATH"));
 			
 			getManager().getStatsManager().addInt(v, 1, StatsKey.DEATHS);
 			if(ev.getEntity().getKiller()!=null&&ev.getEntity().getKiller() instanceof Player){
 				getManager().getStatsManager().addInt(ev.getEntity().getKiller(), 1, StatsKey.KILLS);
 				
-				ev.getEntity().getKiller().sendMessage(Language.getText(ev.getEntity().getKiller(), "PREFIX")+Language.getText(ev.getEntity().getKiller(), "PVP_KILL",new Object[]{v.getName()} ));
+				ev.getEntity().getKiller().sendMessage(TranslationManager.getText(ev.getEntity().getKiller(), "PREFIX")+TranslationManager.getText(ev.getEntity().getKiller(), "PVP_KILL",new Object[]{v.getName()} ));
 			}
 		}
 	}
@@ -188,7 +188,7 @@ public class kPvPListener extends kListener{
 					 vote_list.remove(UtilPlayer.getRealUUID(Bukkit.getPlayer(ev.getPlayername())));
 					 manager.getStatsManager().addDouble(Bukkit.getPlayer(ev.getPlayername()), 200, StatsKey.MONEY);
 					 UtilInv.repairInventory(Bukkit.getPlayer(ev.getPlayername()), true);
-					 Bukkit.getPlayer(ev.getPlayername()).sendMessage(Language.getText(Bukkit.getPlayer(ev.getPlayername()), "PREFIX")+Language.getText(Bukkit.getPlayer(ev.getPlayername()), "VOTE_THX"));
+					 Bukkit.getPlayer(ev.getPlayername()).sendMessage(TranslationManager.getText(Bukkit.getPlayer(ev.getPlayername()), "PREFIX")+TranslationManager.getText(Bukkit.getPlayer(ev.getPlayername()), "VOTE_THX"));
 				 }
 			}
 		}
@@ -200,6 +200,6 @@ public class kPvPListener extends kListener{
 		getManager().getStatsManager().loadPlayer(ev.getPlayer());
 		getManager().getMoney().loadPlayer(ev.getPlayer());
 		getManager().getGildenManager().loadPlayer(ev.getPlayer());
-		ev.getPlayer().sendMessage(Language.getText(ev.getPlayer(), "PREFIX")+Language.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
+		ev.getPlayer().sendMessage(TranslationManager.getText(ev.getPlayer(), "PREFIX")+TranslationManager.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
 	}
 }
