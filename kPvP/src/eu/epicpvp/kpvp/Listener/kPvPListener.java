@@ -24,7 +24,7 @@ import eu.epicpvp.kcore.Listener.kListener;
 import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsCreateEvent;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsLoadedEvent;
-import eu.epicpvp.kcore.Translation.TranslationManager;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Util.TabTitle;
 import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilPlayer;
@@ -37,51 +37,11 @@ public class kPvPListener extends kListener{
 	@Getter
 	private kPvPManager manager;
 	private HashMap<Player,String> pet_respawn = new HashMap<>();
-	private ArrayList<UUID> vote_list = new ArrayList<>();
 	
 	public kPvPListener(kPvPManager manager){
 		super(manager.getPvP(),"[kPvPListener]");
 		this.manager=manager;
 	}
-	
-//	Player player;
-//	@EventHandler
-//	public void PacketReceive(PacketReceiveEvent ev){
-//		if(ev.getPacket() instanceof WORLD_CHANGE_DATA){
-//			WORLD_CHANGE_DATA packet = (WORLD_CHANGE_DATA)ev.getPacket();
-//			UtilPlayer.setWorldChangeUUID(Bukkit.getWorld(packet.getWorldName()), packet.getOld_uuid(), packet.getNew_uuid());
-//		}else if(ev.getPacket() instanceof PLAYER_VOTE){
-//			PLAYER_VOTE vote = (PLAYER_VOTE)ev.getPacket();
-//			
-//			if(UtilPlayer.isOnline(vote.getPlayer())){
-//				player=Bukkit.getPlayer(vote.getPlayer());
-//				if(UtilServer.getDeliveryPet()!=null){
-//					UtilServer.getDeliveryPet().deliveryUSE(player, "§aVote for EpicPvP", true);
-//				}
-//				manager.getStatsManager().setDouble(player, manager.getStatsManager().getDouble(Stats.MONEY, player)+200, Stats.MONEY);
-//				UtilInv.repairInventory(player, true);
-//				player.sendMessage(Language.getText(player, "PREFIX")+Language.getText(player, "VOTE_THX"));
-//			}else{
-//				vote_list.add(vote.getUuid());
-//			}
-//		}else if(ev.getPacket() instanceof TWITTER_PLAYER_FOLLOW){
-//			TWITTER_PLAYER_FOLLOW tw = (TWITTER_PLAYER_FOLLOW)ev.getPacket();
-//			
-//			if(UtilPlayer.isOnline(tw.getPlayer())){
-//				Player p = Bukkit.getPlayer(tw.getPlayer());
-//				if(!tw.isFollow()){
-//					getManager().getPvP().getMysql().Update("DELETE FROM BG_TWITTER WHERE uuid='" + UtilPlayer.getRealUUID(p) + "'");
-//					p.sendMessage(Language.getText(p,"PREFIX")+Language.getText(p, "TWITTER_FOLLOW_N"));
-//					p.sendMessage(Language.getText(p,"PREFIX")+Language.getText(p, "TWITTER_REMOVE"));
-//				}else{
-//					UtilServer.getDeliveryPet().deliveryBlock(p, "§cTwitter Reward");
-//					getManager().getStatsManager().addDouble(p, 300, Stats.MONEY);
-//					p.setLevel(p.getLevel()+15);
-//					p.sendMessage(Language.getText(p, "PREFIX")+Language.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","300"}));
-//				}
-//			}
-//		}
-//	}
 	
 	@EventHandler
 	public void Enderpearl(PlayerTeleportEvent ev){
@@ -93,7 +53,7 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void playerTeleport(PlayerTeleportEvent ev){
 		if(!getManager().getAntiManager().is(ev.getPlayer())){
-			ev.getPlayer().sendMessage(TranslationManager.getText(ev.getPlayer(), "PREFIX")+TranslationManager.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT"));
+			ev.getPlayer().sendMessage(TranslationHandler.getText(ev.getPlayer(), "PREFIX")+TranslationHandler.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT"));
 			ev.setCancelled(true);
 		}
 	}
@@ -101,7 +61,7 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void GildeHome(GildenPlayerTeleportEvent ev){
 		if(!getManager().getAntiManager().is(ev.getPlayer())){
-			ev.getPlayer().sendMessage(TranslationManager.getText(ev.getPlayer(), "PREFIX")+TranslationManager.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT_CMD","/gilde home"));
+			ev.getPlayer().sendMessage(TranslationHandler.getText(ev.getPlayer(), "PREFIX")+TranslationHandler.getText(ev.getPlayer(), "ANIT_LOGOUT_FIGHT_CMD","/gilde home"));
 			ev.setCancelled(true);
 		}
 	}
@@ -127,13 +87,13 @@ public class kPvPListener extends kListener{
 		ev.setDeathMessage(null);
 		if(ev.getEntity() instanceof Player){
 			Player v = (Player)ev.getEntity();
-			v.sendMessage(TranslationManager.getText(v, "PREFIX")+TranslationManager.getText(v, "PVP_DEATH"));
+			v.sendMessage(TranslationHandler.getText(v, "PREFIX")+TranslationHandler.getText(v, "PVP_DEATH"));
 			
 			getManager().getStatsManager().addInt(v, 1, StatsKey.DEATHS);
 			if(ev.getEntity().getKiller()!=null&&ev.getEntity().getKiller() instanceof Player){
 				getManager().getStatsManager().addInt(ev.getEntity().getKiller(), 1, StatsKey.KILLS);
 				
-				ev.getEntity().getKiller().sendMessage(TranslationManager.getText(ev.getEntity().getKiller(), "PREFIX")+TranslationManager.getText(ev.getEntity().getKiller(), "PVP_KILL",new Object[]{v.getName()} ));
+				ev.getEntity().getKiller().sendMessage(TranslationHandler.getText(ev.getEntity().getKiller(), "PREFIX")+TranslationHandler.getText(ev.getEntity().getKiller(), "PVP_KILL",new Object[]{v.getName()} ));
 			}
 		}
 	}
@@ -141,9 +101,10 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void NEW(PlayerStatsCreateEvent ev){
 		if(ev.getManager().getType() != GameType.Money){
-			if(UtilPlayer.isOnline(ev.getPlayername())){
-				getManager().getNeulingManager().add(Bukkit.getPlayer(ev.getPlayername()));
-				Bukkit.getPlayer(ev.getPlayername()).teleport(Bukkit.getPlayer(ev.getPlayername()).getWorld().getSpawnLocation());
+			if(UtilPlayer.isOnline(ev.getPlayerId())){
+				Player player = UtilPlayer.searchExact(ev.getPlayerId());
+				getManager().getNeulingManager().add(player);
+				player.teleport(player.getWorld().getSpawnLocation());
 			}
 		}
 	}
@@ -178,28 +139,11 @@ public class kPvPListener extends kListener{
 	}
 	
 	@EventHandler
-	public void loadedStats(PlayerStatsLoadedEvent ev){
-		if(ev.getManager().getType() != GameType.Money){
-			if(UtilPlayer.isOnline(ev.getPlayername())){
-				if(vote_list.contains( UtilPlayer.getRealUUID(Bukkit.getPlayer(ev.getPlayername())) )){
-					 if(UtilServer.getDeliveryPet()!=null){
-						 UtilServer.getDeliveryPet().deliveryUSE(Bukkit.getPlayer(ev.getPlayername()), "§aVote for EpicPvP", true);
-					 }
-					 vote_list.remove(UtilPlayer.getRealUUID(Bukkit.getPlayer(ev.getPlayername())));
-					 manager.getStatsManager().addDouble(Bukkit.getPlayer(ev.getPlayername()), 200, StatsKey.MONEY);
-					 UtilInv.repairInventory(Bukkit.getPlayer(ev.getPlayername()), true);
-					 Bukkit.getPlayer(ev.getPlayername()).sendMessage(TranslationManager.getText(Bukkit.getPlayer(ev.getPlayername()), "PREFIX")+TranslationManager.getText(Bukkit.getPlayer(ev.getPlayername()), "VOTE_THX"));
-				 }
-			}
-		}
-	}
-	
-	@EventHandler
 	public void Join(PlayerJoinEvent ev){
 		ev.setJoinMessage(null);
 		getManager().getStatsManager().loadPlayer(ev.getPlayer());
 		getManager().getMoney().loadPlayer(ev.getPlayer());
 		getManager().getGildenManager().loadPlayer(ev.getPlayer());
-		ev.getPlayer().sendMessage(TranslationManager.getText(ev.getPlayer(), "PREFIX")+TranslationManager.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
+		ev.getPlayer().sendMessage(TranslationHandler.getText(ev.getPlayer(), "PREFIX")+TranslationHandler.getText(ev.getPlayer(), "WHEREIS_TEXT","PvP"));
 	}
 }

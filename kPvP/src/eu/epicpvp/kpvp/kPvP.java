@@ -12,7 +12,7 @@ import eu.epicpvp.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
 import eu.epicpvp.kcore.Listener.Command.ListenerCMD;
 import eu.epicpvp.kcore.MySQL.MySQL;
 import eu.epicpvp.kcore.Permission.PermissionManager;
-import eu.epicpvp.kcore.Translation.TranslationManager;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Update.Updater;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilException;
@@ -45,7 +45,6 @@ public class kPvP extends JavaPlugin{
 	
 	public void onEnable(){
 		try{
-			TranslationManager.init(this);
 			loadConfig();
 			this.mysql=new MySQL(getConfig().getString("Config.MySQL.User"),getConfig().getString("Config.MySQL.Password"),getConfig().getString("Config.MySQL.Host"),getConfig().getString("Config.MySQL.DB"),this);
 			this.instance=this;
@@ -57,8 +56,8 @@ public class kPvP extends JavaPlugin{
 			this.hologram.RemoveText();
 			this.userData=new UserDataConfig(this);
 			this.manager=new kPvPManager(this);
-	
-			new BungeeCordFirewallListener(mysql,cmd, "pvp");
+
+			new BungeeCordFirewallListener(this,UtilServer.getCommandHandler());
 			new Listener(getManager());
 			new ListenerCMD(this);
 			UtilServer.createLagListener(cmd);

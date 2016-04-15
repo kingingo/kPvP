@@ -37,7 +37,6 @@ import eu.epicpvp.kcore.Command.Admin.CommandTpHere;
 import eu.epicpvp.kcore.Command.Admin.CommandTppos;
 import eu.epicpvp.kcore.Command.Admin.CommandTrackingRange;
 import eu.epicpvp.kcore.Command.Admin.CommandURang;
-import eu.epicpvp.kcore.Command.Admin.CommandUnBan;
 import eu.epicpvp.kcore.Command.Admin.CommandVanish;
 import eu.epicpvp.kcore.Command.Admin.CommandgBroadcast;
 import eu.epicpvp.kcore.Command.Commands.CommandBack;
@@ -117,7 +116,7 @@ import eu.epicpvp.kcore.Pet.Commands.CommandPet;
 import eu.epicpvp.kcore.Pet.Shop.PlayerPetHandler;
 import eu.epicpvp.kcore.StatsManager.StatsManager;
 import eu.epicpvp.kcore.TeleportManager.TeleportManager;
-import eu.epicpvp.kcore.Translation.TranslationManager;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Util.TimeSpan;
 import eu.epicpvp.kcore.Util.UtilEnt;
 import eu.epicpvp.kcore.Util.UtilEvent.ActionType;
@@ -126,7 +125,6 @@ import eu.epicpvp.kcore.Util.UtilLocation;
 import eu.epicpvp.kcore.Util.UtilMath;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-import eu.epicpvp.kcore.friend.FriendManager;
 import eu.epicpvp.kcore.kConfig.kConfig;
 import eu.epicpvp.kpvp.Command.Commandifix;
 import eu.epicpvp.kpvp.Listener.PerkListener;
@@ -137,8 +135,6 @@ public class kPvPManager{
 
 	@Getter
 	private GildenManager gildenManager;
-	@Getter
-	private FriendManager friendManager;
 	@Getter
 	private NeulingManager neulingManager;
 	@Getter
@@ -171,7 +167,6 @@ public class kPvPManager{
 		this.gildenManager.setAsync(true);
 		this.perkManager=new PerkManager(getPvP(),new Perk[]{new PerkStrength(),new PerkNoPotion(PotionEffectType.POISON),new PerkArrowPotionEffect(),new PerkNoWaterdamage(),new PerkGoldenApple(),new PerkHat(),new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(getPvP().getCmd())});
 		new PerkListener(perkManager);
-		this.friendManager=new FriendManager(getPvP(),getPvP().getMysql(),getPvP().getCmd());
 		this.neulingManager=new NeulingManager(getPvP(),getPvP().getCmd(),20);
 		this.antiManager=new AntiLogoutManager(getPvP(),AntiLogoutType.DROP_AMOR,40);
 		UtilServer.createGemsShop(new GemsShop(PvP.getHologram(),this.money,PvP.getCmd(), getBase(),PvP.getPermissionManager(), ServerType.PVP));
@@ -222,7 +217,6 @@ public class kPvPManager{
 		getPvP().getCmd().register(CommandLocations.class, new CommandLocations(PvP));
 		getPvP().getCmd().register(CommandStats.class, new CommandStats(getStatsManager()));
 		getPvP().getCmd().register(CommandURang.class, new CommandURang(getPvP().getPermissionManager(),getPvP().getMysql()));
-		getPvP().getCmd().register(CommandUnBan.class, new CommandUnBan(getPvP().getMysql()));
 		getPvP().getCmd().register(CommandBanned.class, new CommandBanned(getPvP().getMysql()));
 		getPvP().getCmd().register(Commandifix.class, new Commandifix());
 		getPvP().getCmd().register(CommandMoney.class, new CommandMoney(getStatsManager(),PvP.getMysql(),ServerType.PVP));
@@ -254,11 +248,11 @@ public class kPvPManager{
 					@Override
 					public void onClick(Player p, ActionType a,Object obj) {
 						p.closeInventory();
-						p.sendMessage(TranslationManager.getText(p,"PREFIX")+"§7-----------------------------------------");
-						p.sendMessage(TranslationManager.getText(p,"PREFIX")+" ");
-						p.sendMessage(TranslationManager.getText(p,"PREFIX")+"Vote Link:§a http://goo.gl/wxdAj4");
-						p.sendMessage(TranslationManager.getText(p,"PREFIX")+" ");
-						p.sendMessage(TranslationManager.getText(p,"PREFIX")+"§7-----------------------------------------");
+						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+"§7-----------------------------------------");
+						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+" ");
+						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+"Vote Link:§a http://goo.gl/wxdAj4");
+						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+" ");
+						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+"§7-----------------------------------------");
 					}
 					
 				},-1),
@@ -268,7 +262,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 200, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+10);
-						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","200"}));
+						p.sendMessage(TranslationHandler.getText(p, "PREFIX")+TranslationHandler.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","200"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -278,7 +272,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 300, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+15);
-						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","300"}));
+						p.sendMessage(TranslationHandler.getText(p, "PREFIX")+TranslationHandler.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","300"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -288,7 +282,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 400, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+20);
-						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","400"}));
+						p.sendMessage(TranslationHandler.getText(p, "PREFIX")+TranslationHandler.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","400"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -298,7 +292,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 500, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+25);
-						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","500"}));
+						p.sendMessage(TranslationHandler.getText(p, "PREFIX")+TranslationHandler.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","500"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -308,7 +302,7 @@ public class kPvPManager{
 					public void onClick(Player p, ActionType a,Object obj) {
 						getStatsManager().addDouble(p, 600, StatsKey.MONEY);
 						p.setLevel(p.getLevel()+30);
-						p.sendMessage(TranslationManager.getText(p, "PREFIX")+TranslationManager.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","600"}));
+						p.sendMessage(TranslationHandler.getText(p, "PREFIX")+TranslationHandler.getText(p, "MONEY_RECEIVE_FROM", new String[]{"§bThe Delivery Jockey!","600"}));
 					}
 					
 				},TimeSpan.DAY*7),
@@ -349,7 +343,7 @@ public class kPvPManager{
 					
 					getStatsManager().addDouble(player, 200, StatsKey.MONEY);
 					UtilInv.repairInventory(player, true);
-					player.sendMessage(TranslationManager.getText(player, "PREFIX")+TranslationManager.getText(player, "VOTE_THX"));
+					player.sendMessage(TranslationHandler.getText(player, "PREFIX")+TranslationHandler.getText(player, "VOTE_THX"));
 				}
 			}
 		});
