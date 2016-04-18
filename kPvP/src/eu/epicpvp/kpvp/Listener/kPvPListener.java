@@ -112,7 +112,6 @@ public class kPvPListener extends kListener{
 	@EventHandler
 	public void saveStats(PlayerQuitEvent ev){
 		ev.setQuitMessage(null);
-		getManager().getStatsManager().SaveAllPlayerData(ev.getPlayer());
 	}
 	
 	@EventHandler
@@ -122,7 +121,7 @@ public class kPvPListener extends kListener{
 	
 	@EventHandler
 	public void SendHolo(PlayerJoinEvent ev){
-		TabTitle.setHeaderAndFooter(ev.getPlayer(), "§eEpicPvP§8.§eeu §8| §aPvP Server", "§aTeamSpeak: §7ts.EpicPvP.eu §8| §eWebsite: §7EpicPvP.eu");
+		UtilPlayer.setTab(ev.getPlayer(), "PvP-Server");
 	}
 	
 	@EventHandler

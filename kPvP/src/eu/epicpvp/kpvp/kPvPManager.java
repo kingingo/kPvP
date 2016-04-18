@@ -216,7 +216,7 @@ public class kPvPManager{
 		getPvP().getCmd().register(CommandPerk.class, new CommandPerk(perkManager));
 		getPvP().getCmd().register(CommandLocations.class, new CommandLocations(PvP));
 		getPvP().getCmd().register(CommandStats.class, new CommandStats(getStatsManager()));
-		getPvP().getCmd().register(CommandURang.class, new CommandURang(getPvP().getPermissionManager(),getPvP().getMysql()));
+		getPvP().getCmd().register(CommandURang.class, new CommandURang(getPvP().getPermissionManager()));
 		getPvP().getCmd().register(CommandBanned.class, new CommandBanned(getPvP().getMysql()));
 		getPvP().getCmd().register(Commandifix.class, new Commandifix());
 		getPvP().getCmd().register(CommandMoney.class, new CommandMoney(getStatsManager(),PvP.getMysql(),ServerType.PVP));

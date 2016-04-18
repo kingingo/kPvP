@@ -12,11 +12,13 @@ import eu.epicpvp.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
 import eu.epicpvp.kcore.Listener.Command.ListenerCMD;
 import eu.epicpvp.kcore.MySQL.MySQL;
 import eu.epicpvp.kcore.Permission.PermissionManager;
+import eu.epicpvp.kcore.Permission.Group.GroupTyp;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Update.Updater;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilException;
 import eu.epicpvp.kcore.Util.UtilServer;
+import eu.epicpvp.kcore.Util.UtilTime;
 import eu.epicpvp.kpvp.Listener.Listener;
 import lombok.Getter;
 
@@ -51,12 +53,13 @@ public class kPvP extends JavaPlugin{
 			this.updater=new Updater(this);
 			this.client = UtilServer.createClient(this,ClientType.OTHER, getConfig().getString("Config.Client.Host"), getConfig().getInt("Config.Client.Port"), "PvP");
 			this.cmd=new CommandHandler(this);
-			this.permissionManager=new PermissionManager(this);
+			this.permissionManager=new PermissionManager(this,GroupTyp.PVP);
 			this.hologram=new Hologram(this);
 			this.hologram.RemoveText();
 			this.userData=new UserDataConfig(this);
 			this.manager=new kPvPManager(this);
 
+			UtilTime.setTimeManager(getPermissionManager());
 			new BungeeCordFirewallListener(this,UtilServer.getCommandHandler());
 			new Listener(getManager());
 			new ListenerCMD(this);
