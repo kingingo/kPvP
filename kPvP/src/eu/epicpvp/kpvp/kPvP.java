@@ -8,6 +8,7 @@ import dev.wolveringer.client.connection.ClientType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.Command.CommandHandler;
 import eu.epicpvp.kcore.Hologram.Hologram;
+import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
 import eu.epicpvp.kcore.Listener.Command.ListenerCMD;
 import eu.epicpvp.kcore.MySQL.MySQL;
@@ -63,6 +64,7 @@ public class kPvP extends JavaPlugin{
 			new BungeeCordFirewallListener(this,UtilServer.getCommandHandler());
 			new Listener(getManager());
 			new ListenerCMD(this);
+			new AntiCrashListener(getClient(), getMysql());
 			UtilServer.createLagListener(cmd);
 		}catch(Exception e){
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
