@@ -29,6 +29,7 @@ import eu.epicpvp.kcore.Command.Admin.CommandGiveGems;
 import eu.epicpvp.kcore.Command.Admin.CommandItem;
 import eu.epicpvp.kcore.Command.Admin.CommandLocations;
 import eu.epicpvp.kcore.Command.Admin.CommandMore;
+import eu.epicpvp.kcore.Command.Admin.CommandPacketToggle;
 import eu.epicpvp.kcore.Command.Admin.CommandPvPMute;
 import eu.epicpvp.kcore.Command.Admin.CommandSocialspy;
 import eu.epicpvp.kcore.Command.Admin.CommandToggle;
@@ -238,6 +239,7 @@ public class kPvPManager{
 		getPvP().getCmd().register(CommandRemoveEnchantment.class, new CommandRemoveEnchantment());
 		getPvP().getCmd().register(CommandEnchantmentTable.class, new CommandEnchantmentTable());
 		getPvP().getCmd().register(CommandPotion.class, new CommandPotion(getPvP().getPermissionManager()));
+		getPvP().getCmd().register(CommandPacketToggle.class, new CommandPacketToggle(getPvP().getInstance()));
 		getPvP().getCmd().register(CommandAddEpics.class, new CommandAddEpics(getStatsManager()));
 		getPvP().getCmd().register(CommandGiveGems.class, new CommandGiveGems(UtilServer.getGemsShop().getGems()));
 		

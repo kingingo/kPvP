@@ -158,6 +158,10 @@ public class Listener extends kListener{
 				ev.setCancelled(true);
 				restart();
 			}
+		}else{
+			if(manager.getAntiManager().is(ev.getPlayer())){
+				if(cmd.equalsIgnoreCase("/handel")||cmd.equalsIgnoreCase("/trade"))ev.setCancelled(true);
+			}
 		}
 	}
 
