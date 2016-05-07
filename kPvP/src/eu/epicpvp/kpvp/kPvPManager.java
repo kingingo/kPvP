@@ -149,8 +149,6 @@ public class kPvPManager{
 	@Getter
 	private PetManager petManager;
 	@Getter
-	private InventoryBase base;
-	@Getter
 	private PlayerPetHandler petHandler;
 	@Getter
 	private kPvP PvP;
@@ -160,7 +158,6 @@ public class kPvPManager{
 	public kPvPManager(kPvP PvP){
 		this.PvP=PvP;
 		this.teleport=new TeleportManager(getPvP().getCmd(), getPvP().getPermissionManager(), 5);
-		this.base=new InventoryBase(PvP);
 		this.petManager=new PetManager(PvP);
 		this.money=new StatsManager(PvP, PvP.getClient(), GameType.Money);
 		this.statsManager=new StatsManager(PvP, PvP.getClient(), GameType.PVP);
@@ -170,8 +167,8 @@ public class kPvPManager{
 		new PerkListener(perkManager);
 		this.neulingManager=new NeulingManager(getPvP(),getPvP().getCmd(),20);
 		this.antiManager=new AntiLogoutManager(getPvP(),AntiLogoutType.DROP_AMOR,40);
-		UtilServer.createGemsShop(new GemsShop(PvP.getHologram(),this.money,PvP.getCmd(), getBase(),PvP.getPermissionManager(), ServerType.PVP));
-		this.petHandler = new PlayerPetHandler(ServerType.PVP, PvP.getMysql(),getPetManager(), getBase(), PvP.getPermissionManager());
+		UtilServer.createGemsShop(new GemsShop(PvP.getHologram(),this.money,PvP.getCmd(), UtilInv.getBase(),PvP.getPermissionManager(), ServerType.PVP));
+		this.petHandler = new PlayerPetHandler(ServerType.PVP, PvP.getMysql(),getPetManager(), PvP.getPermissionManager());
 		this.petHandler.setAsync(true);
 		new ItemShop(statsManager, getPvP().getCmd());
 		
@@ -244,7 +241,7 @@ public class kPvPManager{
 		getPvP().getCmd().register(CommandGiveGems.class, new CommandGiveGems(UtilServer.getGemsShop().getGems()));
 		
 		
-		UtilServer.createDeliveryPet(new DeliveryPet(getBase(),null,new DeliveryObject[]{
+		UtilServer.createDeliveryPet(new DeliveryPet( UtilInv.getBase(),null,new DeliveryObject[]{
 			new DeliveryObject(new String[]{"","§7Click for Vote!","","§ePvP Rewards:","§7   200 Epics","§7   1x Inventory Repair","","§eGame Rewards:","§7   25 Gems","§7   100 Coins","","§eSkyBlock Rewards:","§7   200 Epics","§7   2x Diamonds","§7   2x Iron Ingot","§7   2x Gold Ingot"},PermissionType.DELIVERY_PET_VOTE,false,28,"§aVote for ClashMC",Material.PAPER,Material.REDSTONE_BLOCK,new Click(){
 
 					@Override
@@ -395,7 +392,7 @@ public class kPvPManager{
 						}
 						
 					}, "§a§lRandom Teleport", UtilServer.getGemsShop().getGems(), 25,0);
-					getBase().addAnother(buy);
+					 UtilInv.getBase().addAnother(buy);
 					p.openInventory((Inventory) buy);
 					
 				}else{
