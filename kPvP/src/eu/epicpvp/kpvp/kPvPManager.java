@@ -249,7 +249,7 @@ public class kPvPManager{
 						p.closeInventory();
 						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+"§7-----------------------------------------");
 						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+" ");
-						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+"Vote Link:§a http://mcsl.name/29874");
+						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+"Vote Link:§a http://vote.clashmc.eu/");
 						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+" ");
 						p.sendMessage(TranslationHandler.getText(p,"PREFIX")+"§7-----------------------------------------");
 					}
