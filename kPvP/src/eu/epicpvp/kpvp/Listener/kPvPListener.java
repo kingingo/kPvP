@@ -19,6 +19,7 @@ import dev.wolveringer.dataserver.gamestats.GameType;
 import dev.wolveringer.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.AntiLogout.Events.AntiLogoutAddPlayerEvent;
 import eu.epicpvp.kcore.AntiLogout.Events.AntiLogoutDelPlayerEvent;
+import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Gilden.Events.GildenPlayerTeleportEvent;
 import eu.epicpvp.kcore.Listener.kListener;
 import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
@@ -48,6 +49,12 @@ public class kPvPListener extends kListener{
 		if(ev.getCause()==TeleportCause.ENDER_PEARL&& (!ev.getPlayer().isPermissionSet("kpvp.enderpearl")) ){
 			ev.setCancelled(true);
 		}
+	}
+	
+	@EventHandler
+	public void update(ServerStatusUpdateEvent ev){
+		ev.getPacket().setPlayers(UtilServer.getPlayers().size());
+		ev.getPacket().setTyp(GameType.PVP);
 	}
 	
 	@EventHandler
