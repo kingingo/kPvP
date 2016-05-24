@@ -26,6 +26,7 @@ import eu.epicpvp.kcore.Command.Admin.CommandFlyspeed;
 import eu.epicpvp.kcore.Command.Admin.CommandGive;
 import eu.epicpvp.kcore.Command.Admin.CommandGiveAll;
 import eu.epicpvp.kcore.Command.Admin.CommandGiveGems;
+import eu.epicpvp.kcore.Command.Admin.CommandHomeCheck;
 import eu.epicpvp.kcore.Command.Admin.CommandItem;
 import eu.epicpvp.kcore.Command.Admin.CommandLocations;
 import eu.epicpvp.kcore.Command.Admin.CommandMore;
@@ -163,11 +164,11 @@ public class kPvPManager{
 		this.statsManager=new StatsManager(PvP, PvP.getClient(), GameType.PVP);
 		this.gildenManager=new GildenManager(getPvP().getMysql(),GildenType.PVP,getPvP().getCmd(),getStatsManager());
 		this.gildenManager.setAsync(true);
-		this.perkManager=new PerkManager(getPvP(),new Perk[]{new PerkStrength(),new PerkNoPotion(PotionEffectType.POISON),new PerkArrowPotionEffect(),new PerkNoWaterdamage(),new PerkGoldenApple(),new PerkHat(),new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(0.35F),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(getPvP().getCmd())});
+		this.perkManager=new PerkManager(getPvP(),new Perk[]{new PerkStrength(),new PerkNoPotion(PotionEffectType.POISON),new PerkArrowPotionEffect(),new PerkNoWaterdamage(),new PerkGoldenApple(),new PerkHat(),new PerkNoHunger(),new PerkHealPotion(1),new PerkNoFiredamage(),new PerkRunner(),new PerkDoubleJump(),new PerkDoubleXP(),new PerkDropper(),new PerkGetXP(),new PerkPotionClear(),new PerkItemName(getPvP().getCmd())});
 		new PerkListener(perkManager);
 		this.neulingManager=new NeulingManager(getPvP(),getPvP().getCmd(),20);
 		this.antiManager=new AntiLogoutManager(getPvP(),AntiLogoutType.DROP_AMOR,40);
-		UtilServer.createGemsShop(new GemsShop(PvP.getHologram(),this.money,PvP.getCmd(), UtilInv.getBase(),PvP.getPermissionManager(), ServerType.PVP));
+		UtilServer.createGemsShop(new GemsShop(ServerType.PVP));
 		this.petHandler = new PlayerPetHandler(ServerType.PVP, PvP.getMysql(),getPetManager(), PvP.getPermissionManager());
 		this.petHandler.setAsync(true);
 		new ItemShop(statsManager, getPvP().getCmd());
@@ -239,7 +240,7 @@ public class kPvPManager{
 		getPvP().getCmd().register(CommandPacketToggle.class, new CommandPacketToggle(getPvP().getInstance()));
 		getPvP().getCmd().register(CommandAddEpics.class, new CommandAddEpics(getStatsManager()));
 		getPvP().getCmd().register(CommandGiveGems.class, new CommandGiveGems(UtilServer.getGemsShop().getGems()));
-		
+		getPvP().getCmd().register(CommandHomeCheck.class, new CommandHomeCheck(getPvP()));
 		
 		UtilServer.createDeliveryPet(new DeliveryPet( UtilInv.getBase(),null,new DeliveryObject[]{
 			new DeliveryObject(new String[]{"","§7Click for Vote!","","§ePvP Rewards:","§7   200 Epics","§7   1x Inventory Repair","","§eGame Rewards:","§7   25 Gems","§7   100 Coins","","§eSkyBlock Rewards:","§7   200 Epics","§7   2x Diamonds","§7   2x Iron Ingot","§7   2x Gold Ingot"},PermissionType.DELIVERY_PET_VOTE,false,28,"§aVote for ClashMC",Material.PAPER,Material.REDSTONE_BLOCK,new Click(){
