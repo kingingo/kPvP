@@ -61,7 +61,7 @@ public class kPvP extends JavaPlugin{
 			this.manager=new kPvPManager(this);
 
 			UtilTime.setTimeManager(getPermissionManager());
-			new BungeeCordFirewallListener(this,UtilServer.getCommandHandler());
+			new BungeeCordFirewallListener(UtilServer.getCommandHandler());
 			new Listener(getManager());
 			new ListenerCMD(this);
 			new AntiCrashListener(getClient(), getMysql());
