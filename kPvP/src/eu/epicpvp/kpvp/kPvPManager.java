@@ -334,7 +334,7 @@ public class kPvPManager{
 		new VoteListener(getPvP(),true, new Callback<String>() {
 			
 			@Override
-			public void call(String playerName) {
+			public void call(String playerName,Throwable ex) {
 				if(UtilPlayer.isOnline(playerName)){
 					Player player = Bukkit.getPlayer(playerName);
 					if(UtilServer.getDeliveryPet()!=null){
