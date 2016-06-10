@@ -3,6 +3,7 @@ package eu.epicpvp.kpvp;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.client.connection.ClientType;
 import eu.epicpvp.kcore.AACHack.AACHack;
@@ -13,8 +14,6 @@ import eu.epicpvp.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
 import eu.epicpvp.kcore.Listener.Command.ListenerCMD;
 import eu.epicpvp.kcore.MySQL.MySQL;
 import eu.epicpvp.kcore.Permission.PermissionManager;
-import eu.epicpvp.kcore.Permission.Group.GroupTyp;
-import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Update.Updater;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilException;

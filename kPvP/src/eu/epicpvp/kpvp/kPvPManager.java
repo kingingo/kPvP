@@ -82,7 +82,6 @@ import eu.epicpvp.kcore.Gilden.GildenManager;
 import eu.epicpvp.kcore.Gilden.GildenType;
 import eu.epicpvp.kcore.Hologram.nametags.NameTagMessage;
 import eu.epicpvp.kcore.Hologram.nametags.NameTagType;
-import eu.epicpvp.kcore.Inventory.InventoryBase;
 import eu.epicpvp.kcore.Inventory.Inventory.InventoryBuy;
 import eu.epicpvp.kcore.Inventory.Item.Click;
 import eu.epicpvp.kcore.ItemShop.ItemShop;
