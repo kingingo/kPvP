@@ -13,6 +13,7 @@ import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
 import eu.epicpvp.kcore.Listener.Command.ListenerCMD;
 import eu.epicpvp.kcore.MySQL.MySQL;
+import eu.epicpvp.kcore.Particle.WingShop;
 import eu.epicpvp.kcore.Permission.PermissionManager;
 import eu.epicpvp.kcore.Update.Updater;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
@@ -64,6 +65,7 @@ public class kPvP extends JavaPlugin{
 			new Listener(getManager());
 			new ListenerCMD(this);
 			new AntiCrashListener(getClient(), getMysql());
+			new WingShop(this);
 			UtilServer.createLagListener(cmd);
 		}catch(Exception e){
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
