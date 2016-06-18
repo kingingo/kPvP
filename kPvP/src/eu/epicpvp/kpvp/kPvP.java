@@ -8,6 +8,7 @@ import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.client.connection.ClientType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.Command.CommandHandler;
+import eu.epicpvp.kcore.Command.Admin.CommandLocations;
 import eu.epicpvp.kcore.Hologram.Hologram;
 import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
@@ -65,7 +66,8 @@ public class kPvP extends JavaPlugin{
 			new Listener(getManager());
 			new ListenerCMD(this);
 			new AntiCrashListener(getClient(), getMysql());
-			new WingShop(this);
+			WingShop wings = new WingShop(this);
+			wings.setEntity(CommandLocations.getLocation("wingshop"));
 			UtilServer.createLagListener(cmd);
 		}catch(Exception e){
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
