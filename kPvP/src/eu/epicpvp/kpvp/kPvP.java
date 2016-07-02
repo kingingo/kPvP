@@ -24,7 +24,7 @@ import eu.epicpvp.kcore.Util.UtilTime;
 import eu.epicpvp.kpvp.Listener.Listener;
 import lombok.Getter;
 
-public class kPvP extends JavaPlugin{
+public class kPvP extends JavaPlugin {
 
 	@Getter
 	private ClientWrapper client;
@@ -46,20 +46,20 @@ public class kPvP extends JavaPlugin{
 	private Hologram hologram;
 	@Getter
 	private kPvPManager manager;
-	
-	public void onEnable(){
-		try{
+
+	public void onEnable() {
+		try {
 			loadConfig();
-			this.mysql=new MySQL(getConfig().getString("Config.MySQL.User"),getConfig().getString("Config.MySQL.Password"),getConfig().getString("Config.MySQL.Host"),getConfig().getString("Config.MySQL.DB"),this);
-			this.instance=this;
-			this.updater=new Updater(this);
-			this.client = UtilServer.createClient(this,ClientType.OTHER, getConfig().getString("Config.Client.Host"), getConfig().getInt("Config.Client.Port"), "PvP");
-			this.cmd=new CommandHandler(this);
-			this.permissionManager=new PermissionManager(this,GroupTyp.PVP);
-			this.hologram=new Hologram(this);
+			this.mysql = new MySQL(getConfig().getString("Config.MySQL.User"), getConfig().getString("Config.MySQL.Password"), getConfig().getString("Config.MySQL.Host"), getConfig().getString("Config.MySQL.DB"), this);
+			this.instance = this;
+			this.updater = new Updater(this);
+			this.client = UtilServer.createClient(this, ClientType.OTHER, getConfig().getString("Config.Client.Host"), getConfig().getInt("Config.Client.Port"), "PvP");
+			this.cmd = new CommandHandler(this);
+			this.permissionManager = new PermissionManager(this, GroupTyp.PVP);
+			this.hologram = new Hologram(this);
 			this.hologram.RemoveText();
-			this.userData=new UserDataConfig(this);
-			this.manager=new kPvPManager(this);
+			this.userData = new UserDataConfig(this);
+			this.manager = new kPvPManager(this);
 
 			UtilTime.setTimeManager(getPermissionManager());
 			new BungeeCordFirewallListener(UtilServer.getCommandHandler());
@@ -69,26 +69,26 @@ public class kPvP extends JavaPlugin{
 			WingShop wings = new WingShop(this);
 			wings.setEntity(CommandLocations.getLocation("wingshop"));
 			UtilServer.createLagListener(cmd);
-		}catch(Exception e){
+		} catch (Exception e) {
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
 		}
 	}
-	
-	public void onDisable(){
+
+	public void onDisable() {
 		this.manager.onDisable();
 		UtilServer.disable();
 		saveConfig();
 	}
-	
-	public void loadConfig(){
+
+	public void loadConfig() {
 		getConfig().addDefault("Config.MySQL.Host", "NONE");
-	    getConfig().addDefault("Config.MySQL.DB", "NONE");
-	    getConfig().addDefault("Config.MySQL.User", "NONE");
-	    getConfig().addDefault("Config.MySQL.Password", "NONE");
-	    getConfig().addDefault("Config.Client.Host", "79.133.55.5");
-	    getConfig().addDefault("Config.Client.Port", 9051);
-	    getConfig().options().copyDefaults(true);
-	    saveConfig();
-	  }
-	
+		getConfig().addDefault("Config.MySQL.DB", "NONE");
+		getConfig().addDefault("Config.MySQL.User", "NONE");
+		getConfig().addDefault("Config.MySQL.Password", "NONE");
+		getConfig().addDefault("Config.Client.Host", "79.133.55.5");
+		getConfig().addDefault("Config.Client.Port", 9051);
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+	}
+
 }
