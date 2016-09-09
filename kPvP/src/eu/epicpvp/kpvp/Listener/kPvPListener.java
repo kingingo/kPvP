@@ -2,6 +2,7 @@ package eu.epicpvp.kpvp.Listener;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -105,7 +106,7 @@ public class kPvPListener extends kListener{
 			if(UtilPlayer.isOnline(ev.getPlayerId())){
 				Player player = UtilPlayer.searchExact(ev.getPlayerId());
 				getManager().getNeulingManager().add(player);
-				player.teleport(player.getWorld().getSpawnLocation());
+				player.teleport(Bukkit.getWorld("world").getSpawnLocation());
 			}
 		}
 	}

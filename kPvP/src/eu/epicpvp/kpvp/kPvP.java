@@ -69,7 +69,7 @@ public class kPvP extends JavaPlugin {
 			new AntiCrashListener(getClient(), getMysql());
 			WingShop wings = new WingShop(this);
 			wings.setEntity(CommandLocations.getLocation("wingshop"));
-			UtilServer.getLagListener(); //Init if not alredy init
+			UtilServer.getLagListener(); //Init if not already init
 		} catch (Exception e) {
 			UtilException.catchException(e, "pvp", Bukkit.getIp(), mysql);
 		}

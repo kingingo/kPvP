@@ -159,7 +159,7 @@ public class kPvPManager {
 
 	public kPvPManager(kPvP PvP) {
 		this.PvP = PvP;
-		this.teleport = new TeleportManager(getPvP().getCmd(), getPvP().getPermissionManager(), 5);
+		this.teleport = new TeleportManager(getPvP().getCmd(), getPvP().getPermissionManager());
 		this.petManager = new PetManager(PvP);
 		this.money = StatsManagerRepository.createStatsManager(GameType.Money);
 		this.statsManager = StatsManagerRepository.createStatsManager(GameType.PVP);
