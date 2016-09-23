@@ -332,7 +332,7 @@ public class kPvPManager {
 
 		new EnderChestListener(getPvP().getUserData());
 		new kPvPListener(this);
-		new ChatListener(getPvP(), gildenManager, getPvP().getPermissionManager(), getPvP().getUserData());
+		new ChatListener();
 		new EnderpearlListener(getPvP());
 		getPerkManager().setPerkEntity(CommandLocations.getLocation("perk"));
 		setRandomCreature(CommandLocations.getLocation("random"));
