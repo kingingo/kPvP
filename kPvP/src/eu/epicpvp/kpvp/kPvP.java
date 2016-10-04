@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.wolveringer.bukkit.permissions.GroupTyp;
-import dev.wolveringer.client.ClientWrapper;
+import eu.epicpvp.datenclient.client.ClientWrapper;
 import dev.wolveringer.client.connection.ClientType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.Command.CommandHandler;
