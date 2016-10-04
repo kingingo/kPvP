@@ -13,8 +13,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import dev.wolveringer.dataserver.gamestats.GameType;
-import dev.wolveringer.dataserver.gamestats.StatsKey;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.GameType;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.AntiLogout.Events.AntiLogoutAddPlayerEvent;
 import eu.epicpvp.kcore.AntiLogout.Events.AntiLogoutDelPlayerEvent;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
@@ -33,25 +33,25 @@ public class kPvPListener extends kListener{
 	@Getter
 	private kPvPManager manager;
 	private HashMap<Player,String> pet_respawn = new HashMap<>();
-	
+
 	public kPvPListener(kPvPManager manager){
 		super(manager.getPvP(),"[kPvPListener]");
 		this.manager=manager;
 	}
-	
+
 	@EventHandler
 	public void Enderpearl(PlayerTeleportEvent ev){
 		if(ev.getCause()==TeleportCause.ENDER_PEARL&& (!ev.getPlayer().isPermissionSet("kpvp.enderpearl")) ){
 			ev.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void update(ServerStatusUpdateEvent ev){
 		ev.getPacket().setPlayers(UtilServer.getPlayers().size());
 		ev.getPacket().setTyp(GameType.PVP);
 	}
-	
+
 	@EventHandler
 	public void playerTeleport(PlayerTeleportEvent ev){
 		if(!getManager().getAntiManager().is(ev.getPlayer())){
@@ -59,7 +59,7 @@ public class kPvPListener extends kListener{
 			ev.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void GildeHome(GildenPlayerTeleportEvent ev){
 		if(!getManager().getAntiManager().is(ev.getPlayer())){
@@ -67,7 +67,7 @@ public class kPvPListener extends kListener{
 			ev.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void AntiLogoutdelPlayer(AntiLogoutDelPlayerEvent ev){
 		if(pet_respawn.containsKey(ev.getPlayer())){
@@ -83,23 +83,23 @@ public class kPvPListener extends kListener{
 			manager.getPetManager().RemovePet(ev.getPlayer(), true);
 		}
 	}
-	
+
 	@EventHandler
 	public void Death(PlayerDeathEvent ev){
 		ev.setDeathMessage(null);
 		if(ev.getEntity() instanceof Player){
 			Player v = (Player)ev.getEntity();
 			v.sendMessage(TranslationHandler.getText(v, "PREFIX")+TranslationHandler.getText(v, "PVP_DEATH"));
-			
+
 			getManager().getStatsManager().addInt(v, 1, StatsKey.DEATHS);
 			if(ev.getEntity().getKiller()!=null&&ev.getEntity().getKiller() instanceof Player){
 				getManager().getStatsManager().addInt(ev.getEntity().getKiller(), 1, StatsKey.KILLS);
-				
+
 				ev.getEntity().getKiller().sendMessage(TranslationHandler.getText(ev.getEntity().getKiller(), "PREFIX")+TranslationHandler.getText(ev.getEntity().getKiller(), "PVP_KILL",new Object[]{v.getName()} ));
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void NEW(PlayerStatsCreateEvent ev){
 		if(ev.getManager().getType() != GameType.Money){
@@ -110,22 +110,22 @@ public class kPvPListener extends kListener{
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void saveStats(PlayerQuitEvent ev){
 		ev.setQuitMessage(null);
 	}
-	
+
 	@EventHandler
 	public void AddBoard(PlayerSetScoreboardEvent ev){
 		UtilPlayer.setScoreboardGems(ev.getPlayer(), UtilServer.getGemsShop().getGems());
 	}
-	
+
 	@EventHandler
 	public void SendHolo(PlayerJoinEvent ev){
 		UtilPlayer.setTab(ev.getPlayer(), "PvP-Server");
 	}
-	
+
 	@EventHandler
 	public void pet(EntityDamageByEntityEvent ev){
 		if(ev.getEntity() instanceof Creature){
@@ -138,7 +138,7 @@ public class kPvPListener extends kListener{
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void Join(PlayerJoinEvent ev){
 		ev.setJoinMessage(null);

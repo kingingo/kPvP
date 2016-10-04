@@ -10,9 +10,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffectType;
 
 import eu.epicpvp.datenclient.client.Callback;
-import dev.wolveringer.dataserver.gamestats.GameType;
-import dev.wolveringer.dataserver.gamestats.ServerType;
-import dev.wolveringer.dataserver.gamestats.StatsKey;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.GameType;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.ServerType;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.AntiLogout.AntiLogoutManager;
 import eu.epicpvp.kcore.AntiLogout.AntiLogoutType;
 import eu.epicpvp.kcore.Command.Admin.CommandAddEpics;
