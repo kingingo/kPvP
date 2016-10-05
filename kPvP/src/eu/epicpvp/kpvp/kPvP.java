@@ -3,9 +3,9 @@ package eu.epicpvp.kpvp;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import dev.wolveringer.bukkit.permissions.GroupTyp;
 import eu.epicpvp.datenclient.client.ClientWrapper;
-import dev.wolveringer.client.connection.ClientType;
+import eu.epicpvp.datenserver.definitions.connection.ClientType;
+import eu.epicpvp.datenserver.definitions.permissions.GroupTyp;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.Command.CommandHandler;
 import eu.epicpvp.kcore.Command.Admin.CommandLocations;
