@@ -111,6 +111,7 @@ import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.Listener.EnderChest.EnderChestListener;
 import eu.epicpvp.kcore.Listener.Enderpearl.EnderpearlListener;
 import eu.epicpvp.kcore.Listener.EntityClick.EntityClickListener;
+import eu.epicpvp.kcore.Listener.FlyListener.FlyListener;
 import eu.epicpvp.kcore.Listener.VoteListener.VoteListener;
 import eu.epicpvp.kcore.Neuling.NeulingManager;
 import eu.epicpvp.kcore.Permission.PermissionType;
@@ -338,7 +339,8 @@ public class kPvPManager {
 		new EnderpearlListener(getPvP());
 		getPerkManager().setPerkEntity(CommandLocations.getLocation("perk"));
 		setRandomCreature(CommandLocations.getLocation("random"));
-
+//		new FlyListener();
+		
 		new VoteListener(getPvP(), true, new Callback<String>() {
 
 			@Override
