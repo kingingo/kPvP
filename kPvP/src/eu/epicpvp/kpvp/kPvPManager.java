@@ -29,6 +29,7 @@ import eu.epicpvp.kcore.Command.Admin.CommandGiveAll;
 import eu.epicpvp.kcore.Command.Admin.CommandGiveGems;
 import eu.epicpvp.kcore.Command.Admin.CommandHomeCheck;
 import eu.epicpvp.kcore.Command.Admin.CommandItem;
+import eu.epicpvp.kcore.Command.Admin.CommandK;
 import eu.epicpvp.kcore.Command.Admin.CommandLocations;
 import eu.epicpvp.kcore.Command.Admin.CommandMore;
 import eu.epicpvp.kcore.Command.Admin.CommandPacketToggle;
@@ -192,6 +193,7 @@ public class kPvPManager {
 		getPvP().getCmd().register(CommandMsg.class, new CommandMsg());
 		getPvP().getCmd().register(CommandFeed.class, new CommandFeed());
 		getPvP().getCmd().register(CommandRepair.class, new CommandRepair());
+		getPvP().getCmd().register(CommandK.class, new CommandK());
 		getPvP().getCmd().register(CommandTag.class, new CommandTag());
 		getPvP().getCmd().register(CommandNacht.class, new CommandNacht());
 		getPvP().getCmd().register(CommandWarp.class, new CommandWarp(getTeleport()));
@@ -247,14 +249,14 @@ public class kPvPManager {
 
 		UtilServer.getDeliveryPet(new DeliveryPet(UtilInv.getBase(), null, new DeliveryObject[]
 		{ new DeliveryObject(new String[]
-				{ "", "§7Click for Vote!", "", "§ePvP Rewards:", "§7   200 Epics", "§7   1x Inventory Repair", "", "§eGame Rewards:", "§7   25 Gems", "§7   100 Coins", "", "§eSkyBlock Rewards:", "§7   200 Epics", "§7   2x Diamonds", "§7   2x Iron Ingot", "§7   2x Gold Ingot" }, PermissionType.DELIVERY_PET_VOTE, false, 28, "§aVote for ClashMC", Material.PAPER, Material.REDSTONE_BLOCK, new Click() {
+				{ "", "§7Click for Vote!", "", "§ePvP Rewards:", "§7   200 Epics", "§7   1x Inventory Repair", "", "§eGame Rewards:", "§7   25 Gems", "§7   100 Coins", "", "§eSkyBlock Rewards:", "§7   200 Epics", "§7   2x Diamonds", "§7   2x Iron Ingot", "§7   2x Gold Ingot" }, PermissionType.DELIVERY_PET_VOTE, false, 28, "§aVote for EpicPvP", Material.PAPER, Material.REDSTONE_BLOCK, new Click() {
 
 					@Override
 					public void onClick(Player p, ActionType a, Object obj) {
 						p.closeInventory();
 						p.sendMessage(TranslationHandler.getText(p, "PREFIX") + "§7-----------------------------------------");
 						p.sendMessage(TranslationHandler.getText(p, "PREFIX") + " ");
-						p.sendMessage(TranslationHandler.getText(p, "PREFIX") + "Vote Link:§a http://vote.clashmc.eu/");
+						p.sendMessage(TranslationHandler.getText(p, "PREFIX") + "Vote Link:§a http://vote.EpicPvP.eu/");
 						p.sendMessage(TranslationHandler.getText(p, "PREFIX") + " ");
 						p.sendMessage(TranslationHandler.getText(p, "PREFIX") + "§7-----------------------------------------");
 					}
@@ -344,7 +346,7 @@ public class kPvPManager {
 				if (UtilPlayer.isOnline(playerName)) {
 					Player player = Bukkit.getPlayer(playerName);
 					if (UtilServer.getDeliveryPet() != null) {
-						UtilServer.getDeliveryPet().deliveryUSE(player, "§aVote for ClashMC", true);
+						UtilServer.getDeliveryPet().deliveryUSE(player, "§aVote for EpicPvP", true);
 					}
 
 					getStatsManager().addDouble(player, 200, StatsKey.MONEY);
