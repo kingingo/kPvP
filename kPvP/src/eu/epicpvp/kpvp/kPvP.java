@@ -97,7 +97,6 @@ public class kPvP extends JavaPlugin {
 			new CustomEnchantment("Lightning", new LightningEnchantmentListener(5));
 			new CustomEnchantment("Blaze", new BlazeEnchantmentListener());
 			new CustomEnchantment("Wither", new WitherEnchantmentListener());
-			new CustomEnchantment("Poison", new PoisonEnchantmentListener());
 			new CustomEnchantment("Poisened", new PoisenedEnchantmentListener());
 			new CustomEnchantment("Frozen", new FrozenEnchantmentListener());
 			new CustomEnchantment("Obsidianshield", new ObsidianshieldEnchantmentListener());
