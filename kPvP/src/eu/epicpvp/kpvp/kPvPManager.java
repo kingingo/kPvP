@@ -15,6 +15,7 @@ import eu.epicpvp.datenserver.definitions.dataserver.gamestats.ServerType;
 import eu.epicpvp.datenserver.definitions.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.AntiLogout.AntiLogoutManager;
 import eu.epicpvp.kcore.AntiLogout.AntiLogoutType;
+import eu.epicpvp.kcore.AuktionsMarkt.AuktionsMarkt;
 import eu.epicpvp.kcore.Command.Admin.CommandAddEpics;
 import eu.epicpvp.kcore.Command.Admin.CommandBanned;
 import eu.epicpvp.kcore.Command.Admin.CommandBroadcast;
@@ -339,7 +340,8 @@ public class kPvPManager {
 		new EnderpearlListener(getPvP());
 		getPerkManager().setPerkEntity(CommandLocations.getLocation("perk"));
 		setRandomCreature(CommandLocations.getLocation("random"));
-//		new FlyListener();
+		new FlyListener();
+		new AuktionsMarkt();
 		
 		new VoteListener(getPvP(), true, new Callback<String>() {
 

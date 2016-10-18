@@ -9,7 +9,6 @@ import eu.epicpvp.datenclient.client.ClientWrapper;
 import eu.epicpvp.datenserver.definitions.connection.ClientType;
 import eu.epicpvp.datenserver.definitions.permissions.GroupTyp;
 import eu.epicpvp.kcore.AACHack.AACHack;
-import eu.epicpvp.kcore.AuktionsMarkt.AuktionsMarkt;
 import eu.epicpvp.kcore.Command.CommandHandler;
 import eu.epicpvp.kcore.Command.Admin.CommandLocations;
 import eu.epicpvp.kcore.Hologram.Hologram;
@@ -26,8 +25,12 @@ import eu.epicpvp.kcore.Util.UtilItem;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilTime;
 import eu.epicpvp.kcore.deliverychest.DeliveryChest;
-import eu.epicpvp.kcore.deliverychest.DeliveryChestHandler;
 import eu.epicpvp.kcore.deliverychest.ItemModifier;
+import eu.epicpvp.kcore.enchantment.AnvilEnchantHandler;
+import eu.epicpvp.kcore.enchantment.CustomEnchantment;
+import eu.epicpvp.kcore.enchantment.enchantments.attack.BlindEnchantmentListener;
+import eu.epicpvp.kcore.enchantment.enchantments.attack.LifestealEnchantmentListener;
+import eu.epicpvp.kcore.enchantment.enchantments.attack.PoisonEnchantmentListener;
 import eu.epicpvp.kpvp.Listener.Listener;
 import lombok.Getter;
 
@@ -78,6 +81,11 @@ public class kPvP extends JavaPlugin {
 			WingShop wings = new WingShop(this);
 			wings.setEntity(CommandLocations.getLocation("wingshop"));
 			UtilServer.getLagListener(); //Init if not already init
+			
+			new AnvilEnchantHandler();
+			new CustomEnchantment("Blind", new BlindEnchantmentListener());
+			new CustomEnchantment("Lifesteal", new LifestealEnchantmentListener());
+			new CustomEnchantment("Poison", new PoisonEnchantmentListener());
 			
 			new DeliveryChest(this, UtilServer.getUserData(), new ItemModifier() {
 				
