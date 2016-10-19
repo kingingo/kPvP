@@ -2,6 +2,9 @@ package eu.epicpvp.kpvp;
 
 import java.util.concurrent.TimeUnit;
 
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.GameType;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.StatsKey;
+import eu.epicpvp.kcore.lottery.Lottery;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -90,6 +93,7 @@ public class kPvP extends JavaPlugin {
 			WingShop wings = new WingShop(this);
 			wings.setEntity(CommandLocations.getLocation("wingshop"));
 			UtilServer.getLagListener(); //Init if not already init
+			new Lottery(this, GameType.PVP, StatsKey.MONEY);
 
 			new AnvilEnchantHandler();
 			new CustomEnchantment("Blind", new BlindEnchantmentListener()).setCooldown(15, TimeUnit.SECONDS);
