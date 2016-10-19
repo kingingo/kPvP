@@ -1,5 +1,7 @@
 package eu.epicpvp.kpvp;
 
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -88,21 +90,21 @@ public class kPvP extends JavaPlugin {
 			WingShop wings = new WingShop(this);
 			wings.setEntity(CommandLocations.getLocation("wingshop"));
 			UtilServer.getLagListener(); //Init if not already init
-			
+
 			new AnvilEnchantHandler();
-			new CustomEnchantment("Blind", new BlindEnchantmentListener());
-			new CustomEnchantment("Lifesteal", new LifestealEnchantmentListener());
-			new CustomEnchantment("Poison", new PoisonEnchantmentListener());
+			new CustomEnchantment("Blind", new BlindEnchantmentListener()).setCooldown(15, TimeUnit.SECONDS);
+			new CustomEnchantment("Lifesteal", new LifestealEnchantmentListener()).setCooldown(10, TimeUnit.SECONDS);
+			new CustomEnchantment("Poison", new PoisonEnchantmentListener()).setCooldown(30, TimeUnit.SECONDS);
 			new CustomEnchantment("Smelting", new SmeltingEnchantmentListener());
 			new CustomEnchantment("Lightning", new LightningEnchantmentListener(5));
-			new CustomEnchantment("Blaze", new BlazeEnchantmentListener());
-			new CustomEnchantment("Wither", new WitherEnchantmentListener());
-			new CustomEnchantment("Poisened", new PoisenedEnchantmentListener());
-			new CustomEnchantment("Frozen", new FrozenEnchantmentListener());
+			new CustomEnchantment("Blaze", new BlazeEnchantmentListener()).setCooldown(60, TimeUnit.SECONDS);
+			new CustomEnchantment("Wither", new WitherEnchantmentListener()).setCooldown(90, TimeUnit.SECONDS);
+			new CustomEnchantment("Poisened", new PoisenedEnchantmentListener()).setCooldown(30, TimeUnit.SECONDS);
+			new CustomEnchantment("Frozen", new FrozenEnchantmentListener()).setCooldown(30, TimeUnit.SECONDS);
 			new CustomEnchantment("Obsidianshield", new ObsidianshieldEnchantmentListener());
-			
+
 			new DeliveryChest(this, UtilServer.getUserData(), new ItemModifier() {
-				
+
 				@Override
 				public void modify(ItemStack itemStack) {
 					switch(itemStack.getType()){
