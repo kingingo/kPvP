@@ -49,6 +49,7 @@ import eu.epicpvp.kcore.Command.Commands.CommandClearInventory;
 import eu.epicpvp.kcore.Command.Commands.CommandDelHome;
 import eu.epicpvp.kcore.Command.Commands.CommandEnchantmentTable;
 import eu.epicpvp.kcore.Command.Commands.CommandEnderchest;
+import eu.epicpvp.kcore.Command.Commands.CommandEpic;
 import eu.epicpvp.kcore.Command.Commands.CommandExt;
 import eu.epicpvp.kcore.Command.Commands.CommandFeed;
 import eu.epicpvp.kcore.Command.Commands.CommandFill;
@@ -248,6 +249,7 @@ public class kPvPManager {
 		getPvP().getCmd().register(CommandAddEpics.class, new CommandAddEpics(getStatsManager()));
 		getPvP().getCmd().register(CommandGiveGems.class, new CommandGiveGems(UtilServer.getGemsShop().getGems()));
 		getPvP().getCmd().register(CommandHomeCheck.class, new CommandHomeCheck(getPvP()));
+		getPvP().getCmd().register(CommandEpic.class, new CommandEpic());
 
 		UtilServer.getDeliveryPet(new DeliveryPet(UtilInv.getBase(), null, new DeliveryObject[]
 		{ new DeliveryObject(new String[]
@@ -340,8 +342,6 @@ public class kPvPManager {
 		new EnderpearlListener(getPvP());
 		getPerkManager().setPerkEntity(CommandLocations.getLocation("perk"));
 		setRandomCreature(CommandLocations.getLocation("random"));
-		new FlyListener();
-		new AuktionsMarkt();
 		
 		new VoteListener(getPvP(), true, new Callback<String>() {
 

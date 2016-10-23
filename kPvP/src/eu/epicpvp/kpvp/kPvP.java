@@ -14,12 +14,14 @@ import eu.epicpvp.datenclient.client.ClientWrapper;
 import eu.epicpvp.datenserver.definitions.connection.ClientType;
 import eu.epicpvp.datenserver.definitions.permissions.GroupTyp;
 import eu.epicpvp.kcore.AACHack.AACHack;
+import eu.epicpvp.kcore.AuktionsMarkt.AuktionsMarkt;
 import eu.epicpvp.kcore.Command.CommandHandler;
 import eu.epicpvp.kcore.Command.Admin.CommandLocations;
 import eu.epicpvp.kcore.Hologram.Hologram;
 import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.BungeeCordFirewall.BungeeCordFirewallListener;
 import eu.epicpvp.kcore.Listener.Command.ListenerCMD;
+import eu.epicpvp.kcore.Listener.FlyListener.FlyListener;
 import eu.epicpvp.kcore.MySQL.MySQL;
 import eu.epicpvp.kcore.Particle.WingShop;
 import eu.epicpvp.kcore.Permission.PermissionManager;
@@ -106,6 +108,8 @@ public class kPvP extends JavaPlugin {
 			new CustomEnchantment("Poisened", new PoisenedEnchantmentListener()).setCooldown(30, TimeUnit.SECONDS);
 			new CustomEnchantment("Frozen", new FrozenEnchantmentListener()).setCooldown(30, TimeUnit.SECONDS);
 			new CustomEnchantment("Obsidianshield", new ObsidianshieldEnchantmentListener());
+			new FlyListener();
+			new AuktionsMarkt();
 
 			new DeliveryChest(this, UtilServer.getUserData(), new ItemModifier() {
 
