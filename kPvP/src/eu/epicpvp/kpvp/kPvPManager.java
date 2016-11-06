@@ -347,15 +347,12 @@ public class kPvPManager {
 
 			@Override
 			public void call(String playerName, Throwable ex) {
-				if (UtilPlayer.isOnline(playerName)) {
-					Player player = Bukkit.getPlayer(playerName);
+				Player player = UtilPlayer.searchExact(playerName);
+				if (player!=null) {
 					if (UtilServer.getDeliveryPet() != null) {
 						UtilServer.getDeliveryPet().deliveryUSE(player, "§aVote for EpicPvP", true);
 					}
-
-					getStatsManager().addDouble(player, 200, StatsKey.MONEY);
-					UtilInv.repairInventory(player, true);
-					player.sendMessage(TranslationHandler.getText(player, "PREFIX") + TranslationHandler.getText(player, "VOTE_THX"));
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cr givekey "+playerName+" vote 1");
 				}
 			}
 		});
